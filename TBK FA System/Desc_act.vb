@@ -556,9 +556,9 @@ break_loop:
                         End If
                     End Try
                     Working_Pro.cal_eff()
-                        Working_Pro.Enabled = True
-                        Me.Close()
-                    Else
+                    Working_Pro.Enabled = True
+                    Me.Close()
+                Else
                         'MsgBox("Please check QTY OF SHIFT")
                         PictureBox3.Enabled = False
                     PictureBox2.Enabled = False

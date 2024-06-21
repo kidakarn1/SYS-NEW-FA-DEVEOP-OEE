@@ -10,6 +10,7 @@ Friend Class defectSelectcode
     Public Shared sDefectcode As String = ""
     Public Shared sSeqSpc = "NO DATA"
     Public Shared sPwiSpc = "NO DATA"
+    Public Shared mainCp = "NO DATA"
     Public Shared sDefectdetail As String = ""
     Public Shared dSelecttype As New defectSelecttype()
     Public Shared dSelecttypeSpc As New defectSpecialSelectFG()
@@ -135,6 +136,7 @@ Friend Class defectSelectcode
             dfRegister.swi = swi
             dfRegister.SeqSpc = sSeqSpc
             dfRegister.PwiSpc = sPwiSpc
+            dfRegister.mainCP = mainCp
             dfRegister.Show()
             Me.Hide()
         Catch ex As Exception

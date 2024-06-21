@@ -31,11 +31,12 @@ Partial Class defectSelecttype
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ITEMNAME = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
-        Me.lbType = New System.Windows.Forms.Label()
         Me.wis = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.seq = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pwi_id = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.PictureBox4 = New System.Windows.Forms.PictureBox()
+        Me.lbType = New System.Windows.Forms.Label()
+        Me.mainChildPart = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         CType(Me.btnUp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnBack, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -89,7 +90,7 @@ Partial Class defectSelecttype
         '
         Me.lvChildpart.Activation = System.Windows.Forms.ItemActivation.OneClick
         Me.lvChildpart.BackColor = System.Drawing.Color.FromArgb(CType(CType(7, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(35, Byte), Integer))
-        Me.lvChildpart.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ITEMNAME, Me.wis, Me.seq, Me.pwi_id})
+        Me.lvChildpart.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ITEMNAME, Me.wis, Me.seq, Me.pwi_id, Me.mainChildPart})
         Me.lvChildpart.Cursor = System.Windows.Forms.Cursors.Default
         Me.lvChildpart.Font = New System.Drawing.Font("Yu Gothic", 15.75!, System.Drawing.FontStyle.Bold)
         Me.lvChildpart.ForeColor = System.Drawing.Color.White
@@ -120,6 +121,18 @@ Partial Class defectSelecttype
         '
         Me.ITEMNAME.Width = 275
         '
+        'wis
+        '
+        Me.wis.Width = 140
+        '
+        'seq
+        '
+        Me.seq.Width = 1
+        '
+        'pwi_id
+        '
+        Me.pwi_id.Width = 1
+        '
         'PictureBox4
         '
         Me.PictureBox4.BackColor = System.Drawing.Color.Transparent
@@ -141,17 +154,9 @@ Partial Class defectSelecttype
         Me.lbType.TabIndex = 52
         Me.lbType.Text = "XX"
         '
-        'wis
+        'mainChildPart
         '
-        Me.wis.Width = 140
-        '
-        'seq
-        '
-        Me.seq.Width = 1
-        '
-        'pwi_id
-        '
-        Me.pwi_id.Width = 1
+        Me.mainChildPart.Width = 0
         '
         'defectSelecttype
         '
@@ -191,4 +196,5 @@ Partial Class defectSelecttype
     Friend WithEvents wis As ColumnHeader
     Friend WithEvents seq As ColumnHeader
     Friend WithEvents pwi_id As ColumnHeader
+    Friend WithEvents mainChildPart As ColumnHeader
 End Class

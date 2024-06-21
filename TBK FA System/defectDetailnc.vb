@@ -24,6 +24,7 @@ Friend Class defectDetailnc
     Public Shared ChildPartNC As Integer = 0
     Public Shared ChildPartNG As Integer = 0
     Public Shared dtpwi_id As String = ""
+    Public Shared mainCP As String = ""
     Private Sub defectDetailnc_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         dtSeqno = Working_Pro.seqNo
         dtWino = Working_Pro.wi_no.Text
@@ -79,6 +80,7 @@ Friend Class defectDetailnc
                         datlvDefectdetails.SubItems.Add(item("dt_seq_no").ToString()) 'seq
                         datlvDefectdetails.SubItems.Add(item("pwi_id").ToString())
                     End If
+                    datlvDefectdetails.SubItems.Add(item("dt_main_cp").ToString())
                     lvDefectdetails.Items.Add(datlvDefectdetails)
                     i += 1
                 End If
@@ -105,6 +107,7 @@ Friend Class defectDetailnc
                     Me.sNc = lvDefectdetails.Items(lvItem.Index).SubItems(5).Text
                     Me.dtQty = lvDefectdetails.Items(lvItem.Index).SubItems(5).Text
                     Me.dtName = lvDefectdetails.Items(lvItem.Index).SubItems(4).Text
+                    Me.mainCP = lvDefectdetails.Items(lvItem.Index).SubItems(7).Text
                     If MainFrm.chk_spec_line = "2" Then
                         dtWino = lvDefectdetails.Items(lvItem.Index).SubItems(6).Text
                         dtSeqno = lvDefectdetails.Items(lvItem.Index).SubItems(7).Text
@@ -113,7 +116,6 @@ Friend Class defectDetailnc
                 Next
                 ' Dim dfNumpadafjust = New defectNumpadadjust
                 'dfNumpadafjust.Show()
-
                 defectNumpadadjust.Show()
                 Me.Close()
             Else

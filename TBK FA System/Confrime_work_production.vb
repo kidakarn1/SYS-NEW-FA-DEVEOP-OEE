@@ -247,11 +247,16 @@ re_load:
                     Working_Pro.wi_no.Text = Prd_detail.lb_wi.Text
                     Working_Pro.Label3.Text = Prd_detail.lb_item_cd.Text
                     Working_Pro.Label12.Text = Prd_detail.lb_item_name.Text
+                    Working_Pro.newPartname.Text = Prd_detail.lb_item_name.Text
+
+                    If Working_Pro.newPartname.Text.Length > 17 Then
+                        Working_Pro.newPartname.Text = Working_Pro.newPartname.Text.ToString.Substring(0, 17) & "..."
+                    End If
                     Working_Pro.Label8.Text = Prd_detail.lb_plan_qty.Text
-                    'Working_Pro.Label6.Text = ListView1.Items(numOfindex).SubItems(4).Text.ToString
-                    'SNP
-                    'Working_Pro.Label27.Text = Prd_detail.lb_snp.Text
-                    Dim cavi_ty As Integer = MainFrm.cavity.Text
+                        'Working_Pro.Label6.Text = ListView1.Items(numOfindex).SubItems(4).Text.ToString
+                        'SNP
+                        'Working_Pro.Label27.Text = Prd_detail.lb_snp.Text
+                        Dim cavi_ty As Integer = MainFrm.cavity.Text
                     'CT = ListBox2
                     Working_Pro.CycleTime.Text = Prd_detail.lb_ct.Text
                     Dim time_req As Double = Prd_detail.lb_ct.Text * Prd_detail.lb_remain_qty.Text
@@ -321,10 +326,10 @@ re_load:
     End Function
     Public Shared Sub loadData_Working_OEE()
         Working_Pro.Show()
-        'Working_OEE.lbLine.Text = MainFrm.Label4.Text
-        'Working_OEE.lbPartNo.Text = Prd_detail.lb_item_cd.Text
-        'Working_OEE.lbPartName.Text = Prd_detail.lb_item_name.Text
-        'Working_OEE.Show()
+        '  Working_OEE.lbLine.Text = MainFrm.Label4.Text
+        '  Working_OEE.lbPartNo.Text = Prd_detail.lb_item_cd.Text
+        '  Working_OEE.lbPartName.Text = Prd_detail.lb_item_name.Text
+        '  Working_OEE.Show()
     End Sub
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         next_pae()

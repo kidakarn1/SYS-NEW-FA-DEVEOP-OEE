@@ -1,4 +1,5 @@
 ﻿Imports System.Data.SQLite
+Imports System.Globalization
 Imports System.Web.Script.Serialization
 Imports Newtonsoft.Json
 Imports Newtonsoft.Json.Linq
@@ -12,6 +13,40 @@ Public Class ModelSqliteDefect
 
         Catch ex As Exception
             MsgBox("Error Files ModelSqliteDefect In Function UpdateStatusCloselotSqlite")
+        End Try
+    End Function
+    Public Shared Function mSqliteGetDataQuality(line_cd As String, lot_no As String, startTimeFrith As String)
+        Dim api As New api
+        Try
+            Dim Sql = "Select dt_code , sum(dt_qty) AS TotalQ,
+                        (SELECT SUM(dt_qty)
+                             FROM defect_transactions  
+                             I where 
+		                        dt_line_cd ='" & line_cd & "' and dt_lot_no ='" & lot_no & "' and dt_main_cp = '1' and dt_type ='1' and dt_status_flg = '1' and dt_created_date >= '" & startTimeFrith & "'  
+	                         ) AS AllDefect
+                         from defect_transactions where dt_line_cd ='" & line_cd & "' and dt_lot_no ='" & lot_no & "' and dt_main_cp = '1' and dt_type ='1' and dt_status_flg = '1' and dt_created_date >= '" & startTimeFrith & "'  
+                        GROUP by dt_code order by sum(dt_qty) Desc LIMIT 3;"
+            Console.WriteLine(Sql)
+            Dim jsonData As String = api.Load_dataSQLite(Sql)
+            Return jsonData
+        Catch ex As Exception
+            MsgBox("Error Files ModelSqliteDefect In Function mSqliteGetDataQuality")
+        End Try
+    End Function
+    Public Shared Function mSqliteGetDataNG_BYHOUR(line_cd As String, lot_no As String)
+        Dim api As New api
+        Dim dt As DateTime = DateTime.Now
+        Dim dateTimeCurr = dt.ToString("yyyy-MM-dd HH") & ":00:00"
+        Dim dateTimeEND = dt.ToString("yyyy-MM-dd HH") & ":59:59"
+        Try
+            Dim Sql = "Select   sum(dt_qty) AS TotalNGByHour
+                         from defect_transactions where dt_line_cd ='" & line_cd & "' and dt_lot_no ='" & lot_no & "' and dt_item_type = '1' and dt_type ='1' and dt_status_flg = '1' and dt_created_date between '" & dateTimeCurr & "'and '" & dateTimeEND & "'"
+            Console.WriteLine(Sql)
+            Dim jsonData As String = api.Load_dataSQLite(Sql)
+            Return jsonData
+
+        Catch ex As Exception
+            MsgBox("Error Files ModelSqliteDefect In Function mSqliteGetDataNG_BYHOUR")
         End Try
     End Function
     Public Function mSqliteGetdatachildpartsummaryfg(dtWino As String, dtSeq As String, dtLot As String)
@@ -324,7 +359,7 @@ Public Class ModelSqliteDefect
             Return False
         End Try
     End Function
-    Public Function mSqliteInsertDefectTransection(dt_wi_no As String, dt_line_cd As String, dt_item_cd As String, dt_item_type As String, dt_lot_no As String, dt_seq_no As String, dt_type As String, dt_code As String, dt_qty As String, dtMenu As String, dtActualdate As String, pwi_id As String, dt_name_en As String)
+    Public Function mSqliteInsertDefectTransection(dt_wi_no As String, dt_line_cd As String, dt_item_cd As String, dt_item_type As String, dt_lot_no As String, dt_seq_no As String, dt_type As String, dt_code As String, dt_qty As String, dtMenu As String, dtActualdate As String, pwi_id As String, dt_name_en As String, mainCP As String)
         Dim sqliteConn As New SQLiteConnection(Backoffice_model.sqliteConnect)
         Backoffice_model.Check_connect_sqlite()
         Backoffice_model.Clear_sqlite()
@@ -359,7 +394,8 @@ Public Class ModelSqliteDefect
 					dt_updated_by,
 					pwi_id,
                     dt_status_close_lot,
-                    dt_name_en
+                    dt_name_en,
+                    dt_main_cp
 					) Values(
 					'" & dt_wi_no & "',
 					'" & dt_line_cd & "',
@@ -379,7 +415,8 @@ Public Class ModelSqliteDefect
 					'" & dt_line_cd & "',
 					'" & pwi_id & "',
                     '0',
-                    '" & dt_name_en & "')
+                    '" & dt_name_en & "' , 
+                    '" & mainCP & "')
             "
             Console.WriteLine(cmd.CommandText)
             Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
@@ -417,14 +454,14 @@ Public Class ModelSqliteDefect
     Public Shared Function mSqliteGetdefectdetailnc(dfWi As String, dfSeq As String, dfLot As String, dfType As String)
         Dim api As New api
         Try
-            Dim Sql = "SELECT dt.dt_item_cd, dt.dt_code, SUM(dt.dt_qty) AS total_nc, dt.dt_name_en ,  dt.dt_item_type, dt.dt_wi_no as dt_wi_no " &
+            Dim Sql = "SELECT dt.dt_item_cd, dt.dt_code, SUM(dt.dt_qty) AS total_nc, dt.dt_name_en ,  dt.dt_item_type, dt.dt_wi_no as dt_wi_no , dt.dt_main_cp as dt_main_cp " &
           "FROM defect_transactions as dt " &
           "WHERE dt.dt_wi_no = '" & dfWi & "' " &
           "AND dt.dt_seq_no = '" & dfSeq & "' " &
           "AND dt.dt_lot_no = '" & dfLot & "' " &
           "AND dt.dt_type = '" & dfType & "' " &
           "AND dt.dt_status_flg = '1' " &
-          "GROUP BY dt.dt_item_cd, dt.dt_name_en , dt.dt_code, dt.dt_item_type, dt.dt_wi_no " &
+          "GROUP BY dt.dt_item_cd, dt.dt_name_en , dt.dt_code, dt.dt_item_type, dt.dt_wi_no  , dt.dt_main_cp " &
           "ORDER BY dt.dt_item_type ASC"
             Console.WriteLine(Sql)
             Dim jsonData As String = api.Load_dataSQLite(Sql)

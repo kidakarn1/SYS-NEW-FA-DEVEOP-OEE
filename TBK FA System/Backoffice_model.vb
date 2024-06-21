@@ -178,7 +178,7 @@ Public Class Backoffice_model
                 "DELETE FROM close_lot_act where prd_st_date BETWEEN '" & convert_date_start & "' AND '" & currdated & "' and transfer_flg = '1'",
                 "DELETE FROM loss_actual where start_loss BETWEEN '" & convert_date_start1 & "' AND '" & currdated1 & "' and transfer_flg = '1'",
                 "DELETE FROM maintenance where mn_create_date BETWEEN '" & convert_date_start1 & "' AND '" & currdated1 & "' and mn_status = '2'",
-                "DELETE FROM defect_transactions where dt_created_date BETWEEN '" & convert_date_startDefect & "' and '" & currdated & " 23:59:59" & "' and dt_status_close_lot = '1'"
+                "DELETE FROM defect_transactions where dt_created_date BETWEEN '" & convert_date_startDefect & "' and '" & ConvertcurrdatedDefect & " 23:59:59" & "' and dt_status_close_lot = '1'"
             }
         Console.WriteLine(command_data(4))
         For i = 0 To command_data.Length - 1
@@ -1491,8 +1491,7 @@ recheck:
             '  SQLConn.Close()
         End Try
     End Function
-
-    Public Shared Function update_tagprintforDefect(wi As String, flgUpdate As String, conditionflg As String, pwi_id As String, BoxNo As Integer)
+    Public Shared Function update_tagprintforDefect(wi As String, flgUpdate As String, conditionflg As String, pwi_id As String, BoxNo As Integer, goodQty As String, cupprint As String)
         ' Dim reader As SqlDataReader
         'Dim SQLConn As New SqlConnection() 'The SQL Connection
         ' Dim SQLCmd As New SqlCommand()
@@ -1506,10 +1505,10 @@ recheck:
             '  reader.Close()
             'Return reader
             Dim mdDefect = New modelDefect
+            Console.WriteLine("http: //" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
             If mdDefect.mGetDataEnableFGPart(MainFrm.Label4.Text) = "1" Then
                 Dim api = New api()
-                Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo)
-                Console.WriteLine("http: //" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo)
+                Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
                 Return result
             Else
                 Return 0

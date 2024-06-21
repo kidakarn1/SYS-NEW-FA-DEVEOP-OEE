@@ -15,6 +15,7 @@ Friend Class defectSelecttype
     Public Shared mv = New manageVariable()
     Public Shared S_index As Integer = 0
     Dim SelectSpcSeq = "NO DATA"
+    Public Shared maincp = "NO DATA"
     Dim SelectSpcPWI_ID = "NO DATA"
     Public Shared Sub setVariable()
         actTotal = Working_Pro.LB_COUNTER_SEQ.Text
@@ -86,10 +87,12 @@ Friend Class defectSelecttype
                     'MsgBox("index ===>" & index)
                     'End If
                     datlvChildpart.SubItems.Add(Working_Pro.Spwi_id(index - 1))
+
                 Else
                     datlvChildpart.SubItems.Add(Working_Pro.seqNo)
                     datlvChildpart.SubItems.Add(Working_Pro.pwi_id)
                 End If
+                datlvChildpart.SubItems.Add(item("ODR_SEQ").ToString())
                 lvChildpart.Items.Add(datlvChildpart)
                 i += 1
             Next
@@ -120,7 +123,7 @@ Friend Class defectSelecttype
             If S_index < 0 Then
                 S_index = 0
                 ' ElseIf lvChildpart.Items.Count > S_index Then
-                '    S_index = CDbl(Val((lvChildpart.Items.Count - 1)))
+                '    S_index = CDbl(Val((lvCvhildpart.Items.Count - 1)))
             End If
             lvChildpart.Items(S_index).Selected = True
             lvChildpart.Items(S_index).EnsureVisible()
@@ -158,6 +161,7 @@ Friend Class defectSelecttype
             SelectSpcSeq = lvChildpart.Items(lvItem.Index).SubItems(4).Text
             SelectSpcPWI_ID = lvChildpart.Items(lvItem.Index).SubItems(5).Text
             wi = lvChildpart.Items(lvItem.Index).SubItems(3).Text
+            maincp = lvChildpart.Items(lvItem.Index).SubItems(6).Text
         Next
         dt_menu = "1"
         If type = "NG" Then
@@ -229,10 +233,12 @@ Friend Class defectSelecttype
     End Sub
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
         If lvChildpart.SelectedItems.Count > 0 Then
+
             Dim sDefectcode As New defectSelectcode()
             sDefectcode.sSeqSpc = SelectSpcSeq
             sDefectcode.sPwiSpc = SelectSpcPWI_ID
             sDefectcode.swi = wi
+            sDefectcode.mainCp = maincp
             sDefectcode.Show()
             Me.Hide()
         Else

@@ -15,6 +15,7 @@ Public Class defectDetailng
     Public Shared dtCode As String = ""
     Public Shared dtQty As String = ""
     Public Shared dtMenu As String = "1"
+    Public Shared mainCP As String = ""
     Public Shared dtActualdate As String = DateTime.Now.ToString("yyyy-MM-dd H:m:s")
     Dim cBuottndown As Integer = 0
     Dim cListview As Integer = 0
@@ -76,6 +77,7 @@ Public Class defectDetailng
                         datlvDefectdetails.SubItems.Add(item("dt_seq_no").ToString()) 'seq
                         datlvDefectdetails.SubItems.Add(item("pwi_id").ToString())
                     End If
+                    datlvDefectdetails.SubItems.Add(item("dt_main_cp").ToString())
                     lvDefectdetails.Items.Add(datlvDefectdetails)
                     i += 1
                 End If
@@ -104,6 +106,7 @@ Public Class defectDetailng
                     Me.sNg = lvDefectdetails.Items(lvItem.Index).SubItems(5).Text
                     Me.dtQty = lvDefectdetails.Items(lvItem.Index).SubItems(5).Text
                     Me.dtName = lvDefectdetails.Items(lvItem.Index).SubItems(4).Text
+                    Me.mainCP = lvDefectdetails.Items(lvItem.Index).SubItems(7).Text
                     If MainFrm.chk_spec_line = "2" Then
                         dtWino = lvDefectdetails.Items(lvItem.Index).SubItems(6).Text
                         dtSeqno = lvDefectdetails.Items(lvItem.Index).SubItems(7).Text

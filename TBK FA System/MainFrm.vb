@@ -95,10 +95,12 @@ Public Class MainFrm
             End If
             Insert_list.Label3.Text = Label4.Text
             Prd_detail.Label3.Text = Label4.Text
+
             '  RobotApppSuport.loadMain()
         Else
             Application.Exit()
         End If
+        'Me.WebView21.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=K1A003&shift=P")
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick

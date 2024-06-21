@@ -23,7 +23,20 @@ Partial Class TestForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TestForm))
+        Me.WebView21 = New Microsoft.Web.WebView2.WinForms.WebView2()
+        CType(Me.WebView21, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'WebView21
+        '
+        Me.WebView21.BackColor = System.Drawing.Color.White
+        Me.WebView21.CreationProperties = Nothing
+        Me.WebView21.DefaultBackgroundColor = System.Drawing.Color.White
+        Me.WebView21.Location = New System.Drawing.Point(12, 47)
+        Me.WebView21.Name = "WebView21"
+        Me.WebView21.Size = New System.Drawing.Size(757, 541)
+        Me.WebView21.TabIndex = 4640
+        Me.WebView21.ZoomFactor = 1.0R
         '
         'TestForm
         '
@@ -32,10 +45,14 @@ Partial Class TestForm
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(800, 600)
         Me.ControlBox = False
+        Me.Controls.Add(Me.WebView21)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "TestForm"
         Me.Text = "TestForm"
+        CType(Me.WebView21, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
+
+    Friend WithEvents WebView21 As Microsoft.Web.WebView2.WinForms.WebView2
 End Class

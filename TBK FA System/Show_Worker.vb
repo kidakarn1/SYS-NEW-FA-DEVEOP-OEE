@@ -43,7 +43,7 @@ Public Class Show_Worker
         Dim url As String = ""
         Dim tImage As Bitmap
         Try
-            url = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+            url = "http://192.168.161.207/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
             tImage = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
         Catch ex As Exception
             url = "Http://192.168.161.102/fa_system/asset/img/no_user.jpg"
@@ -75,7 +75,7 @@ Public Class Show_Worker
         Dim pictureBox As New PictureBox()
         Dim tclient As New WebClient
         'pictureBox.Image = Image.FromFile("http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg") ' เปลี่ยนเส้นทางไปยังไฟล์รูปภาพของคุณ
-        Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+        Dim url As String = "http://192.168.161.207/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
         Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
         pictureBox.Image = tImage
         If k2 Mod 5 = 0 Then

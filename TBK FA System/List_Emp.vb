@@ -579,6 +579,7 @@ Public Class List_Emp
                 Working_Pro.Label20.Text = " -- : --"
                 Working_Pro.Enabled = True
                 Backoffice_model.Check_detail_actual_insert_act_no_api() 'ทำให้ช้า'
+                Working_Pro.showWorkker()
                 Working_Pro.Enabled = True
                 Working_Pro.Show()
                 Me.Hide()

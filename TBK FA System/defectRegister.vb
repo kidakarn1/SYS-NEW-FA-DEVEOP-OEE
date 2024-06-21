@@ -20,6 +20,7 @@
     Public Shared SeqSpc = "NO DATA"
     Public Shared PwiSpc
     Public Shared sPart
+    Public Shared mainCP = ""
     Public Shared swi As String = "NO DATA"
     Private Sub defectRegister_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         setVariable()
@@ -31,6 +32,7 @@
         sPart = lbPart.Text
         lbDefectcode.Text = dSelectcode.sDefectcode
         lbDefectdetail.Text = dSelectcode.sDefectdetail
+        mainCP = dSelecttype.maincp
         If MainFrm.chk_spec_line = "2" Then
             dtWino = swi
             dtSeqno = SeqSpc
@@ -101,6 +103,7 @@
         End If
     End Sub
     Public Sub CalFG()
+        mainCP = "1"
         If tbQtydefectnc.Text < 0 Then
             tbQtydefectnc.Text = 0
         End If
@@ -115,7 +118,7 @@
         Else
             pwi_id = Working_Pro.pwi_id
         End If
-        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail)
+        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail, mainCP)
         Dim dataQty
         If rs Then
             If dtType = "1" Then
@@ -126,9 +129,9 @@
                 Working_Pro.lb_nc_qty.Text = dataQty
             End If
             Dim dfAll = CDbl(Val(Working_Pro.lb_ng_qty.Text)) + CDbl(Val(Working_Pro.lb_nc_qty.Text))
+            Working_Pro.cal_eff()
             Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) - CDbl(Val(tbQtydefectnc.Text))
             Working_Pro.Enabled = True
-
             Working_Pro.ResetRed()
             Me.Close()
         End If
@@ -147,7 +150,7 @@
         Else
             pwi_id = Working_Pro.pwi_id
         End If
-        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail)
+        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail, mainCP)
         If rs Then
             If dtType = "1" Then
                 Dim dataQty = calQtytotalncregisterNGChildPart(tbQtydefectnc.Text, actTotal, Working_Pro.lb_nc_child_part.Text, Working_Pro.lb_ng_child_part.Text)
@@ -157,6 +160,7 @@
                 Working_Pro.lb_nc_child_part.Text = dataQty
             End If
             Working_Pro.Enabled = True
+            Working_Pro.cal_eff()
             Working_Pro.ResetRed()
             Me.Close()
         End If
@@ -178,11 +182,11 @@
         Dim setNg = ngTotal + tbQtydefectnc
         Return setNg
     End Function
-    Public Function insertDefectregister(dtWino As String, dtLineno As String, dtItemcd As String, dtItemtype As String, dtLotno As String, dtSeqno As String, dtType As String, dtCode As String, dtQty As String, dtMenu As String, dtActualdate As String, pwi_id As String, def_name As String)
+    Public Function insertDefectregister(dtWino As String, dtLineno As String, dtItemcd As String, dtItemtype As String, dtLotno As String, dtSeqno As String, dtType As String, dtCode As String, dtQty As String, dtMenu As String, dtActualdate As String, pwi_id As String, def_name As String, mainCP As String)
         Try
             Dim mdDefect = New modelDefect()
             Dim mdSQLiteDefect = New ModelSqliteDefect()
-            Dim rsDataSQLite = mdSQLiteDefect.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, pwi_id, def_name)
+            Dim rsDataSQLite = mdSQLiteDefect.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, pwi_id, def_name, mainCP)
             'Dim rsData = mdDefect.mInsertdefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, pwi_id)
             'If rsData Then
             If rsDataSQLite Then

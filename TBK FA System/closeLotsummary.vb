@@ -33,18 +33,18 @@ Public Class closeLotsummary
             Finish_work.Close()
             'If My.Computer.Network.Ping("192.168.161.101") Then
             If MainFrm.chk_spec_line = "2" Then
-                    lbLine.BackColor = Color.FromArgb(44, 88, 130)
-                    lbLine.Location = New Point(166, 113)
-                    lbLine.Font = New Font(lbLine.Font.FontFamily, 23)
-                    pbSpecialSummary.Visible = True
-                    ListView2.Visible = True
-                    PictureBox3.Visible = True
-                    PictureBox3.Enabled = True
-                    setDataSpecial()
-                Else
-                    pbSpecialSummary.Visible = False
-                End If
-                getDefectdetailnc(sWi, sSeq, sLot)
+                lbLine.BackColor = Color.FromArgb(44, 88, 130)
+                lbLine.Location = New Point(166, 113)
+                lbLine.Font = New Font(lbLine.Font.FontFamily, 23)
+                pbSpecialSummary.Visible = True
+                ListView2.Visible = True
+                PictureBox3.Visible = True
+                PictureBox3.Enabled = True
+                setDataSpecial()
+            Else
+                pbSpecialSummary.Visible = False
+            End If
+            getDefectdetailnc(sWi, sSeq, sLot)
             'Else
             'load_show.Show()
             '    End If
@@ -216,14 +216,14 @@ Public Class closeLotsummary
     Public Sub Manage_closelot()
         'Try
         If My.Computer.Network.Ping("192.168.161.101") Then
-                If Loss_reg.Visible = True Then
-                    Loss_reg.Submit_loss()
-                End If
-                Dim md As New modelDefect()
-                Dim cFlg = comPleteflg(sAct, pQty)
-                Dim trFlg As String = "1"
-                Dim dFlg As String = "0"
-                Dim prdFlg As String = "1"
+            If Loss_reg.Visible = True Then
+                Loss_reg.Submit_loss()
+            End If
+            Dim md As New modelDefect()
+            Dim cFlg = comPleteflg(sAct, pQty)
+            Dim trFlg As String = "1"
+            Dim dFlg As String = "0"
+            Dim prdFlg As String = "1"
             Dim clFlg As String = "1"
             btnOk.Visible = False
             If MainFrm.chk_spec_line = "2" Then
@@ -308,49 +308,49 @@ Public Class closeLotsummary
             End If
             insertProductionactual(sWi, sLine, sPart, pQty, seqQty, sSeq, sShift, staffNo, stDatetime, eDatetime, sLot, cFlg, trFlg, dFlg, prdFlg, clFlg, avarage_eff, avarage_act_prd_time)
             If MainFrm.chk_spec_line = "2" Then
-                    For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
-                        Dim special_wi As String = itemPlanData.wi
-                        If cFlg = 1 Then
-                            Backoffice_model.work_complete(special_wi)
-                        Else
-                            Backoffice_model.work_complete_offline(special_wi)
-                        End If
-                    Next
-                Else
+                For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
+                    Dim special_wi As String = itemPlanData.wi
                     If cFlg = 1 Then
-                        Backoffice_model.work_complete(sWi)
+                        Backoffice_model.work_complete(special_wi)
                     Else
-                        Backoffice_model.work_complete_offline(sWi)
+                        Backoffice_model.work_complete_offline(special_wi)
                     End If
-                End If
-                checkPrintnormal()
-                If MainFrm.chk_spec_line = "2" Then
-                    Dim GenSEQ As Integer = sSeq - MainFrm.ArrayDataPlan.ToArray.Length
-                    Dim Iseq = GenSEQ
-                    For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
-                        Iseq = Iseq + 1
-                        Dim special_wi As String = itemPlanData.wi
-                        checkPrintdefect(special_wi, Iseq, sLot)
-                    Next
-                Else
-                    checkPrintdefect(sWi, sSeq, sLot)
-                End If
-
-                If statusPage.Text = "MAN" Then
-                    Sel_prd_setup.Close()
-                    List_Emp.lb_link.Text = "working"
-                    List_Emp.Show()
-                    Me.Close()
-                Else
-                    Working_Pro.Close()
-                    Prd_detail.Close()
-                    MainFrm.Enabled = True
-                    MainFrm.Show()
-                    Me.Close()
-                End If
+                Next
             Else
-                load_show.Show()
+                If cFlg = 1 Then
+                    Backoffice_model.work_complete(sWi)
+                Else
+                    Backoffice_model.work_complete_offline(sWi)
+                End If
             End If
+            checkPrintnormal()
+            If MainFrm.chk_spec_line = "2" Then
+                Dim GenSEQ As Integer = sSeq - MainFrm.ArrayDataPlan.ToArray.Length
+                Dim Iseq = GenSEQ
+                For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
+                    Iseq = Iseq + 1
+                    Dim special_wi As String = itemPlanData.wi
+                    checkPrintdefect(special_wi, Iseq, sLot)
+                Next
+            Else
+                checkPrintdefect(sWi, sSeq, sLot)
+            End If
+
+            If statusPage.Text = "MAN" Then
+                Sel_prd_setup.Close()
+                List_Emp.lb_link.Text = "working"
+                List_Emp.Show()
+                Me.Close()
+            Else
+                Working_Pro.Close()
+                Prd_detail.Close()
+                MainFrm.Enabled = True
+                MainFrm.Show()
+                Me.Close()
+            End If
+        Else
+            load_show.Show()
+        End If
         'Catch ex As Exception
         'load_show.Show()
         ' End Try
@@ -509,6 +509,16 @@ Public Class closeLotsummary
         If Integer.Parse(lbGood.Text) > 0 And result_mod > 0 And CDbl(Val(Working_Pro.Label10.Text)) < 0 Then
             Working_Pro.lb_box_count.Text = Working_Pro.lb_box_count.Text + 1
             Working_Pro.Label_bach.Text = Working_Pro.Label_bach.Text + 1
+            Dim cupprint
+            Dim rs = (CDbl(Val(lbNc.Text)) + (CDbl(Val(lbNg.Text))))
+            If rs <= Working_Pro.Label27.Text Then
+                cupprint = 1
+            Else
+                '      MsgBox("rs ===>" & rs)
+                '       MsgBox("CDbl(Val(Working_Pro.Label27.Text)) ===>" & CDbl(Val(Working_Pro.Label27.Text)))
+                cupprint = rs / CDbl(Val(Working_Pro.Label27.Text))
+            End If
+            '    MsgBox("cupprint===>" & cupprint)
             If MainFrm.chk_spec_line = "2" Then
                 If result_mod <> 0 Then
                     Working_Pro.GoodQty = lbGood.Text
@@ -519,14 +529,15 @@ Public Class closeLotsummary
                     For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
                         'special
                         Iseq += 1
-                        Backoffice_model.update_tagprintforDefect(itemPlanData.wi, "2", "1", Working_Pro.Spwi_id(j), (CDbl(Val(Working_Pro.lb_box_count.Text)) - 1))
+
+                        Backoffice_model.update_tagprintforDefect(itemPlanData.wi, "2", "1", Working_Pro.Spwi_id(j), (CDbl(Val(Working_Pro.lb_box_count.Text)) - 1), Working_Pro.GoodQty, Math.Ceiling(cupprint))
                         j += 1
                     Next
                 End If
             Else
                 Working_Pro.GoodQty = Working_Pro.lb_good.Text
                 Working_Pro.tag_print()
-                Backoffice_model.update_tagprintforDefect(sWi, "2", "1", Working_Pro.pwi_id, (CDbl(Val(Working_Pro.lb_box_count.Text)) - 1))
+                Backoffice_model.update_tagprintforDefect(sWi, "2", "1", Working_Pro.pwi_id, (CDbl(Val(Working_Pro.lb_box_count.Text)) - 1), Working_Pro.GoodQty, Math.Ceiling(cupprint))
             End If
             ' Working_Pro.Label_bach.Text = Working_Pro.Label_bach.Text + 1
         End If
@@ -736,7 +747,6 @@ Public Class closeLotsummary
     Private Sub lbNg_Click(sender As Object, e As EventArgs) Handles lbNg.Click
 
     End Sub
-
     Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
         btnOk.Visible = True
         ShowSpcDetailDefect.Show()

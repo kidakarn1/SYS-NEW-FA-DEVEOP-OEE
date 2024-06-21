@@ -573,6 +573,12 @@
     <Compile Include="defectSelectcode.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="defectSelectSupplier.Designer.vb">
+      <DependentUpon>defectSelectSupplier.vb</DependentUpon>
+    </Compile>
+    <Compile Include="defectSelectSupplier.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="defectSelecttype.Designer.vb">
       <DependentUpon>defectSelecttype.vb</DependentUpon>
     </Compile>
@@ -626,6 +632,12 @@
       <DependentUpon>Finish_work.vb</DependentUpon>
     </Compile>
     <Compile Include="Finish_work.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="loadingFA.Designer.vb">
+      <DependentUpon>loadingFA.vb</DependentUpon>
+    </Compile>
+    <Compile Include="loadingFA.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ModelSqliteDefect.vb" />
@@ -1161,6 +1173,9 @@
     <EmbeddedResource Include="defectSelectcode.resx">
       <DependentUpon>defectSelectcode.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="defectSelectSupplier.resx">
+      <DependentUpon>defectSelectSupplier.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="defectSelecttype.resx">
       <DependentUpon>defectSelecttype.vb</DependentUpon>
     </EmbeddedResource>
@@ -1187,6 +1202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Finish_work.resx">
       <DependentUpon>Finish_work.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="loadingFA.resx">
+      <DependentUpon>loadingFA.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressBar_Form.resx">
       <DependentUpon>ProgressBar_Form.vb</DependentUpon>
@@ -1393,6 +1411,37 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fa_logo.ico" />
+    <None Include="Resources\startingProd1.png" />
+    <None Include="Resources\btnInfoNew.png" />
+    <None Include="Resources\btnSetUpNewnew.png" />
+    <None Include="Resources\btnStartNewnew.png" />
+    <None Include="Resources\btnSetUpNew.png" />
+    <None Include="Resources\btnCloseLotNew.png" />
+    <None Include="Resources\btnDefectNew.png" />
+    <None Include="Resources\btnIncNew.png" />
+    <None Include="Resources\btnDescNew.png" />
+    <None Include="Resources\btnbacknew1.png" />
+    <None Include="Resources\btnStartnew.png" />
+    <None Include="Resources\btnbacknew.png" />
+    <None Include="Resources\tabStopProd.png" />
+    <None Include="Resources\stopProd.png" />
+    <None Include="Resources\btnStart1.png" />
+    <None Include="Resources\btnBack.png" />
+    <None Include="Resources\tabStartProd.png" />
+    <None Include="Resources\tabStartProd1.png" />
+    <None Include="Resources\startingProd.png" />
+    <None Include="Resources\btnUser.png" />
+    <None Include="Resources\btnStopp.png" />
+    <None Include="Resources\btnStop1.png" />
+    <None Include="Resources\btnSetting11.png" />
+    <None Include="Resources\btnInfo.png" />
+    <None Include="Resources\btnDesc1.png" />
+    <None Include="Resources\btnInc1.png" />
+    <None Include="Resources\btnSetting1.png" />
+    <None Include="Resources\btnDefect1.png" />
+    <None Include="Resources\btnClose.png" />
+    <None Include="Resources\btnStarting.png" />
+    <None Include="Resources\red.png" />
     <None Include="Resources\logoTBKK.jpeg" />
     <None Include="Resources\MainMenu4.png" />
     <None Include="Resources\addSpeNumpad1.png" />

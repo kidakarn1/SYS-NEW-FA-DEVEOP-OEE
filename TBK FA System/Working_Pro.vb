@@ -16,6 +16,8 @@ Imports BarcodeLib.Barcode
 'Imports NationalInstruments.DAQmx
 Imports System.Net
 Imports System.Web.Script.Serialization
+Imports Microsoft.Web.WebView2.Core
+Imports Microsoft.Web.WebView2.WinForms
 Public Class Working_Pro
     Public Shared comportTowerLamp = "COM4"
     ' Public Shared ArrayDataSpecial As New List(Of DataPlan)
@@ -70,10 +72,12 @@ Public Class Working_Pro
     Public Shared carvity As Integer = MainFrm.cavity.Text
     Public Shared ResultPrint As Integer = 0
     Delegate Sub SetTextCallback(ByVal [text] As String)
+
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         'Label44.Text = TimeOfDay.ToString("H:mm:ss")
         Label17.Text = TimeOfDay.ToString("H:mm:ss")
-        Label1.Text = DateTime.Now.ToString("D")
+        'Label1.Text = DateTime.Now.ToString("D")
+        Label1.Text = DateTime.Now.ToString("yyyy, MMMM dd")
         Label43.Text = DateTime.Now.ToString("yyyy/MM/dd")
         lb_loss_status.Text = lb_loss_status.Text
         If lb_loss_status.Right < 0 Then
@@ -99,18 +103,286 @@ Public Class Working_Pro
             Next
         End If
     End Function
-    Private Sub Working_Pro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Public Sub setlvA(line_cd As String, lot_no As String, shift As String, dateStart As String)
+        Dim OEE = New OEE
+        lvA.Items.Clear()
+        Dim rslvA = OEE.OEE_GET_Data_LOSS(line_cd, lot_no, shift, dateStart)
+        If rslvA <> "0" Then
+            Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvA)
+            Try
+                For Each item As Object In dict3
+                    lbOverTimeAvailability.Text = item("AllLossTime").ToString()
+                    datlvDefectsumary = New ListViewItem(item("loss_cd").ToString())
+                    datlvDefectsumary.SubItems.Add(item("lossTime").ToString())
+                    lvA.Items.Add(datlvDefectsumary)
+                Next
+            Catch ex As Exception
 
+            End Try
+        End If
+    End Sub
+    Public Sub showWorkker()
+        Dim emp_cd As String = List_Emp.ListView1.Items(0).Text
+        Dim tclient As New WebClient
+        Dim tImage As Bitmap = Nothing ' Initialize tImage to avoid potential null reference exceptions
+
+        Try
+            Dim url As String = "http://192.168.161.207/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
+            Dim data As Byte() = tclient.DownloadData(url)
+            Using stream As New MemoryStream(data)
+                tImage = New Bitmap(stream)
+            End Using
+        Catch ex As Exception
+            ' If there's an error downloading or creating the image, load a default image
+            Dim defaultUrl As String = "http://192.168.161.102/fa_system/asset/img/no_user.jpg"
+            Dim defaultData As Byte() = tclient.DownloadData(defaultUrl)
+            Using defaultStream As New MemoryStream(defaultData)
+                tImage = New Bitmap(defaultStream)
+            End Using
+        End Try
+        ' Assign the retrieved or default image to pcWorker1.Image
+        pcWorker1.Image = tImage
+        Label48.Text = "1"
+        If CDbl(Val(Label29.Text)) > 1 Then
+            tImage = Nothing
+            emp_cd = List_Emp.ListView1.Items(1).Text
+            Try
+                Dim url As String = "http://192.168.161.207/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
+                Dim data As Byte() = tclient.DownloadData(url)
+                Using stream As New MemoryStream(data)
+                    tImage = New Bitmap(stream)
+                End Using
+            Catch ex As Exception
+                ' If there's an error downloading or creating the image, load a default image
+                Dim defaultUrl As String = "http://192.168.161.102/fa_system/asset/img/no_user.jpg"
+                Dim defaultData As Byte() = tclient.DownloadData(defaultUrl)
+                Using defaultStream As New MemoryStream(defaultData)
+                    tImage = New Bitmap(defaultStream)
+                End Using
+            End Try
+            pcWorker2.Image = tImage
+            Label48.Text = "2"
+        End If
+    End Sub
+    Public Function cal_progressbarQ(NGAll, Good)
+        Dim rs = CInt(NGAll) + CInt(Good)
+        Dim totalProgressbar = (Good / rs) * 100
+        If Good = "0" And rs = "0" Then
+            totalProgressbar = Int(100)
+        End If
+        If rs = "0" Then
+            totalProgressbar = Int(100)
+        End If
+        If Math.Ceiling(totalProgressbar) > 100 Then
+            progressbarQ.Text = Int(100) & "%"
+            progressbarQ.Value = Int(100)
+        ElseIf Math.Ceiling(totalProgressbar) < 0 Then
+            progressbarQ.Text = Int(0) & "%"
+            progressbarQ.Value = Int(0)
+        Else
+            progressbarQ.Text = Int(totalProgressbar) & "%"
+            progressbarQ.Value = Int(totalProgressbar)
+        End If
+        Return totalProgressbar
+        'CircularProgressBar2.Text = sum_prg2 & "%"
+        'CircularProgressBar2.Value = sum_prg2
+    End Function
+    Public Sub calProgressOEE(A, Q, P)
+
+        Dim total = A + Q + P
+
+        If A > 100 Then
+            A = 100
+        ElseIf A < 0 Then
+            A = 0
+        End If
+        If Q > 100 Then
+            Q = 100
+        ElseIf Q < 0 Then
+            Q = 0
+        End If
+        If P > 100 Then
+            P = 100
+        ElseIf P < 0 Then
+            P = 0
+        End If
+        A = A / 100
+        Q = Q / 100
+        P = P / 100
+        ' Dim totalProgressbar = Int(FormatNumber((A * Q * P), 2) * 100) 'Int((total / 300) * 100)
+
+        Dim result As Double = A * Q * P
+        ' ปัดเศษให้เป็นทศนิยม 2 ตำแหน่ง
+        Dim roundedResult As Double = Math.Round(result, 2)
+
+        Dim flooredResult As Double = Math.Floor(result * 100)
+        Dim totalProgressbar As Integer = flooredResult.ToString("F2")
+        If totalProgressbar > 100 Then
+            progressbarOEE.Text = Int(100) & "%"
+            progressbarOEE.Value = Int(100)
+        ElseIf totalProgressbar < 0 Then
+            progressbarOEE.Text = Int(0) & "%"
+            progressbarOEE.Value = Int(0)
+        Else
+            progressbarOEE.Text = totalProgressbar & "%"
+            progressbarOEE.Value = totalProgressbar
+        End If
+        If totalProgressbar > 80 Then
+            progressbarOEE.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
+        ElseIf totalProgressbar < 80 And totalProgressbar > 65 Then
+            progressbarOEE.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
+        ElseIf totalProgressbar < 65 Then
+            progressbarOEE.ProgressColor = Color.Red
+        End If
+    End Sub
+
+    Public Function cal_progressbarA(line_cd, st_shift, end_shift)
+        Dim OEE = New OEE
+        Dim totalProgressbar = OEE.GetDataProgressbarA(st_shift, end_shift, line_cd)
+        If totalProgressbar > 100 Then
+            progressbarA.Text = Int(100) & "%"
+            progressbarA.Value = Int(100)
+        ElseIf totalProgressbar < 0 Then
+            progressbarA.Text = Int(0) & "%"
+            progressbarA.Value = Int(0)
+        Else
+            progressbarA.Text = totalProgressbar & "%"
+            progressbarA.Value = totalProgressbar
+        End If
+        Return totalProgressbar
+    End Function
+
+    Public Function setgetSpeedLoss(NG, Good, timeShift, std_cd, line_cd)
+        Dim OEE = New OEE
+        'Dim per = "%"
+        'per.Font = New Font("Arial", 20, FontStyle.Bold)
+        'Dim rs = OEE.OEE_getSpeedLoss(NG, Good, timeShift, std_cd)
+
+        Dim startDate As Date
+        Dim rsDateDiff As Long
+        ' แปลงข้อความเป็นชนิดข้อมูล Date
+        Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd)
+        actualP.Text = OEE_actual_detailByHour
+        ' Try
+
+        startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString.Substring(0, 10)) & " " & timeShift
+        ' หาความแตกต่างในหน่วยนาที
+        rsDateDiff = DateDiff("s", startDate, Now())
+            Dim minrsDateDiff = rsDateDiff / 60
+        If rsDateDiff < 3600 Then
+            stdJobP.Text = Math.Ceiling(rsDateDiff / std_cd)
+            Label25.Text = Math.Ceiling(minrsDateDiff)
+            minACTUAL_P.Text = Math.Ceiling(minrsDateDiff)
+            PanelSTDJOBP.Visible = True
+            PanelACTP.Visible = True
+            Try
+                lbOverTimePerformance.Text = Math.Ceiling(rsDateDiff / actualP.Text)
+
+            Catch ex As Exception
+                lbOverTimePerformance.Text = 1
+            End Try
+
+        Else
+            Dim GetLossByHouseP1 = OEE.OEE_GetLossByHouseP1(line_cd)
+            Dim calHour = 0
+            Dim rsmanage = 0
+            If GetLossByHouseP1 <> "0" Then
+                rsmanage = 3600 - GetLossByHouseP1
+            Else
+                rsmanage = 3600
+            End If
+            PanelSTDJOBP.Visible = False
+            PanelACTP.Visible = False
+            stdJobP.Text = Math.Ceiling(rsmanage / std_cd)
+            lbOverTimePerformance.Text = Math.Ceiling(rsmanage / actualP.Text)
+        End If
+        ' Catch ex As Exception
+        '
+        ' End Try
+        ' stdJobP.Text = Math.Ceiling(3600 / std_cd) ' CInt((CDbl(Val(Label7.Text)) / CDbl(Val(HourOverAllShift.Text))))
+        Dim workingTime = OEE.OEE_getWorkingTime(line_cd, timeShift)
+        Dim workingTimemin = workingTime * 60
+        Dim workingTimesec = workingTimemin * 60
+        Dim rscalwork_std = workingTimesec / std_cd
+        Dim totalProgressbar
+        If actualP.Text = "0" And stdJobP.Text = "0" Then
+            totalProgressbar = 0
+        Else
+            totalProgressbar = (actualP.Text / stdJobP.Text) * 100  '((Good + NG) / rscalwork_std)
+        End If
+        If Math.Ceiling(totalProgressbar) > 100 Then
+
+            progressbarP.Text = Int(100) & "%"
+            progressbarP.Value = Int(100)
+        ElseIf Math.Ceiling(totalProgressbar) < 0 Then
+            progressbarP.Text = Int(0) & "%"
+            progressbarP.Value = Int(0)
+        Else
+            progressbarP.Text = Int(totalProgressbar) & "%"
+            progressbarP.Value = Int(totalProgressbar)
+        End If
+        Return totalProgressbar
+    End Function
+    Public Sub setNgByHour(line_cd As String, lot_no As String)
+        'Dim sqlite = New ModelSqliteDefect
+        'Dim rs = sqlite.mSqliteGetDataNG_BYHOUR(line_cd, lot_no)
+        'If rs <> "0" Then
+        'Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rs)
+        'Try
+        'For Each item As Object In dict3a
+        'Next
+        'Catch ex As Exception
+        '
+        'End Try
+        'End If
+        '  lbNG.Text = lbOverTimeQuality.Text
+    End Sub
+    Public Sub set_AccTarget(TimestartShift, std_ct)
+        Dim OEE = New OEE
+        lbAccTarget.Text = OEE.OEE_GET_Data_AccTarget(TimestartShift, std_ct)
+    End Sub
+    Public Sub setlvQ(line_cd As String, lot_no As String)
+        lvQ.Items.Clear()
+        lbOverTimeQuality.Text = "0"
+        lbNG.Text = "0"
+        Dim OEE = New OEE
+        Dim sqlite = New ModelSqliteDefect
+        Dim rslvQ = sqlite.mSqliteGetDataQuality(line_cd, lot_no, DateTimeStartofShift.Text)
+        If rslvQ <> "0" Then
+            Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvQ)
+            Try
+                For Each item As Object In dict3
+                    lbOverTimeQuality.Text = item("AllDefect").ToString()
+                    lbNG.Text = lbOverTimeQuality.Text
+                    datlvDefectsumary = New ListViewItem(item("dt_code").ToString())
+                    datlvDefectsumary.SubItems.Add(item("TotalQ").ToString())
+                    lvQ.Items.Add(datlvDefectsumary)
+                Next
+            Catch ex As Exception
+
+            End Try
+        End If
+    End Sub
+    Private Sub Working_Pro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        WebView22.BringToFront()
         If CheckOs() Then
             counterNewDIO = New CheckWindow
             counterNewDIO.Per_CheckCounter()
         End If
+        Dim OEE = New OEE
+        showWorkker()
+        DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
         tag_group_no = Backoffice_model.Get_tag_group_no()
-        Label7.Text = OEE.OEE_GET_TARGET(Label14.Text, Prd_detail.lb_wi.Text, Label6.Text)
-        PictureBox12.Visible = False
+        CircularProgressBar2.Visible = False
+        Label7.Text = OEE.OEE_GET_NEW_TARGET(Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5), Label38.Text)
+        setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+        setlvQ(Label24.Text, Label18.Text)
+        set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
+        setNgByHour(Label24.Text, Label18.Text)
+        'PictureBox12.Visible = False
         PictureBox10.Visible = True
         Label29.BringToFront()
-        PictureBox11.Visible = False
+        'PictureBox11.Visible = False
         Wait_data.Close()
         'Prd_detail.Timer3.Enabled = False
         Label47.Visible = False
@@ -127,6 +399,7 @@ Public Class Working_Pro
         load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
         lbNextTime.Text = BreakTime
+        HourOverAllShift.Text = OEE.OEE_GET_Hour(Label14.Text)
         'TimerLossBT.Start()
         V_check_line_reprint = Backoffice_model.check_line_reprint()
         Dim next_process = Backoffice_model.GET_NEXT_PROCESS()
@@ -226,7 +499,11 @@ Public Class Working_Pro
         Dim mdDf = New modelDefect
         lb_good.Text = mdDf.mGetGoodWILot(wi_no.Text, Label18.Text)
         Main()
+        Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, LB_COUNTER_SHIP.Text)
+        Dim A = cal_progressbarA(Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
         Backoffice_model.Get_close_lot_time(Label14.Text)
+        Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
+        calProgressOEE(A, Q, P)
         Timer2.Start()
     End Sub
     Public Sub check_seq_data()
@@ -302,10 +579,10 @@ Public Class Working_Pro
                 Call DioGetErrorString(Ret, szError)
             Catch ex As Exception
                 Button1.Enabled = False
-                btn_start.Enabled = False
+                btnStart.Enabled = False
                 btn_back.Enabled = False
-                PictureBox13.Enabled = False
-                PictureBox14.Enabled = False
+                panelpcWorker1.Enabled = False
+                btnInfo.Enabled = False
                 Dim listdetail = "Please check DIO !"
                 PictureBox10.BringToFront()
                 PictureBox10.Show()
@@ -338,10 +615,10 @@ Public Class Working_Pro
                 PictureBox16.Visible = False
             Catch ex As Exception
                 Button1.Enabled = False
-                btn_start.Enabled = False
+                btnStart.Enabled = False
                 btn_back.Enabled = False
-                PictureBox13.Enabled = False
-                PictureBox14.Enabled = False
+                panelpcWorker1.Enabled = False
+                btnInfo.Enabled = False
                 Dim listdetail = "Port Not Found Please Check Port. " & mec_name & "."
                 PictureBox10.BringToFront()
                 PictureBox10.Show()
@@ -364,10 +641,10 @@ Public Class Working_Pro
                 Dim rs = counterNewDIO.count_NIMAX()
                 If rs <> "OK" Then
                     Button1.Enabled = False
-                    btn_start.Enabled = False
+                    btnStart.Enabled = False
                     btn_back.Enabled = False
-                    PictureBox13.Enabled = False
-                    PictureBox14.Enabled = False
+                    panelpcWorker1.Enabled = False
+                    btnInfo.Enabled = False
                     Dim listdetail = "Please check DIO !"
                     PictureBox10.BringToFront()
                     PictureBox10.Show()
@@ -387,10 +664,10 @@ Public Class Working_Pro
             Else
                 'MsgBox("")
                 Button1.Enabled = False
-                btn_start.Enabled = False
+                btnStart.Enabled = False
                 btn_back.Enabled = False
-                PictureBox13.Enabled = False
-                PictureBox14.Enabled = False
+                panelpcWorker1.Enabled = False
+                btnInfo.Enabled = False
                 Dim listdetail = "Not Support Counter NI MAX because  OS window 7."
                 PictureBox10.BringToFront()
                 PictureBox10.Show()
@@ -408,7 +685,7 @@ Public Class Working_Pro
     Private Sub Label8_Click(sender As Object, e As EventArgs)
 
     End Sub
-    Private Sub btn_setup_Click(sender As Object, e As EventArgs) Handles btn_setup.Click
+    Private Sub btn_setup_Click(sender As Object, e As EventArgs) Handles btn_setup.Click, btnSetUp.Click
         Try
             If My.Computer.Network.Ping("192.168.161.101") Then
                 Sel_prd_setup.Show()
@@ -435,44 +712,46 @@ Public Class Working_Pro
 
     End Sub
     Public Sub stop_working()
-        btn_start.BringToFront()
-        LB_COUNTER_SHIP.Visible = False
-        btn_start.Visible = True
-        PictureBox11.Visible = True
-        PictureBox13.BackColor = Color.FromArgb(63, 63, 63)
+        WebView22.Visible = False
+        btnInfo.Visible = True
+        btnStart.BringToFront()
+        ' LB_COUNTER_SHIP.Visible = False
+        'btnStart.Visible = True
+        'PictureBox11.Visible = True
+        'panelpcWorker1.BackColor = Color.FromArgb(63, 63, 63)
         'Panel3.Location = New Point(47, 209)
         'Label6.Location = New Point(38, 324)
         'Label10.Location = New Point(38, 439)
-        Label24.BackColor = Color.FromArgb(63, 63, 63)
-        Label17.BackColor = Color.FromArgb(63, 63, 63)
-        Label1.BackColor = Color.FromArgb(63, 63, 63)
-        Label3.BackColor = Color.FromArgb(63, 63, 63)
-        Label18.BackColor = Color.FromArgb(63, 63, 63)
-        Label18.Location = New Point(490, 121)
-        Label16.BackColor = Color.FromArgb(63, 63, 63)
+        'Label24.BackColor = Color.FromArgb(63, 63, 63)
+        'Label17.BackColor = Color.FromArgb(63, 63, 63)
+        ' Label1.BackColor = Color.FromArgb(63, 63, 63)
+        'Label3.BackColor = Color.FromArgb(63, 63, 63)
+        'Label18.BackColor = Color.FromArgb(63, 63, 63)
+        'Label18.Location = New Point(490, 121)
+        'Label16.BackColor = Color.FromArgb(63, 63, 63)
         Label20.Visible = False
-        Label20.BackColor = Color.FromArgb(63, 63, 63)
+        'Label20.BackColor = Color.FromArgb(63, 63, 63)
         LB_COUNTER_SEQ.SendToBack()
         CircularProgressBar2.Visible = False
-        CircularProgressBar2.BackColor = Color.FromArgb(63, 63, 63)
-        CircularProgressBar2.InnerColor = Color.FromArgb(63, 63, 63)
+        'CircularProgressBar2.BackColor = Color.FromArgb(63, 63, 63)
+        'CircularProgressBar2.InnerColor = Color.FromArgb(63, 63, 63)
 
 
-        Label7.Location = New Point(98, 192)
-        Label7.BackColor = Color.FromArgb(12, 27, 45)
-        Label7.BringToFront()
+        ' Label7.Location = New Point(150, 25)
+        '        Label7.BackColor = Color.FromArgb(12, 27, 45)
+        ''        Label7.BringToFront()
 
-        Label8.Location = New Point(56, 297)
-        Label8.BackColor = Color.FromArgb(12, 27, 45)
-        Label8.BringToFront()
+        ' Label8.Location = New Point(56, 297)
+        'Label8.BackColor = Color.FromArgb(12, 27, 45)
+        'Label8.BringToFront()
 
-        Label6.Location = New Point(43, 403)
-        Label6.BackColor = Color.FromArgb(12, 27, 45)
-        Label6.BringToFront()
+        ' Label6.Location = New Point(43, 403)
+        'Label6.BackColor = Color.FromArgb(12, 27, 45)
+        'Label6.BringToFront()
 
-        Label10.Location = New Point(41, 510)
-        Label10.BackColor = Color.FromArgb(12, 27, 45)
-        Label10.BringToFront()
+        '   Label10.Location = New Point(41, 510)
+        'Label10.BackColor = Color.FromArgb(12, 27, 45)
+        'Label10.BringToFront()
 
 
 
@@ -505,13 +784,16 @@ Public Class Working_Pro
         Panel1.BackColor = Color.Red
         Label30.Text = "STOPPED"
         'btn_back.Visible = True
-        btn_setup.Visible = True
+        btnSetUp.Visible = True
         btn_ins_act.Visible = True
         btn_desc_act.Visible = True
-        btn_defect.Visible = True
-        btn_closelot.Visible = True
-        btn_stop.Visible = False
-        btn_start.Visible = True
+        btnDefect.Visible = True
+        btnInfo.Visible = True
+        btnCloseLot.Visible = True
+        PictureBox11.Visible = True
+        redBox.Visible = True
+        btn_stop.Visible = True
+        btnStart.Visible = True
         CheckMenu()
     End Sub
     Private Sub btn_stop_Click(sender As Object, e As EventArgs) Handles btn_stop.Click
@@ -527,7 +809,7 @@ Public Class Working_Pro
         stop_working()
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btn_defect.Click
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnDefect.Click, btnDefect.Click
         Dim dfHome As New defectHome()
         dfHome.Show()
         Me.Enabled = False
@@ -636,11 +918,15 @@ Public Class Working_Pro
             End Try
             st_time.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
             st_count_ct.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
-            btn_setup.Enabled = True
+            btnSetUp.Enabled = True
             btn_ins_act.Enabled = True
             btn_desc_act.Enabled = True
-            btn_defect.Enabled = True
-            btn_closelot.Enabled = True
+            btnDefect.Enabled = True
+            PictureBox11.Enabled = True
+            btnInfo.Enabled = True
+
+            btnCloseLot.Enabled = True
+            redBox.Enabled = True
             'Dim temppo As Double = Label34.Text
             CircularProgressBar2.Text = 0 & "%"
             CircularProgressBar2.Value = 0
@@ -659,13 +945,16 @@ Public Class Working_Pro
         End If
         Panel1.BackColor = Color.Green
         Label30.Text = "NORMAL"
-        btn_start.Visible = False
+        btnStart.Visible = False
         btn_back.Visible = False
-        btn_setup.Visible = False
+        btnSetUp.Visible = False
         btn_ins_act.Visible = False
         btn_desc_act.Visible = False
-        btn_defect.Visible = False
-        btn_closelot.Visible = False
+        btnDefect.Visible = False
+        PictureBox11.Visible = False
+        btnInfo.Visible = False
+        btnCloseLot.Visible = False
+        redBox.Visible = False
         btn_stop.Visible = True
         Prd_detail.Timer3.Enabled = False
     End Sub
@@ -694,7 +983,7 @@ Public Class Working_Pro
             Backoffice_model.ins_loss_act_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
         End Try
     End Sub
-    Public Sub Start_Production()
+    Public Sub Start_Production() '
         If check_network_frist = 0 Then
             Try
                 If My.Computer.Network.Ping("192.168.161.101") Then
@@ -708,6 +997,7 @@ Public Class Working_Pro
             Dim date_st1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
             Dim date_end1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
             Backoffice_model.date_time_click_start = DateTime.Now.ToString("yyyy-MM-dd HH:mm") & ":00"
+
             Dim rsTime As Integer = calTimeBreakTime(Backoffice_model.date_time_click_start, lbNextTime.Text)
             '  TimerCountBT.Interval = rsTime * 1000
             '  If rsTime <> 0 Then
@@ -777,6 +1067,7 @@ Public Class Working_Pro
                 Next
             End If
             check_in_up_seq += 1
+            DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
         End If
         Main()
         Try
@@ -961,11 +1252,15 @@ Public Class Working_Pro
             st_time.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
             st_count_ct.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
             'Starting
-            btn_setup.Enabled = True
+            btnSetUp.Enabled = True
             btn_ins_act.Enabled = True
             btn_desc_act.Enabled = True
-            btn_defect.Enabled = True
-            btn_closelot.Enabled = True
+            btnDefect.Enabled = True
+            PictureBox11.Enabled = True
+            btnInfo.Enabled = True
+
+            btnCloseLot.Enabled = True
+            redBox.Enabled = True
             'Starting
             'End
             'End
@@ -981,79 +1276,91 @@ Public Class Working_Pro
         Else
             'Label32.Text = "0"
         End If
+        cal_eff()
         TIME_CAL_EFF.Start()
         LB_COUNTER_SHIP.Visible = True
         Panel1.BackColor = Color.Green
         Label30.Text = "NORMAL"
-        btn_start.Visible = False
+        btnStart.Visible = False
         btn_back.Visible = False
-        btn_setup.Visible = False
+        btnSetUp.Visible = False
         btn_ins_act.Visible = False
         btn_desc_act.Visible = False
-        btn_defect.Visible = False
-        btn_closelot.Visible = False
+        btnDefect.Visible = False
+        PictureBox11.Visible = False
+        btnInfo.Visible = False
+        btnCloseLot.Visible = False
+        redBox.Visible = False
+        WebView22.Visible = True
+        loadDataProgressBar(Label24.Text, Label14.Text)
         btn_stop.Visible = True
         Prd_detail.Timer3.Enabled = False
 
-        btn_start.Visible = False
-        PictureBox11.Visible = False
-        PictureBox12.Visible = True
+        btnStart.Visible = False
+        'PictureBox11.Visible = False
+        'PictureBox12.Visible = True
         'PictureBox10.Visible = True
 
-        Label24.BackColor = Color.FromArgb(44, 93, 129)
-        Label24.BringToFront()
-        btn_stop.BringToFront()
-        Label17.BackColor = Color.FromArgb(44, 93, 129)
-        Label17.BringToFront()
-        Label1.BackColor = Color.FromArgb(44, 93, 129)
-        Label1.BringToFront()
+        'Label24.BackColor = Color.FromArgb(44, 93, 129)
+        'Label24.BringToFront()
+        'btn_stop.BringToFront()
+        'Label17.BackColor = Color.FromArgb(44, 93, 129)
+        'Label17.BringToFront()
+        'Label1.BackColor = Color.FromArgb(44, 93, 129)
+        'Label1.BringToFront()
         'Label29.BackColor = Color.FromArgb(44, 93, 129)
 
-        Label3.BackColor = Color.FromArgb(44, 88, 130)
-        Label3.BringToFront()
-        Label18.BackColor = Color.FromArgb(44, 88, 130)
-        Label18.BringToFront()
+        '        Label3.BackColor = Color.FromArgb(44, 88, 130)
+        '        Label3.BringToFront()
+        '        Label18.BackColor = Color.FromArgb(44, 88, 130)
+        '        Label18.BringToFront()
 
-        Label16.BackColor = Color.FromArgb(44, 82, 131)
-        Label16.BringToFront()
-        Label20.BackColor = Color.FromArgb(44, 82, 131)
-        Label20.BringToFront()
+        '  Label16.BackColor = Color.FromArgb(44, 82, 131)
+        '  Label16.BringToFront()
+        '  Label20.BackColor = Color.FromArgb(44, 82, 131)
+        '  Label20.BringToFront()
 
-        CircularProgressBar2.BackColor = Color.FromArgb(44, 67, 133)
-        CircularProgressBar2.InnerColor = Color.FromArgb(44, 67, 133)
-        CircularProgressBar2.BringToFront()
+        'CircularProgressBar2.BackColor = Color.FromArgb(44, 67, 133)
+        'CircularProgressBar2.InnerColor = Color.FromArgb(44, 67, 133)
+        'CircularProgressBar2.BringToFront()
 
-        lbNextTime.BringToFront()
-        Panel7.BringToFront()
-        lb_ng_qty.BringToFront()
-        LB_COUNTER_SHIP.BringToFront()
-        LB_COUNTER_SEQ.BringToFront()
-        Label29.BringToFront()
-
-        PictureBox13.BackColor = Color.FromArgb(44, 93, 129)
-        PictureBox14.BackColor = Color.FromArgb(44, 88, 130)
-
-        Label7.Location = New Point(98, 192)
-        Label7.BackColor = Color.FromArgb(12, 27, 45)
-        Label7.BringToFront()
-
-        Label8.Location = New Point(56, 297)
-        Label8.BackColor = Color.FromArgb(12, 27, 45)
-        Label8.BringToFront()
-
-        Label6.Location = New Point(43, 403)
-        Label6.BackColor = Color.FromArgb(12, 27, 45)
-        Label6.BringToFront()
-
-        Label10.Location = New Point(41, 510)
-        Label10.BackColor = Color.FromArgb(12, 27, 45)
-        Label10.BringToFront()
-        Label20.Visible = True
-        LB_COUNTER_SEQ.Visible = True
+        ' lbNextTime.BringToFront()
+        'Panel7.BringToFront()
+        ' lb_ng_qty.BringToFront()
+        'LB_COUNTER_SHIP.BringToFront()
         'LB_COUNTER_SEQ.BringToFront()
-        CircularProgressBar2.Visible = True
+        'Label29.BringToFront()
+
+        panelpcWorker1.BackColor = Color.FromArgb(44, 93, 129)
+        btnInfo.BackColor = Color.FromArgb(44, 88, 130)
+
+        '        Label7.Location = New Point(420, 120)
+        '        Label7.BackColor = Color.FromArgb(62, 97, 146)
+        '       Label7.BringToFront()
+        '
+        'Label8.Location = New Point(56, 297)
+        'Label8.BackColor = Color.FromArgb(12, 27, 45)
+        'Label8.BringToFront()
+        '
+        'Label6.Location = New Point(43, 403)
+        'Label6.BackColor = Color.FromArgb(12, 27, 45)
+        '  Label6.BringToFront()
+
+        'Label10.Location = New Point(41, 510)
+        ' Label10.BackColor = Color.FromArgb(12, 27, 45)
+        ' Label10.BringToFront()
+        Label20.Visible = True
+        'LB_COUNTER_SEQ.Visible = True
+        'LB_COUNTER_SEQ.BringToFront()
+        ' CircularProgressBar2.Visible = True
         connect_counter_qty()
     End Sub
+    Public Sub loadDataProgressBar(line_cd As String, shift As String)
+        Dim OEE = New OEE
+        Me.WebView22.Source = New Uri("http://192.168.161.219/test_ci/loading.php")
+        Me.WebView22.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=" & line_cd & "&shift=" & shift)
+    End Sub
+
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
         lbNextTime.Text = BreakTime
@@ -2054,6 +2361,7 @@ Public Class Working_Pro
         check_bull = 1
         Console.WriteLine("IN FUNCTION")
         Await counter_contect_DIO()
+        cal_eff()
         Console.WriteLine("OUT FUNCTION")
         'Timer3.Enabled = True
         Dim delay_setting As Integer = 0
@@ -2088,6 +2396,7 @@ Public Class Working_Pro
         check_bull = 1
         Console.WriteLine("IN FUNCTION")
         Await counter_contect_DIO_RS232()
+        cal_eff()
         Console.WriteLine("OUT FUNCTION")
         'Timer3.Enabled = True
         Dim delay_setting As Integer = 0
@@ -2123,6 +2432,7 @@ Public Class Working_Pro
             ' If check_bull = 0 Then
             check_bull = 1
             Await counter_data_new_dio()
+            cal_eff()
             'Timer3.Enabled = True
             Dim delay_setting As Integer = 0
             If status_conter = "0" Then
@@ -2181,13 +2491,13 @@ Public Class Working_Pro
     Public Sub CheckMenu()
         statusDefect = Backoffice_model.GetDefectMenu(MainFrm.Label4.Text)
         If statusDefect = "0" Then
-            btn_defect.Enabled = False
+            btnDefect.Enabled = False
         Else
-            btn_defect.Enabled = True
+            btnDefect.Enabled = True
         End If
     End Sub
 
-    Private Sub btn_closelot_Click(sender As Object, e As EventArgs) Handles btn_closelot.Click
+    Private Sub btn_closelot_Click(sender As Object, e As EventArgs) Handles btn_closelot.Click, btnCloseLot.Click
         'MsgBox("Please confirm")
         Me.Enabled = False
         ' Dim clSummary As New closeLotsummary()
@@ -2932,62 +3242,70 @@ Public Class Working_Pro
         End If
         cal_eff()
     End Function
+
     Public Sub cal_eff()
-        Dim cnt_btn As Integer = Integer.Parse(MainFrm.cavity.Text)
-        Dim Total As Double = 0
-        Dim dt11 As DateTime = DateTime.Now
-        Dim dt22 As DateTime = st_time.Text
-        Dim dtspan1 As TimeSpan = dt11 - dt22
-        For I = 0 To ListBox1.Items.Count - 1
-            Total += Val(ListBox1.Items(I))
-            count += 1
-        Next
-        Average = Total / count
-        Dim avarage_act_prd_time3 As Double = Average
-        Dim temppola As Double = ((dtspan1.Seconds / 60) + (dtspan1.Minutes + (dtspan1.Hours * 60)))
-        If temppola < 1 Then
-            temppola = 1
-        End If
-        Dim loss_sum As Integer
-        Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
-                Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
-                While LoadSQL.Read()
-                    loss_sum = LoadSQL("sum_loss")
-                End While
-            Else
-                loss_sum = 0
-            End If
-        Catch ex As Exception
-            'load_show.Show()
-            'loss_sum = 0
-        End Try
-        Dim sum_prg2 As Long = 1
-        Try
-            sum_prg2 = (((Label38.Text * CDbl(Val(LB_COUNTER_SHIP.Text))) / ((temppola * 60) - loss_sum)) * 100)
-        Catch ex As Exception
-            sum_prg2 = 1
-        End Try
-        sum_prg2 = sum_prg2 / cnt_btn
-        If sum_prg2 > 100 Then
-            sum_prg2 = 100
-        ElseIf sum_prg2 < 0 Then
-            sum_prg2 = 0
-        End If
-        If sum_prg2 <= 49 Then
-            CircularProgressBar2.ProgressColor = Color.Red
-            CircularProgressBar2.ForeColor = Color.Black
-        ElseIf sum_prg2 >= 50 And sum_prg2 <= 79 Then
-            CircularProgressBar2.ProgressColor = Color.Chocolate
-            CircularProgressBar2.ForeColor = Color.Black
-        ElseIf sum_prg2 >= 80 And sum_prg2 <= 100 Then
-            CircularProgressBar2.ProgressColor = Color.Green
-            CircularProgressBar2.ForeColor = Color.Black
-        End If
-        Dim avarage_eff As Double = Format(sum_prg2, "0.00")
-        lb_sum_prg.Text = avarage_eff
-        CircularProgressBar2.Text = sum_prg2 & "%"
-        CircularProgressBar2.Value = sum_prg2
+        set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
+        setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+        setlvQ(Label24.Text, Label18.Text)
+        Dim Q = cal_progressbarQ(lbNG.Text, LB_COUNTER_SHIP.Text)
+        Dim A = cal_progressbarA(Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
+        setNgByHour(Label24.Text, Label18.Text)
+        Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
+        loadDataProgressBar(Label24.Text, Label14.Text)
+        calProgressOEE(A, Q, P)
+        ' Dim cnt_btn As Integer = Integer.Parse(MainFrm.cavity.Text)
+        ' Dim Total As Double = 0
+        ' Dim dt11 As DateTime = DateTime.Now
+        ' Dim dt22 As DateTime = st_time.Text
+        ' Dim dtspan1 As TimeSpan = dt11 - dt22
+        ' For I = 0 To ListBox1.Items.Count - 1
+        ' Total += Val(ListBox1.Items(I))
+        ' count += 1
+        ' Next
+        ' Average = Total / count
+        ' Dim avarage_act_prd_time3 As Double = Average
+        ' Dim temppola As Double = ((dtspan1.Seconds / 60) + (dtspan1.Minutes + (dtspan1.Hours * 60)))
+        ' If temppola < 1 Then
+        ' temppola = 1
+        ' End If
+        ' Dim loss_sum As Integer
+        ' Try
+        ' If My.Computer.Network.Ping("192.168.161.101") Then
+        ' Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
+        ' While LoadSQL.Read()
+        ' loss_sum = LoadSQL("sum_loss")
+        ' End While
+        ' Else
+        ' loss_sum = 0
+        ' End If
+        ' Catch ex As Exception
+        ' End Try
+        ' Dim sum_prg2 As Long = 1
+        ' Try
+        ' sum_prg2 = (((Label38.Text * CDbl(Val(LB_COUNTER_SHIP.Text))) / ((temppola * 60) - loss_sum)) * 100)
+        ' Catch ex As Exception
+        ' sum_prg2 = 1
+        ' End Try
+        ' sum_prg2 = sum_prg2 / cnt_btn
+        ' If sum_prg2 > 100 Then
+        ' sum_prg2 = 100
+        ' ElseIf sum_prg2 < 0 Then
+        ' sum_prg2 = 0
+        ' End If
+        ' If sum_prg2 <= 49 Then
+        ' CircularProgressBar2.ProgressColor = Color.Red
+        ' CircularProgressBar2.ForeColor = Color.Black
+        ' ElseIf sum_prg2 >= 50 And sum_prg2 <= 79 Then
+        ' CircularProgressBar2.ProgressColor = Color.Chocolate
+        ' CircularProgressBar2.ForeColor = Color.Black
+        ' ElseIf sum_prg2 >= 80 And sum_prg2 <= 100 Then
+        ' CircularProgressBar2.ProgressColor = Color.Green
+        ' CircularProgressBar2.ForeColor = Color.Black
+        ' End If
+        ' Dim avarage_eff As Double = Format(sum_prg2, "0.00")
+        'lb_sum_prg.Text = avarage_eff
+        'CircularProgressBar2.Text = sum_prg2 & "%"
+        'CircularProgressBar2.Value = sum_prg2
     End Sub
     Public Function Cal_Use_Time_ins_qty_fn_manual(date_start_data As Date, date_end As Date)
         Dim total_ins_qty As Integer = DateDiff(DateInterval.Second, date_start_data, date_end)
@@ -3644,7 +3962,7 @@ Public Class Working_Pro
                 End If
             Catch ex As Exception
                 Button1.Enabled = False
-                btn_start.Enabled = False
+                btnStart.Enabled = False
                 btn_back.Enabled = False
                 Dim listdetail = "Please Check DIO"
                 PictureBox10.BringToFront()
@@ -3842,7 +4160,7 @@ Public Class Working_Pro
     Private Sub PictureBox10_Click(sender As Object, e As EventArgs)
 
     End Sub
-    Private Sub PictureBox13_Click(sender As Object, e As EventArgs) Handles PictureBox13.Click
+    Private Sub PictureBox13_Click(sender As Object, e As EventArgs) Handles panelpcWorker1.Click
         Dim work = New Show_Worker
         work.Show()
     End Sub
@@ -3855,7 +4173,7 @@ Public Class Working_Pro
             Return True
         End If
     End Function
-    Private Sub PictureBox14_Click(sender As Object, e As EventArgs) Handles PictureBox14.Click
+    Private Sub PictureBox14_Click(sender As Object, e As EventArgs) Handles PictureBox14.Click, btnInfo.Click
         'Dim showD = New show_detail_production
         show_detail_production.Show()
     End Sub
@@ -3863,14 +4181,14 @@ Public Class Working_Pro
         PictureBox10.Hide()
         PictureBox16.Hide()
         Panel2.Hide()
-        PictureBox13.Enabled = True
-        PictureBox14.Enabled = True
+        panelpcWorker1.Enabled = True
+        btnInfo.Enabled = True
         Button1.Enabled = True
-        btn_start.Enabled = True
+        btnStart.Enabled = True
         btn_back.Enabled = True
     End Sub
     Private Sub TIME_CAL_EFF_Tick(sender As Object, e As EventArgs) Handles TIME_CAL_EFF.Tick
-        If check_cal_eff = 10 Then
+        If check_cal_eff = 100 Then
             cal_eff()
             check_cal_eff = 1
         Else
@@ -3881,7 +4199,6 @@ Public Class Working_Pro
     Private Sub Button4_Click(sender As Object, e As EventArgs)
         Main()
     End Sub
-
     Private Sub ReceivedText(ByVal [text] As String)
         If Me.InvokeRequired Then
             Dim x As New SetTextCallback(AddressOf ReceivedText)
@@ -3902,9 +4219,6 @@ Public Class Working_Pro
         Console.WriteLine("READ OK")
         '    Dim data As String = serialPort.ReadExisting()
     End Sub
-
-
-
     Private Sub serialPort_PinChanged(sender As Object, e As SerialPinChangedEventArgs) Handles serialPort.PinChanged
         ' การตรวจสอบการเปลี่ยนแปลงของ CTS หรือ DSR
         If e.EventType = SerialPinChange.CtsChanged Then
@@ -3964,5 +4278,28 @@ Public Class Working_Pro
     End Sub
     Public Sub Load_Working_OEE()
         Working_OEE.Show()
+    End Sub
+    Private Sub PictureBox11_Click(sender As Object, e As EventArgs) Handles redBox.Click
+
+    End Sub
+
+    Private Sub lvA_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvA.SelectedIndexChanged
+
+    End Sub
+
+    Private Sub btn_desc_act_Click_1(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
+        Start_Production()
+    End Sub
+
+    Private Sub panelpcWorker2_Click(sender As Object, e As EventArgs) Handles panelpcWorker2.Click
+
+    End Sub
+
+    Private Sub pcWorker1_Click(sender As Object, e As EventArgs) Handles pcWorker1.Click
+
     End Sub
 End Class

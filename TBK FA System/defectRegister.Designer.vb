@@ -118,7 +118,7 @@ Partial Class defectRegister
         'oK
         '
         Me.oK.BackColor = System.Drawing.Color.Transparent
-        Me.oK.Location = New System.Drawing.Point(671, 484)
+        Me.oK.Location = New System.Drawing.Point(672, 484)
         Me.oK.Name = "oK"
         Me.oK.Size = New System.Drawing.Size(129, 119)
         Me.oK.TabIndex = 103
