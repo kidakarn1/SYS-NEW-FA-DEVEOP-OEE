@@ -18,7 +18,9 @@ Imports System.Net
 Imports System.Web.Script.Serialization
 Imports Microsoft.Web.WebView2.Core
 Imports Microsoft.Web.WebView2.WinForms
+
 Public Class Working_Pro
+    Private WithEvents WebViewProgressbar As WebView2
     Public Shared comportTowerLamp = "COM4"
     ' Public Shared ArrayDataSpecial As New List(Of DataPlan)
     Public check_cal_eff As Integer = 0
@@ -268,7 +270,7 @@ Public Class Working_Pro
         startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString.Substring(0, 10)) & " " & timeShift
         ' หาความแตกต่างในหน่วยนาที
         rsDateDiff = DateDiff("s", startDate, Now())
-            Dim minrsDateDiff = rsDateDiff / 60
+        Dim minrsDateDiff = rsDateDiff / 60
         If rsDateDiff < 3600 Then
             stdJobP.Text = Math.Ceiling(rsDateDiff / std_cd)
             Label25.Text = Math.Ceiling(minrsDateDiff)
@@ -363,14 +365,21 @@ Public Class Working_Pro
             End Try
         End If
     End Sub
-    Private Sub Working_Pro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        WebView22.BringToFront()
+
+    Private Async Sub Working_Pro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        PanelProgressbar.BringToFront()
         If CheckOs() Then
             counterNewDIO = New CheckWindow
             counterNewDIO.Per_CheckCounter()
         End If
         Dim OEE = New OEE
         showWorkker()
+        Try
+            ' เรียกใช้ฟังก์ชัน loadDataProgressBar แบบ Async
+            Await loadDataProgressBar(Label24.Text, Label14.Text)
+        Catch ex As Exception
+            MessageBox.Show($"Failed to load data: {ex.Message}")
+        End Try
         DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
         tag_group_no = Backoffice_model.Get_tag_group_no()
         CircularProgressBar2.Visible = False
@@ -707,12 +716,11 @@ Public Class Working_Pro
     Private Sub SendMessageLong(hwnd As Object, prgBrClr As Object, p1 As Object, p2 As Object)
         Throw New NotImplementedException()
     End Sub
-
     Private Sub ProgressBar1_Click(sender As Object, e As EventArgs)
 
     End Sub
     Public Sub stop_working()
-        WebView22.Visible = False
+        PanelProgressbar.Visible = False
         btnInfo.Visible = True
         btnStart.BringToFront()
         ' LB_COUNTER_SHIP.Visible = False
@@ -764,7 +772,7 @@ Public Class Working_Pro
             End If
         Catch ex As Exception
             Backoffice_model.line_status_upd_sqlite(line_id)
-        End Try
+        End Try '
 
 
         Dim date_st As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
@@ -997,7 +1005,6 @@ Public Class Working_Pro
             Dim date_st1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
             Dim date_end1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
             Backoffice_model.date_time_click_start = DateTime.Now.ToString("yyyy-MM-dd HH:mm") & ":00"
-
             Dim rsTime As Integer = calTimeBreakTime(Backoffice_model.date_time_click_start, lbNextTime.Text)
             '  TimerCountBT.Interval = rsTime * 1000
             '  If rsTime <> 0 Then
@@ -1291,11 +1298,11 @@ Public Class Working_Pro
         btnInfo.Visible = False
         btnCloseLot.Visible = False
         redBox.Visible = False
-        WebView22.Visible = True
-        loadDataProgressBar(Label24.Text, Label14.Text)
+        PanelProgressbar.Visible = True
+        'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
+        WebViewProgressbar.Reload()
         btn_stop.Visible = True
         Prd_detail.Timer3.Enabled = False
-
         btnStart.Visible = False
         'PictureBox11.Visible = False
         'PictureBox12.Visible = True
@@ -1330,14 +1337,11 @@ Public Class Working_Pro
         'LB_COUNTER_SHIP.BringToFront()
         'LB_COUNTER_SEQ.BringToFront()
         'Label29.BringToFront()
-
         panelpcWorker1.BackColor = Color.FromArgb(44, 93, 129)
         btnInfo.BackColor = Color.FromArgb(44, 88, 130)
-
         '        Label7.Location = New Point(420, 120)
         '        Label7.BackColor = Color.FromArgb(62, 97, 146)
         '       Label7.BringToFront()
-        '
         'Label8.Location = New Point(56, 297)
         'Label8.BackColor = Color.FromArgb(12, 27, 45)
         'Label8.BringToFront()
@@ -1355,11 +1359,30 @@ Public Class Working_Pro
         ' CircularProgressBar2.Visible = True
         connect_counter_qty()
     End Sub
-    Public Sub loadDataProgressBar(line_cd As String, shift As String)
+    Public Async Function loadDataProgressBar(line_cd As String, shift As String) As Task
         Dim OEE = New OEE
-        Me.WebView22.Source = New Uri("http://192.168.161.219/test_ci/loading.php")
-        Me.WebView22.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=" & line_cd & "&shift=" & shift)
-    End Sub
+        ' Create a new instance of WebView2 control
+        WebViewProgressbar = New WebView2() With {
+            .Dock = DockStyle.Fill
+        }
+        PanelProgressbar.Controls.Add(WebViewProgressbar)
+        ' Add WebView2 control to the form's controls collection
+        Try
+            ' Create a WebView2 environment with a user data folder
+            Dim webViewEnvironment = Await CoreWebView2Environment.CreateAsync(Nothing, "C:\Temp")
+            ' Initialize the WebView2 control with the created environment
+            Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
+            ' Navigate to a web page
+            '  WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/test_ci/loading.php")
+            ' WebViewProgressbar.CoreWebView2.Navigate("https://www.google.com")
+            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrProgress/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("192.168.161.219/productionHrProgressTest/?line_cd=" & line_cd & "&shift=" & shift)
+        Catch ex As Exception
+            '   MessageBox.Show($"Failed to initialize WebView2: {ex.Message}")
+        End Try
+        ' Me.WebView22.Source = New Uri("http://192.168.161.219/test_ci/loading.php")
+        ' Me.WebView22.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=" & line_cd & "&shift=" & shift)
+    End Function
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
@@ -1790,6 +1813,7 @@ Public Class Working_Pro
                 If result_mod = "0" Then
                     Label_bach.Text += 1
                     GoodQty = Label6.Text
+                    'MsgBox("IF ===>" & GoodQty)
                     tag_print()
                 End If
             Else
@@ -1798,6 +1822,7 @@ Public Class Working_Pro
                         lb_box_count.Text = lb_box_count.Text + 1
                         Label_bach.Text = Label_bach.Text + 1
                         GoodQty = Label6.Text
+                        'MsgBox("IF IF ===>" & GoodQty)
                         tag_print()
                     Else
                         If CDbl(Val(Label27.Text)) = 1 Or CDbl(Val(Label27.Text)) = 999999 Then
@@ -1805,6 +1830,7 @@ Public Class Working_Pro
                             lb_box_count.Text = lb_box_count.Text + 1
                             Label_bach.Text = Label_bach.Text + 1
                             GoodQty = Label6.Text
+                            'MsgBox("ELSE ===>" & GoodQty)
                             tag_print()
                         End If
                     End If
@@ -1994,12 +2020,14 @@ Public Class Working_Pro
                         If result_mod = "0" Then
                             Label_bach.Text += 1
                             GoodQty = Label6.Text
+                            'MsgBox("IF ===>" & GoodQty)
                             tag_print()
                         End If
                     Else
                         lb_box_count.Text = lb_box_count.Text + 1
                         Label_bach.Text = Label_bach.Text + 1
                         GoodQty = Label6.Text
+                        'MsgBox("ELSE ===>" & GoodQty)
                         tag_print()
                     End If
                 Else
@@ -2359,7 +2387,7 @@ Public Class Working_Pro
         ' Simulate an asynchronous operation
         ' If check_bull = 0 Then
         check_bull = 1
-        Console.WriteLine("IN FUNCTION")
+        Console.WriteLine("ssss IN FUNCTION")
         Await counter_contect_DIO()
         cal_eff()
         Console.WriteLine("OUT FUNCTION")
@@ -2547,8 +2575,10 @@ Public Class Working_Pro
         e.Graphics.DrawString("QTY.", lb_font1.Font, Brushes.Black, 492, 13)
         'Dim result_snp As Integer = CDbl(Val(Label6.Text)) Mod CDbl(Val(Label27.Text)) ' Check From Actual
         Dim defectAll = CDbl(Val(lb_ng_qty.Text)) + CDbl(Val(lb_nc_qty.Text))
+        ' MsgBox("defectAll ===>" & defectAll)
         '  Dim result_snp As Integer = (CDbl(Val(Label6.Text)) - defectAll) Mod CDbl(Val(Label27.Text)) ' Check From Good
-        Dim result_snp As Integer = (CDbl(Val(GoodQty))) Mod CDbl(Val(Label27.Text)) ' Check From Good
+        Dim modsucc As Integer = (CDbl(Val(GoodQty))) - defectAll
+        Dim result_snp As Integer = modsucc Mod CDbl(Val(Label27.Text)) '(CDbl(Val(GoodQty))) Mod CDbl(Val(Label27.Text)) ' Check From Good
         Dim status_tag As String = "[ Incomplete Tag]"
         If V_check_line_reprint = "0" Then
             If result_snp = "0" Then
@@ -3251,7 +3281,8 @@ Public Class Working_Pro
         Dim A = cal_progressbarA(Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
         setNgByHour(Label24.Text, Label18.Text)
         Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
-        loadDataProgressBar(Label24.Text, Label14.Text)
+        'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
+        WebViewProgressbar.Reload()
         calProgressOEE(A, Q, P)
         ' Dim cnt_btn As Integer = Integer.Parse(MainFrm.cavity.Text)
         ' Dim Total As Double = 0
@@ -3717,6 +3748,7 @@ Public Class Working_Pro
                 If result_mod = "0" Then
                     Label_bach.Text += 1
                     GoodQty = Label6.Text
+                    'MsgBox("IF result_mod ====>" & GoodQty)
                     tag_print()
                 End If
             Else
@@ -3725,6 +3757,7 @@ Public Class Working_Pro
                         lb_box_count.Text = lb_box_count.Text + 1
                         Label_bach.Text = Label_bach.Text + 1
                         GoodQty = Label6.Text
+                        'MsgBox("IF IF result_mod ====>" & GoodQty)
                         tag_print()
                     Else
                         If CDbl(Val(Label27.Text)) = 1 Or CDbl(Val(Label27.Text)) = 999999 Then
@@ -3732,6 +3765,7 @@ Public Class Working_Pro
                             lb_box_count.Text = lb_box_count.Text + 1
                             Label_bach.Text = Label_bach.Text + 1
                             GoodQty = Label6.Text
+                            'MsgBox("IF IF result_mod ====>" & GoodQty)
                             tag_print()
                         End If
                     End If
@@ -3915,6 +3949,7 @@ Public Class Working_Pro
                         If result_mod = "0" Then
                             Label_bach.Text += 1
                             GoodQty = Label6.Text
+                            'MsgBox("IF IF IF ====>" & GoodQty)
                             tag_print()
                         End If
                     Else
@@ -3922,6 +3957,7 @@ Public Class Working_Pro
                         'If Backoffice_model.check_line_reprint() = "0" Then
                         Label_bach.Text = Label_bach.Text + 1
                         GoodQty = Label6.Text
+                        ' MsgBox("ELSE ====>" & GoodQty)
                         tag_print()
                         'End If
                     End If
@@ -4188,12 +4224,12 @@ Public Class Working_Pro
         btn_back.Enabled = True
     End Sub
     Private Sub TIME_CAL_EFF_Tick(sender As Object, e As EventArgs) Handles TIME_CAL_EFF.Tick
-        If check_cal_eff = 100 Then
-            cal_eff()
+        'If check_cal_eff = 1000 Then
+        cal_eff()
             check_cal_eff = 1
-        Else
-            check_cal_eff = check_cal_eff + 1
-        End If
+        'Else
+        'check_cal_eff = check_cal_eff + 1
+        'End If
     End Sub
 
     Private Sub Button4_Click(sender As Object, e As EventArgs)
@@ -4295,11 +4331,7 @@ Public Class Working_Pro
         Start_Production()
     End Sub
 
-    Private Sub panelpcWorker2_Click(sender As Object, e As EventArgs) Handles panelpcWorker2.Click
-
-    End Sub
-
-    Private Sub pcWorker1_Click(sender As Object, e As EventArgs) Handles pcWorker1.Click
-
+    Private Sub Button4_Click_1(sender As Object, e As EventArgs)
+        WebViewProgressbar.Reload()
     End Sub
 End Class

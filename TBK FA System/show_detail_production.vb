@@ -12,6 +12,7 @@
         Else
             plan_seq = Working_Pro.Label22.Text
         End If
+        LBGOOD.Text = Working_Pro.lb_good.Text
         LB_PARTNO.Text = Working_Pro.Label3.Text
         LB_PART_NAME.Text = Working_Pro.Label12.Text
         LB_MODEL.Text = Working_Pro.lb_model.Text

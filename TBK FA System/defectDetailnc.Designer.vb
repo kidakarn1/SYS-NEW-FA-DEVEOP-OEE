@@ -38,6 +38,7 @@ Partial Class defectDetailnc
         Me.btnDown = New System.Windows.Forms.PictureBox()
         Me.btnBack = New System.Windows.Forms.PictureBox()
         Me.btnOk = New System.Windows.Forms.PictureBox()
+        Me.supplier_cd = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         CType(Me.btnUp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnDown, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnBack, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -64,7 +65,7 @@ Partial Class defectDetailnc
         Me.lvDefectdetails.AutoArrange = False
         Me.lvDefectdetails.BackColor = System.Drawing.Color.FromArgb(CType(CType(7, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(35, Byte), Integer))
         Me.lvDefectdetails.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.lvDefectdetails.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.NO, Me.PARTNO, Me.TYPE, Me.CODE, Me.DETAIL, Me.QTY, Me.WI, Me.SEQ, Me.pwi_id})
+        Me.lvDefectdetails.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.NO, Me.PARTNO, Me.TYPE, Me.CODE, Me.DETAIL, Me.QTY, Me.WI, Me.SEQ, Me.pwi_id, Me.supplier_cd})
         Me.lvDefectdetails.Cursor = System.Windows.Forms.Cursors.Default
         Me.lvDefectdetails.Font = New System.Drawing.Font("Microsoft Sans Serif", 13.0!, System.Drawing.FontStyle.Bold)
         Me.lvDefectdetails.ForeColor = System.Drawing.Color.White
@@ -158,6 +159,10 @@ Partial Class defectDetailnc
         Me.btnOk.TabIndex = 45
         Me.btnOk.TabStop = False
         '
+        'supplier_cd
+        '
+        Me.supplier_cd.Width = 0
+        '
         'defectDetailnc
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -197,4 +202,5 @@ Partial Class defectDetailnc
     Friend WithEvents SEQ As ColumnHeader
     Friend WithEvents pwi_id As ColumnHeader
     Friend WithEvents TYPE As ColumnHeader
+    Friend WithEvents supplier_cd As ColumnHeader
 End Class

@@ -22,6 +22,7 @@
     Public Shared sPart
     Public Shared mainCP = ""
     Public Shared swi As String = "NO DATA"
+    Public Shared source_cd_supplier As String = ""
     Private Sub defectRegister_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         setVariable()
     End Sub
@@ -118,7 +119,7 @@
         Else
             pwi_id = Working_Pro.pwi_id
         End If
-        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail, mainCP)
+        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail, mainCP, source_cd_supplier)
         Dim dataQty
         If rs Then
             If dtType = "1" Then
@@ -150,7 +151,7 @@
         Else
             pwi_id = Working_Pro.pwi_id
         End If
-        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail, mainCP)
+        Dim rs = insertDefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id, dSelectcode.sDefectdetail, mainCP, source_cd_supplier)
         If rs Then
             If dtType = "1" Then
                 Dim dataQty = calQtytotalncregisterNGChildPart(tbQtydefectnc.Text, actTotal, Working_Pro.lb_nc_child_part.Text, Working_Pro.lb_ng_child_part.Text)
@@ -182,11 +183,11 @@
         Dim setNg = ngTotal + tbQtydefectnc
         Return setNg
     End Function
-    Public Function insertDefectregister(dtWino As String, dtLineno As String, dtItemcd As String, dtItemtype As String, dtLotno As String, dtSeqno As String, dtType As String, dtCode As String, dtQty As String, dtMenu As String, dtActualdate As String, pwi_id As String, def_name As String, mainCP As String)
+    Public Function insertDefectregister(dtWino As String, dtLineno As String, dtItemcd As String, dtItemtype As String, dtLotno As String, dtSeqno As String, dtType As String, dtCode As String, dtQty As String, dtMenu As String, dtActualdate As String, pwi_id As String, def_name As String, mainCP As String, source_cd_supplier As String)
         Try
             Dim mdDefect = New modelDefect()
             Dim mdSQLiteDefect = New ModelSqliteDefect()
-            Dim rsDataSQLite = mdSQLiteDefect.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, pwi_id, def_name, mainCP)
+            Dim rsDataSQLite = mdSQLiteDefect.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, pwi_id, def_name, mainCP, source_cd_supplier)
             'Dim rsData = mdDefect.mInsertdefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, pwi_id)
             'If rsData Then
             If rsDataSQLite Then

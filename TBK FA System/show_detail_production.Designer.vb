@@ -37,6 +37,8 @@ Partial Class show_detail_production
         Me.LB_WI = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Lbversion = New System.Windows.Forms.Label()
+        Me.LBGOOD = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'LB_PARTNO
@@ -219,6 +221,30 @@ Partial Class show_detail_production
         Me.Lbversion.TabIndex = 15
         Me.Lbversion.Text = "XXXXXXXXXXXXXX"
         '
+        'LBGOOD
+        '
+        Me.LBGOOD.AutoSize = True
+        Me.LBGOOD.BackColor = System.Drawing.Color.Transparent
+        Me.LBGOOD.Font = New System.Drawing.Font("Catamaran", 18.0!)
+        Me.LBGOOD.ForeColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.LBGOOD.Location = New System.Drawing.Point(581, 430)
+        Me.LBGOOD.Name = "LBGOOD"
+        Me.LBGOOD.Size = New System.Drawing.Size(27, 26)
+        Me.LBGOOD.TabIndex = 16
+        Me.LBGOOD.Text = "0"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.BackColor = System.Drawing.Color.Transparent
+        Me.Label1.Font = New System.Drawing.Font("Catamaran", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.ForeColor = System.Drawing.Color.Black
+        Me.Label1.Location = New System.Drawing.Point(422, 430)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(153, 26)
+        Me.Label1.TabIndex = 17
+        Me.Label1.Text = "GOOD QTY : "
+        '
         'show_detail_production
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -226,6 +252,8 @@ Partial Class show_detail_production
         Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.productionListDetail2
         Me.ClientSize = New System.Drawing.Size(785, 515)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.LBGOOD)
         Me.Controls.Add(Me.Lbversion)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.LB_WI)
@@ -265,4 +293,6 @@ Partial Class show_detail_production
     Friend WithEvents LB_WI As Label
     Friend WithEvents Button1 As Button
     Friend WithEvents Lbversion As Label
+    Friend WithEvents LBGOOD As Label
+    Friend WithEvents Label1 As Label
 End Class

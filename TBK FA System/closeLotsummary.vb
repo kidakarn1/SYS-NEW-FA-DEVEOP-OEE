@@ -618,8 +618,16 @@ Public Class closeLotsummary
     End Sub
     Public Sub ClickOk(dtWino As String, dtLineno As String, dtItemcd As String, dtItemtype As String, dtLotno As String, dtSeqno As String, dtType As String, dtCode As String, dtQty As String, dtActualdate As String, pwi_id As String)
         Dim md As New modelDefect()
+        Dim mdSQLite = New ModelSqliteDefect
         Dim cFlg As Integer = comPleteflg(sAct, pQty)
-        Dim rs = md.mInsertdefectactual(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id)
+        Dim lastId = md.mInsertdefectactual(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id)
+        Dim getData = mdSQLite.mSqliteGetdefectdetail(dtWino, dtSeqno, dtLotno, dtType, dtItemcd, dtCode)
+        If getData <> "0" Then
+            Dim rsData2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(getData)
+            For Each item As Object In rsData2
+                Dim insData = md.minsertDefectTrascetionSupplier(lastId, item("dt_supplier_code").ToString(), item("total_nc").ToString(), dtLineno)
+            Next
+        End If
     End Sub
     Public Function comPleteflg(Act As Integer, Plan As Integer)
         Dim cFlg As Integer = 0

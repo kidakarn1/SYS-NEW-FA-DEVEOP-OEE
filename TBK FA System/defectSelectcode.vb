@@ -126,12 +126,49 @@ Friend Class defectSelectcode
             Me.Close()
         End If
     End Sub
+    Public Shared Function checkDefectCodeSupplier(dfCode As String)
+        If dfCode.ToString.Substring(0, 1) = "0" Then
+            Return "1"
+        Else
+            Return "0"
+        End If
+    End Function
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
             For Each lvItem As ListViewItem In lvDefectcode.SelectedItems
                 Me.sDefectcode = lvDefectcode.Items(lvItem.Index).SubItems(0).Text
                 Me.sDefectdetail = lvDefectcode.Items(lvItem.Index).SubItems(1).Text
             Next
+            '   If dSelecttype.type = "2" Then
+            '   Dim rss = checkDefectCodeSupplier(Me.sDefectcode)
+            '   If rss = "1" Then
+            '   Dim rs = OEE.OEE_EXP_CHECK_SUPP(defectSelectcode.sPart)
+            '   If rs <> "0" Then
+            '   Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rs)
+            '   If CDbl(Val(dcResultdata(0)("OUTSIDE_TYP").ToString())) = 2 Then
+            '   Dim dfSupplier = New defectSelectSupplier
+            '   dfSupplier.show()
+            '   Me.Hide()
+            '   Else
+            '   Dim dfRegister = New defectRegister
+            '   dfRegister.swi = swi
+            ''   dfRegister.SeqSpc = sSeqSpc
+            '  dfRegister.PwiSpc = sPwiSpc
+            '  dfRegister.mainCP = mainCp
+            '  dfRegister.Show()
+            '  Me.Hide()
+            '  End If
+            '  End If
+            '  Else
+            '  Dim dfRegister = New defectRegister
+            '  dfRegister.swi = swi
+            '  dfRegister.SeqSpc = sSeqSpc
+            '  dfRegister.PwiSpc = sPwiSpc
+            '  dfRegister.mainCP = mainCp
+            '  dfRegister.Show()
+            '  Me.Hide()
+            '  End If
+            '  Else
             Dim dfRegister = New defectRegister
             dfRegister.swi = swi
             dfRegister.SeqSpc = sSeqSpc
@@ -139,8 +176,9 @@ Friend Class defectSelectcode
             dfRegister.mainCP = mainCp
             dfRegister.Show()
             Me.Hide()
+            '  End If
         Catch ex As Exception
-
+            '
         End Try
     End Sub
     Private Sub btnDown_Click(sender As Object, e As EventArgs) Handles btnDown.Click

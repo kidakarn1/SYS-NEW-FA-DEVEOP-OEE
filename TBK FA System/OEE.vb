@@ -3,6 +3,12 @@ Imports System.Data.SQLite
 Imports System.Globalization
 Imports System.Data
 Public Class OEE
+    Public Shared Function OEE_EXP_CHECK_SUPP(item_cd As String)
+        Dim api = New api()
+        Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/EXP_CHECK_SUPP?item_cd=" & item_cd)
+        Return TarGet
+    End Function
+
     Public Shared Function OEE_GET_TARGET(shift As String, WI As String, actual As String)
         Dim api = New api()
         Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/GET_TARGET?shift=" & shift & "&WI=" & WI & "&actual=" & actual)
@@ -39,7 +45,7 @@ Public Class OEE
     End Function
     Public Shared Function OEE_GetLossByHouseP1(line_cd As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://192.168.161.207/API_NEW_FA/GET_OEE/GetLossByHouse?line_cd=" & line_cd)
+        Dim rs = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/GetLossByHouse?line_cd=" & line_cd)
         Return rs
     End Function
     Public Shared Function OEE_GET_Data_LOSS(line_cd As String, lot_no As String, shift As String, dateStart As String)
@@ -61,14 +67,14 @@ Public Class OEE
     End Function
     Public Shared Function OEE_getWorkingTime(line_cd As String, Timeshift As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://192.168.161.77/API_NEW_FA/GET_OEE/GetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift)
-        Console.WriteLine("http://192.168.161.77/API_NEW_FA/GET_OEE/GetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift)
+        Dim rs = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/GetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift)
+        Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/GetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift)
         Return rs
     End Function
     Public Shared Function OEE_getDateTimeStart(st_shift As String, line_cd As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://192.168.161.77/API_NEW_FA/GET_OEE/getDateTimeStart?st_shift=" & st_shift & "&line_cd=" & line_cd)
-        Console.WriteLine("http://192.168.161.77/API_NEW_FA/GET_OEE/getDateTimeStart?st_shift=" & st_shift & "&line_cd=" & line_cd)
+        Dim rs = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getDateTimeStart?st_shift=" & st_shift & "&line_cd=" & line_cd)
+        Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getDateTimeStart?st_shift=" & st_shift & "&line_cd=" & line_cd)
         Return rs
     End Function
 End Class

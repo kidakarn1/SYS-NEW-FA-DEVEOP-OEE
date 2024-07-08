@@ -1,27 +1,27 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class defectDetailng
-	Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 
-	'Form overrides dispose to clean up the component list.
-	<System.Diagnostics.DebuggerNonUserCode()>
-	Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-		Try
-			If disposing AndAlso components IsNot Nothing Then
-				components.Dispose()
-			End If
-		Finally
-			MyBase.Dispose(disposing)
-		End Try
-	End Sub
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
 
-	'Required by the Windows Form Designer
-	Private components As System.ComponentModel.IContainer
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
 
-	'NOTE: The following procedure is required by the Windows Form Designer
-	'It can be modified using the Windows Form Designer.  
-	'Do not modify it using the code editor.
-	<System.Diagnostics.DebuggerStepThrough()>
-	Private Sub InitializeComponent()
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(defectDetailng))
         Me.lvDefectdetails = New System.Windows.Forms.ListView()
         Me.NO = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -184,17 +184,17 @@ Partial Class defectDetailng
     End Sub
 
     Friend WithEvents lvDefectdetails As ListView
-	Friend WithEvents NO As ColumnHeader
-	Friend WithEvents PARTNO As ColumnHeader
-	Friend WithEvents TYPE As ColumnHeader
-	Friend WithEvents CODE As ColumnHeader
-	Friend WithEvents DETAIL As ColumnHeader
-	Friend WithEvents QTY As ColumnHeader
-	Friend WithEvents btnOk As PictureBox
-	Friend WithEvents btnBack As PictureBox
-	Friend WithEvents btnDown As PictureBox
-	Friend WithEvents btnUp As PictureBox
-	Friend WithEvents lbType As Label
+    Friend WithEvents NO As ColumnHeader
+    Friend WithEvents PARTNO As ColumnHeader
+    Friend WithEvents TYPE As ColumnHeader
+    Friend WithEvents CODE As ColumnHeader
+    Friend WithEvents DETAIL As ColumnHeader
+    Friend WithEvents QTY As ColumnHeader
+    Friend WithEvents btnOk As PictureBox
+    Friend WithEvents btnBack As PictureBox
+    Friend WithEvents btnDown As PictureBox
+    Friend WithEvents btnUp As PictureBox
+    Friend WithEvents lbType As Label
     Friend WithEvents WI As ColumnHeader
     Friend WithEvents SEQ As ColumnHeader
     Friend WithEvents pwi_id As ColumnHeader

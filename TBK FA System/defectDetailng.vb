@@ -24,6 +24,7 @@ Public Class defectDetailng
     Public Shared dtnameItemtype As String = ""
     Public Shared dtpwi_id As String = ""
     Public Shared dtName As String = ""
+    Public Shared source_code_supplier As String = ""
     Private Sub defectDetailng_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'SEQ = Working_Pro.seqNo
         dtSeqno = Working_Pro.seqNo
@@ -78,6 +79,7 @@ Public Class defectDetailng
                         datlvDefectdetails.SubItems.Add(item("pwi_id").ToString())
                     End If
                     datlvDefectdetails.SubItems.Add(item("dt_main_cp").ToString())
+                    datlvDefectdetails.SubItems.Add(item("dt_supplier_code").ToString())
                     lvDefectdetails.Items.Add(datlvDefectdetails)
                     i += 1
                 End If
@@ -107,6 +109,7 @@ Public Class defectDetailng
                     Me.dtQty = lvDefectdetails.Items(lvItem.Index).SubItems(5).Text
                     Me.dtName = lvDefectdetails.Items(lvItem.Index).SubItems(4).Text
                     Me.mainCP = lvDefectdetails.Items(lvItem.Index).SubItems(7).Text
+                    Me.source_code_supplier = lvDefectdetails.Items(lvItem.Index).SubItems(8).Text
                     If MainFrm.chk_spec_line = "2" Then
                         dtWino = lvDefectdetails.Items(lvItem.Index).SubItems(6).Text
                         dtSeqno = lvDefectdetails.Items(lvItem.Index).SubItems(7).Text

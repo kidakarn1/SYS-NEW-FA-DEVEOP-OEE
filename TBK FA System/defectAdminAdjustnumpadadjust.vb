@@ -182,7 +182,7 @@ Public Class defectAdminAdjustnumpadadjust
         Dim md As New modelDefect()
         Dim mdSqlite As New ModelSqliteDefect()
         'Dim rs = md.mUpdateaddjust(dtWino, dtLotNo, dtSeqno, dtType, dtCode, dtItemtype, dtItemCd)
-        Dim rs = mdSqlite.mUpdateaddjust(dtWino, dtLotNo, dtSeqno, dtType, dtCode, dtItemtype, dtItemCd)
+        Dim rs = mdSqlite.mUpdateaddjust(dtWino, dtLotNo, dtSeqno, dtType, dtCode, dtItemtype, dtItemCd, "SupplierCode")
         If rs Then
             Dim objDefectdetailnc As New defectAdminAdjustdetail
             Dim rsActualDefect = md.mUpdatedefectactualAdmin(dtWino, dtLotNo, dtSeqno, dtType, dtCode, dtItemtype, objDefectdetailnc.SPART)

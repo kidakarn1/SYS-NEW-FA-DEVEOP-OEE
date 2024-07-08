@@ -9,6 +9,29 @@ Public Class modelDefect
         ' 0 = machine In house /  1 Order Supplier
         Return "1"
     End Function
+    Public Shared Function mGetDataSupplier(item_cd As String)
+        Try
+            Dim api = New api()
+            Dim rsData = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/EXP_CHECK_SUPP?item_cd=" & item_cd)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/EXP_CHECK_SUPP?item_cd=" & item_cd)
+            Return rsData
+        Catch ex As Exception
+            MsgBox("connect Api Faill Please check modelDefect in Function mGetDataSupplier = " & ex.Message)
+            Return 0
+        End Try
+    End Function
+    Public Shared Function minsertDefectTrascetionSupplier(lastId As String, dt_supplier_code As String, dt_qty As String, Line As String)
+        Try
+            Dim api = New api()
+            Dim rsData = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor/insertDatadefect/insertDefectTransctionSupplier?lastId=" & lastId & "&dt_supplier_code=" & dt_supplier_code & "&dt_qty=" & dt_qty & "&Line=" & Line)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/apiShopfloor/insertDatadefect/insertDefectTransctionSupplier?lastId=" & lastId & "&dt_supplier_code=" & dt_supplier_code & "&dt_qty=" & dt_qty & "&Line=" & Line)
+            Return rsData
+        Catch ex As Exception
+            MsgBox("connect Api Faill Please check modelDefect in Function minsertDefectTrascetionSupplier = " & ex.Message)
+            Return 0
+        End Try
+    End Function
+
     Public Shared Function mGetPwi_id(WI As String, LOT_NO As String, SEQ_NO As String, SHIFT As String)
         Try
             Dim api = New api()
@@ -227,6 +250,7 @@ Public Class modelDefect
         Try
             Dim api = New api()
             Dim rsData = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor/insertDatadefect/insertDefectactual?dtWino=" & dtWino & "&dtLineno=" & dtLineno & "&dtItemcd=" & dtItemcd & "&dtItemtype=" & dtItemtype & "&dtLotNo=" & dtLotno & "&dtSeqno=" & dtSeqno & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtQty=" & dtQty & "&dtMenu=" & dtMenu & "&dtActualdate=" & dtActualdate & "&pwi_id=" & pwi_id)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/apiShopfloor/insertDatadefect/insertDefectactual?dtWino=" & dtWino & "&dtLineno=" & dtLineno & "&dtItemcd=" & dtItemcd & "&dtItemtype=" & dtItemtype & "&dtLotNo=" & dtLotno & "&dtSeqno=" & dtSeqno & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtQty=" & dtQty & "&dtMenu=" & dtMenu & "&dtActualdate=" & dtActualdate & "&pwi_id=" & pwi_id)
             Return rsData
         Catch ex As Exception
             MsgBox("connect Api Faill Please check modelDefect in Function mInsertdefectactual = " & ex.Message)

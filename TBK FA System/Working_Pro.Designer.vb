@@ -190,7 +190,6 @@ Partial Class Working_Pro
         Me.btnDefect = New System.Windows.Forms.PictureBox()
         Me.btnInfo = New System.Windows.Forms.PictureBox()
         Me.btnSetUp = New System.Windows.Forms.PictureBox()
-        Me.WebView22 = New Microsoft.Web.WebView2.WinForms.WebView2()
         Me.btnStart = New System.Windows.Forms.PictureBox()
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label44 = New System.Windows.Forms.Label()
@@ -201,6 +200,7 @@ Partial Class Working_Pro
         Me.Label48 = New System.Windows.Forms.Label()
         Me.Label49 = New System.Windows.Forms.Label()
         Me.newPartname = New System.Windows.Forms.Label()
+        Me.PanelProgressbar = New System.Windows.Forms.Panel()
         Me.Panel1.SuspendLayout()
         Me.Panel7.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -234,7 +234,6 @@ Partial Class Working_Pro
         CType(Me.btnDefect, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSetUp, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.WebView22, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnStart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -350,13 +349,13 @@ Partial Class Working_Pro
         '
         Me.Label24.BackColor = System.Drawing.Color.Transparent
         Me.Label24.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Label24.Font = New System.Drawing.Font("Panton-Trial ExtraBold", 22.0!, System.Drawing.FontStyle.Bold)
+        Me.Label24.Font = New System.Drawing.Font("Panton-Trial ExtraBold", 18.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label24.ForeColor = System.Drawing.Color.White
-        Me.Label24.Location = New System.Drawing.Point(5, 45)
+        Me.Label24.Location = New System.Drawing.Point(5, 47)
         Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(129, 40)
+        Me.Label24.Size = New System.Drawing.Size(142, 40)
         Me.Label24.TabIndex = 4537
-        Me.Label24.Text = "K1A027"
+        Me.Label24.Text = "K1M089"
         '
         'Label23
         '
@@ -1518,7 +1517,7 @@ Partial Class Working_Pro
         '
         'TIME_CAL_EFF
         '
-        Me.TIME_CAL_EFF.Interval = 1000
+        Me.TIME_CAL_EFF.Interval = 120000
         '
         'lb_font3
         '
@@ -1782,6 +1781,7 @@ Partial Class Working_Pro
         '
         'WebView21
         '
+        Me.WebView21.AllowExternalDrop = True
         Me.WebView21.CreationProperties = Nothing
         Me.WebView21.DefaultBackgroundColor = System.Drawing.Color.White
         Me.WebView21.Location = New System.Drawing.Point(0, 423)
@@ -2288,17 +2288,6 @@ Partial Class Working_Pro
         Me.btnSetUp.TabStop = False
         Me.btnSetUp.Visible = False
         '
-        'WebView22
-        '
-        Me.WebView22.CreationProperties = Nothing
-        Me.WebView22.DefaultBackgroundColor = System.Drawing.Color.White
-        Me.WebView22.Location = New System.Drawing.Point(0, 421)
-        Me.WebView22.Name = "WebView22"
-        Me.WebView22.Size = New System.Drawing.Size(800, 179)
-        Me.WebView22.TabIndex = 4690
-        Me.WebView22.Visible = False
-        Me.WebView22.ZoomFactor = 1.0R
-        '
         'btnStart
         '
         Me.btnStart.BackColor = System.Drawing.Color.LightGray
@@ -2405,6 +2394,14 @@ Partial Class Working_Pro
         Me.newPartname.Size = New System.Drawing.Size(246, 24)
         Me.newPartname.TabIndex = 4697
         Me.newPartname.Text = "XXXXXXXXXXXXXXXXX..."
+        '
+        'PanelProgressbar
+        '
+        Me.PanelProgressbar.Location = New System.Drawing.Point(0, 419)
+        Me.PanelProgressbar.Name = "PanelProgressbar"
+        Me.PanelProgressbar.Size = New System.Drawing.Size(800, 181)
+        Me.PanelProgressbar.TabIndex = 4698
+        Me.PanelProgressbar.Visible = False
         '
         'Working_Pro
         '
@@ -2566,7 +2563,7 @@ Partial Class Working_Pro
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.btn_setup)
         Me.Controls.Add(Me.PictureBox14)
-        Me.Controls.Add(Me.WebView22)
+        Me.Controls.Add(Me.PanelProgressbar)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Working_Pro"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -2608,7 +2605,6 @@ Partial Class Working_Pro
         CType(Me.btnDefect, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnInfo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnSetUp, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.WebView22, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnStart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -2780,7 +2776,6 @@ Partial Class Working_Pro
     Friend WithEvents btnDefect As PictureBox
     Friend WithEvents btnInfo As PictureBox
     Friend WithEvents btnSetUp As PictureBox
-    Friend WithEvents WebView22 As Microsoft.Web.WebView2.WinForms.WebView2
     Friend WithEvents btnStart As PictureBox
     Friend WithEvents Label42 As Label
     Friend WithEvents Label44 As Label
@@ -2791,4 +2786,5 @@ Partial Class Working_Pro
     Friend WithEvents Label48 As Label
     Friend WithEvents Label49 As Label
     Friend WithEvents newPartname As Label
+    Friend WithEvents PanelProgressbar As Panel
 End Class

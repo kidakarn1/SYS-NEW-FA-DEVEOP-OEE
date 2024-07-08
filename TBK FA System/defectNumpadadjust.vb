@@ -21,6 +21,7 @@
     Shared sNg
     Shared mainCP
     Shared dtpwi_id_spc
+    Shared source_code_supplier As String = ""
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnNumber1.Click
         tbAddjust.Text = tbAddjust.Text + "1"
     End Sub
@@ -80,6 +81,8 @@
             Dim objDefectdetailnc As New defectDetailnc
             sPart = dfDetailsnc.dtItemcd '"J107-11820-RM" 'pd.pFg
             dtWino = objDefectdetailnc.dtWino
+            source_code_supplier = objDefectdetailnc.source_code_supplier
+            MsgBox("NC source_code_supplier ===>" & source_code_supplier)
             If MainFrm.chk_spec_line = "2" Then
                 dtLineno = MainFrm.Label4.Text
             Else
@@ -104,6 +107,8 @@
             Dim objDefectdetailng As New defectDetailng
             sPart = dfDetailsng.dtItemcd '"J107-11820-RM" 'pd.pFg
             dtWino = objDefectdetailng.dtWino
+            source_code_supplier = objDefectdetailng.source_code_supplier
+            MsgBox("NG source_code_supplier ===>" & source_code_supplier)
             If MainFrm.chk_spec_line = "2" Then
                 dtLineno = MainFrm.Label4.Text
             Else
@@ -229,7 +234,7 @@
                 'MsgBox("dfType = " & dfType)
                 'MsgBox("dtCode = " & dtCode)
 
-                updateAddjustqty(wi, lot, seq, dfType, dtCode, dfName, mainCP)
+                updateAddjustqty(wi, lot, seq, dfType, dtCode, dfName, mainCP, source_code_supplier)
                 Working_Pro.cal_eff()
                 Working_Pro.ResetRed()
                 Working_Pro.Enabled = True
@@ -257,7 +262,7 @@
                 Dim rs = ckInputqtyaddjust(tbAddjust.Text, lbMax.Text)
                 If rs Then
                     setValuenc(actQty, Working_Pro.lb_nc_child_part.Text, Working_Pro.lb_ng_child_part.Text, sNc, tbAddjust.Text)
-                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dfName, mainCP)
+                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dfName, mainCP, source_code_supplier)
                     Working_Pro.cal_eff()
                     Working_Pro.ResetRed()
                     Working_Pro.Enabled = True
@@ -279,7 +284,7 @@
                 Dim rs = ckInputqtyaddjust(tbAddjust.Text, lbMax.Text)
                 If rs Then
                     setValueng(actQty, Working_Pro.lb_nc_child_part.Text, Working_Pro.lb_ng_child_part.Text, sNg, tbAddjust.Text)
-                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dfName, mainCP)
+                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dfName, mainCP, source_code_supplier)
                     Working_Pro.cal_eff()
                     Working_Pro.ResetRed()
                     Working_Pro.Enabled = True
@@ -316,7 +321,7 @@
                     Dim rsCheck = ckInputqtyaddjust(tbAddjust.Text, lbMax.Text)
                     If rsCheck Then
                         setValuenc(actQty, nc, ng, sNc, tbAddjust.Text)
-                        updateAddjustqty(wi, lot, seq, dfType, dtCode, dfDetailsnc.dtName, mainCP)
+                        updateAddjustqty(wi, lot, seq, dfType, dtCode, dfDetailsnc.dtName, mainCP, source_code_supplier)
                         Working_Pro.ResetRed()
                         Working_Pro.Enabled = True
                         Working_Pro.cal_eff()
@@ -338,7 +343,7 @@
                     dtCode = dfDetailsng.dtCode
                     If rsCheck Then
                         setValueng(actQty, nc, ng, sNg, tbAddjust.Text)
-                        updateAddjustqty(wi, lot, seq, dfType, dtCode, dfDetailsng.dtName, mainCP)
+                        updateAddjustqty(wi, lot, seq, dfType, dtCode, dfDetailsng.dtName, mainCP, source_code_supplier)
                         Working_Pro.ResetRed()
                         Working_Pro.Enabled = True
                         Working_Pro.cal_eff()
@@ -375,7 +380,7 @@
                 Dim rs = ckInputqtyaddjust(tbAddjust.Text, lbMax.Text)
                 If rs Then
                     setValuenc(actQty, Working_Pro.lb_nc_child_part.Text, Working_Pro.lb_ng_child_part.Text, sNc, tbAddjust.Text)
-                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dtName, mainCP)
+                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dtName, mainCP, source_code_supplier)
                     Working_Pro.cal_eff()
                     Working_Pro.ResetRed()
                     Working_Pro.Enabled = True
@@ -397,7 +402,7 @@
                 Dim rs = ckInputqtyaddjust(tbAddjust.Text, lbMax.Text)
                 If rs Then
                     setValueng(actQty, Working_Pro.lb_nc_child_part.Text, Working_Pro.lb_ng_child_part.Text, sNg, tbAddjust.Text)
-                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dtName, mainCP)
+                    updateAddjustqty(wi, lot, seq, dfType, dtCode, dtName, mainCP, source_code_supplier)
                     Working_Pro.cal_eff()
                     Working_Pro.ResetRed()
                     Working_Pro.Enabled = True
@@ -467,7 +472,7 @@
             Working_Pro.lb_ng_child_part.Text = total
         End If
     End Function
-    Public Function updateAddjustqty(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, dfName As String, mainCP As String)
+    Public Function updateAddjustqty(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, dfName As String, mainCP As String, source_code_supplier As String)
         Dim md As New modelDefect()
         Dim mdSqlite As New ModelSqliteDefect()
         Dim itemType As String = ""
@@ -486,7 +491,7 @@
         End If
         ' MsgBox("NG ITEM TYHPE ===>" & itemType)
         ' Dim rs = md.mUpdateaddjust(dtWino, dtLotNo, dtSeqno, dtType, dtCode, itemType, lbPart.Text)
-        Dim rsSqlite = mdSqlite.mUpdateaddjust(dtWino, dtLotNo, dtSeqno, dtType, dtCode, itemType, lbPart.Text)
+        Dim rsSqlite = mdSqlite.mUpdateaddjust(dtWino, dtLotNo, dtSeqno, dtType, dtCode, itemType, lbPart.Text, source_code_supplier)
         'If rs Then
         If rsSqlite Then
             Dim dfRegister As New defectRegister()
@@ -500,7 +505,7 @@
             Else
                 pwi_id = Working_Pro.pwi_id
             End If
-            dfRegister.insertDefectregister(dtWino, MainFrm.Label4.Text, dtItemcd, itemType, dtLotNo, dtSeqno, dtType, dtCode, tbAddjust.Text, dtMenu, dtActualdate, pwi_id, dfName, mainCP)
+            dfRegister.insertDefectregister(dtWino, MainFrm.Label4.Text, dtItemcd, itemType, dtLotNo, dtSeqno, dtType, dtCode, tbAddjust.Text, dtMenu, dtActualdate, pwi_id, dfName, mainCP, source_code_supplier)
         Else
             MsgBox("Update Status Fiall Function updateAddjustqty in defectNumpadadjust.vb")
             MsgBox("mUpdateaddjust rs===>" & rs)

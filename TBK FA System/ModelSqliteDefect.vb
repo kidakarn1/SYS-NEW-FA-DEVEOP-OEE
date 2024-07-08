@@ -359,7 +359,7 @@ Public Class ModelSqliteDefect
             Return False
         End Try
     End Function
-    Public Function mSqliteInsertDefectTransection(dt_wi_no As String, dt_line_cd As String, dt_item_cd As String, dt_item_type As String, dt_lot_no As String, dt_seq_no As String, dt_type As String, dt_code As String, dt_qty As String, dtMenu As String, dtActualdate As String, pwi_id As String, dt_name_en As String, mainCP As String)
+    Public Function mSqliteInsertDefectTransection(dt_wi_no As String, dt_line_cd As String, dt_item_cd As String, dt_item_type As String, dt_lot_no As String, dt_seq_no As String, dt_type As String, dt_code As String, dt_qty As String, dtMenu As String, dtActualdate As String, pwi_id As String, dt_name_en As String, mainCP As String, source_cd_supplier As String)
         Dim sqliteConn As New SQLiteConnection(Backoffice_model.sqliteConnect)
         Backoffice_model.Check_connect_sqlite()
         Backoffice_model.Clear_sqlite()
@@ -395,7 +395,8 @@ Public Class ModelSqliteDefect
 					pwi_id,
                     dt_status_close_lot,
                     dt_name_en,
-                    dt_main_cp
+                    dt_main_cp,
+                    dt_supplier_code
 					) Values(
 					'" & dt_wi_no & "',
 					'" & dt_line_cd & "',
@@ -416,7 +417,8 @@ Public Class ModelSqliteDefect
 					'" & pwi_id & "',
                     '0',
                     '" & dt_name_en & "' , 
-                    '" & mainCP & "')
+                    '" & mainCP & "',
+                    '" & source_cd_supplier & "')
             "
             Console.WriteLine(cmd.CommandText)
             Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
@@ -429,9 +431,9 @@ Public Class ModelSqliteDefect
         End Try
         Return 0
     End Function
-    Public Shared Function mUpdateaddjust(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, ItemType As String, PartNo As String)
+    Public Shared Function mUpdateaddjust(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, ItemType As String, PartNo As String, supplier_cd As String)
         'Dim api = New api()
-        ' Dim rsData As Boolean = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test/updateDatadefect/updateDatadefectregister?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & CDbl(Val(dtSeqno)) & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & ItemType & "&PartNo=" & PartNo)
+        ' Dim rsData As Boolean = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor/updateDatadefect/updateDatadefectregister?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & CDbl(Val(dtSeqno)) & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & ItemType & "&PartNo=" & PartNo)
         Dim sqliteConn As New SQLiteConnection(Backoffice_model.sqliteConnect)
         Backoffice_model.Check_connect_sqlite()
         Backoffice_model.Clear_sqlite()
@@ -441,7 +443,7 @@ Public Class ModelSqliteDefect
             Dim sva_ip_address As String = ""
             Dim cmd As New SQLiteCommand
             cmd.Connection = sqliteConn
-            cmd.CommandText = " update defect_transactions set dt_status_flg = '5' where dt_wi_no='" & dtWino & "' and dt_lot_no = '" & dtLotNo & "' and dt_seq_no = '" & dtSeqno & "' and dt_type = '" & dtType & "' and dt_code = '" & dtCode & "' and dt_item_type = '" & ItemType & "' and dt_item_cd = '" & PartNo & "'"
+            cmd.CommandText = " update defect_transactions set dt_status_flg = '5' where dt_wi_no='" & dtWino & "' and dt_lot_no = '" & dtLotNo & "' and dt_seq_no = '" & dtSeqno & "' and dt_type = '" & dtType & "' and dt_code = '" & dtCode & "' and dt_item_type = '" & ItemType & "' and dt_item_cd = '" & PartNo & "' and dt_supplier_code = '" & supplier_cd & "'"
             Console.WriteLine(cmd.CommandText)
             Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
             sqliteConn.Close()
@@ -454,20 +456,46 @@ Public Class ModelSqliteDefect
     Public Shared Function mSqliteGetdefectdetailnc(dfWi As String, dfSeq As String, dfLot As String, dfType As String)
         Dim api As New api
         Try
-            Dim Sql = "SELECT dt.dt_item_cd, dt.dt_code, SUM(dt.dt_qty) AS total_nc, dt.dt_name_en ,  dt.dt_item_type, dt.dt_wi_no as dt_wi_no , dt.dt_main_cp as dt_main_cp " &
+            Console.WriteLine("--------------------------->")
+            Dim Sql = "SELECT dt.dt_item_cd, dt.dt_code, SUM(dt.dt_qty) AS total_nc, dt.dt_name_en ,  dt.dt_item_type, dt.dt_wi_no as dt_wi_no , dt.dt_main_cp as dt_main_cp , dt.dt_supplier_code as dt_supplier_code " &
           "FROM defect_transactions as dt " &
           "WHERE dt.dt_wi_no = '" & dfWi & "' " &
           "AND dt.dt_seq_no = '" & dfSeq & "' " &
           "AND dt.dt_lot_no = '" & dfLot & "' " &
           "AND dt.dt_type = '" & dfType & "' " &
           "AND dt.dt_status_flg = '1' " &
-          "GROUP BY dt.dt_item_cd, dt.dt_name_en , dt.dt_code, dt.dt_item_type, dt.dt_wi_no  , dt.dt_main_cp " &
+          "GROUP BY dt.dt_item_cd, dt.dt_name_en , dt.dt_code, dt.dt_item_type, dt.dt_wi_no  , dt.dt_main_cp  , dt.dt_supplier_code " &
+          "ORDER BY dt.dt_item_type ASC"
+            Console.WriteLine(Sql)
+            Console.WriteLine("-------------77777777-------------->")
+            Dim jsonData As String = api.Load_dataSQLite(Sql)
+            Return jsonData
+        Catch ex As Exception
+            MsgBox("Error Files ModelSqliteDefect In Function mSqliteGetdefectdetailnc")
+        End Try
+        ' No need to close the connection here; it's already closed after exiting the Using block
+        Return 0
+    End Function
+    Public Shared Function mSqliteGetdefectdetail(dfWi As String, dfSeq As String, dfLot As String, dfType As String, item_cd As String, dtCode As String)
+        Dim api As New api
+        Try
+            Console.WriteLine("--------------------------->")
+            Dim Sql = "SELECT dt.dt_item_cd, dt.dt_code, SUM(dt.dt_qty) AS total_nc, dt.dt_name_en ,  dt.dt_item_type, dt.dt_wi_no as dt_wi_no , dt.dt_main_cp as dt_main_cp , dt.dt_supplier_code as dt_supplier_code " &
+          "FROM defect_transactions as dt " &
+          "WHERE dt.dt_wi_no = '" & dfWi & "' " &
+          "AND dt.dt_seq_no = '" & dfSeq & "' " &
+          "AND dt.dt_lot_no = '" & dfLot & "' " &
+          "AND dt.dt_type = '" & dfType & "' " &
+          "AND dt.dt_item_cd = '" & item_cd & "' " &
+          "AND dt.dt_code = '" & dtCode & "' " &
+          "AND dt.dt_status_flg = '1' " &
+          "GROUP BY dt.dt_item_cd, dt.dt_name_en , dt.dt_code, dt.dt_item_type, dt.dt_wi_no  , dt.dt_main_cp  , dt.dt_supplier_code " &
           "ORDER BY dt.dt_item_type ASC"
             Console.WriteLine(Sql)
             Dim jsonData As String = api.Load_dataSQLite(Sql)
             Return jsonData
         Catch ex As Exception
-            MsgBox("Error Files ModelSqliteDefect In Function mGetdefectdetailnc")
+            MsgBox("Error Files ModelSqliteDefect In Function mSqliteGetdefectdetail")
         End Try
         ' No need to close the connection here; it's already closed after exiting the Using block
         Return 0

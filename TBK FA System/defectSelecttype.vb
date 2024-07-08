@@ -92,7 +92,8 @@ Friend Class defectSelecttype
                     datlvChildpart.SubItems.Add(Working_Pro.seqNo)
                     datlvChildpart.SubItems.Add(Working_Pro.pwi_id)
                 End If
-                datlvChildpart.SubItems.Add(item("ODR_SEQ").ToString())
+                ' datlvChildpart.SubItems.Add(item("ODR_SEQ").ToString())
+                datlvChildpart.SubItems.Add("1")
                 lvChildpart.Items.Add(datlvChildpart)
                 i += 1
             Next
@@ -233,7 +234,6 @@ Friend Class defectSelecttype
     End Sub
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
         If lvChildpart.SelectedItems.Count > 0 Then
-
             Dim sDefectcode As New defectSelectcode()
             sDefectcode.sSeqSpc = SelectSpcSeq
             sDefectcode.sPwiSpc = SelectSpcPWI_ID
