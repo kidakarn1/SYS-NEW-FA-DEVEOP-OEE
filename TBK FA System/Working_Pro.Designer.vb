@@ -1910,7 +1910,7 @@ Partial Class Working_Pro
         Me.actualP.BackColor = System.Drawing.Color.White
         Me.actualP.Font = New System.Drawing.Font("Panton-Trial ExtraBold", 14.25!, System.Drawing.FontStyle.Bold)
         Me.actualP.ForeColor = System.Drawing.Color.Black
-        Me.actualP.Location = New System.Drawing.Point(366, 262)
+        Me.actualP.Location = New System.Drawing.Point(366, 238)
         Me.actualP.Name = "actualP"
         Me.actualP.Size = New System.Drawing.Size(58, 24)
         Me.actualP.TabIndex = 4666
@@ -1922,7 +1922,7 @@ Partial Class Working_Pro
         Me.stdJobP.BackColor = System.Drawing.Color.White
         Me.stdJobP.Font = New System.Drawing.Font("Panton-Trial ExtraBold", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.stdJobP.ForeColor = System.Drawing.Color.Black
-        Me.stdJobP.Location = New System.Drawing.Point(365, 220)
+        Me.stdJobP.Location = New System.Drawing.Point(364, 175)
         Me.stdJobP.Name = "stdJobP"
         Me.stdJobP.Size = New System.Drawing.Size(58, 24)
         Me.stdJobP.TabIndex = 4665
@@ -1934,11 +1934,12 @@ Partial Class Working_Pro
         Me.lbOverTimePerformance.BackColor = System.Drawing.Color.White
         Me.lbOverTimePerformance.Font = New System.Drawing.Font("Panton-Trial Black", 15.25!, System.Drawing.FontStyle.Bold)
         Me.lbOverTimePerformance.ForeColor = System.Drawing.Color.Red
-        Me.lbOverTimePerformance.Location = New System.Drawing.Point(365, 168)
+        Me.lbOverTimePerformance.Location = New System.Drawing.Point(105, 25)
         Me.lbOverTimePerformance.Name = "lbOverTimePerformance"
         Me.lbOverTimePerformance.Size = New System.Drawing.Size(26, 26)
         Me.lbOverTimePerformance.TabIndex = 4664
         Me.lbOverTimePerformance.Text = "0"
+        Me.lbOverTimePerformance.Visible = False
         '
         'lbOverTimeQuality
         '
@@ -2013,7 +2014,7 @@ Partial Class Working_Pro
         Me.progressbarP.OuterColor = System.Drawing.Color.Gainsboro
         Me.progressbarP.OuterMargin = -26
         Me.progressbarP.OuterWidth = 29
-        Me.progressbarP.ProgressColor = System.Drawing.Color.Purple
+        Me.progressbarP.ProgressColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(97, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.progressbarP.ProgressWidth = 22
         Me.progressbarP.SecondaryFont = New System.Drawing.Font("Nirmala UI", 15.0!, System.Drawing.FontStyle.Bold)
         Me.progressbarP.Size = New System.Drawing.Size(124, 124)
@@ -2045,7 +2046,7 @@ Partial Class Working_Pro
         Me.progressbarQ.OuterColor = System.Drawing.Color.Gainsboro
         Me.progressbarQ.OuterMargin = -26
         Me.progressbarQ.OuterWidth = 29
-        Me.progressbarQ.ProgressColor = System.Drawing.Color.Olive
+        Me.progressbarQ.ProgressColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(97, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.progressbarQ.ProgressWidth = 22
         Me.progressbarQ.SecondaryFont = New System.Drawing.Font("Arial Narrow", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.progressbarQ.Size = New System.Drawing.Size(124, 124)
@@ -2077,7 +2078,7 @@ Partial Class Working_Pro
         Me.progressbarA.OuterColor = System.Drawing.Color.Gainsboro
         Me.progressbarA.OuterMargin = -26
         Me.progressbarA.OuterWidth = 29
-        Me.progressbarA.ProgressColor = System.Drawing.Color.DodgerBlue
+        Me.progressbarA.ProgressColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(97, Byte), Integer), CType(CType(0, Byte), Integer))
         Me.progressbarA.ProgressWidth = 22
         Me.progressbarA.SecondaryFont = New System.Drawing.Font("Arial Narrow", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.progressbarA.Size = New System.Drawing.Size(124, 124)
@@ -2113,6 +2114,7 @@ Partial Class Working_Pro
         Me.PictureBox12.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox12.Name = "PictureBox12"
         Me.PictureBox12.Size = New System.Drawing.Size(800, 598)
+        Me.PictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.PictureBox12.TabIndex = 4645
         Me.PictureBox12.TabStop = False
         '
@@ -2130,7 +2132,7 @@ Partial Class Working_Pro
         '
         Me.PanelACTP.Controls.Add(Me.Label19)
         Me.PanelACTP.Controls.Add(Me.minACTUAL_P)
-        Me.PanelACTP.Location = New System.Drawing.Point(461, 259)
+        Me.PanelACTP.Location = New System.Drawing.Point(460, 235)
         Me.PanelACTP.Name = "PanelACTP"
         Me.PanelACTP.Size = New System.Drawing.Size(66, 26)
         Me.PanelACTP.TabIndex = 4677
@@ -2159,7 +2161,7 @@ Partial Class Working_Pro
         '
         Me.PanelSTDJOBP.Controls.Add(Me.Label21)
         Me.PanelSTDJOBP.Controls.Add(Me.Label25)
-        Me.PanelSTDJOBP.Location = New System.Drawing.Point(461, 217)
+        Me.PanelSTDJOBP.Location = New System.Drawing.Point(460, 172)
         Me.PanelSTDJOBP.Name = "PanelSTDJOBP"
         Me.PanelSTDJOBP.Size = New System.Drawing.Size(66, 27)
         Me.PanelSTDJOBP.TabIndex = 4678
@@ -2303,7 +2305,7 @@ Partial Class Working_Pro
         '
         Me.Label42.AutoSize = True
         Me.Label42.Font = New System.Drawing.Font("Panton-Trial Black", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.Label42.Location = New System.Drawing.Point(421, 221)
+        Me.Label42.Location = New System.Drawing.Point(421, 175)
         Me.Label42.Name = "Label42"
         Me.Label42.Size = New System.Drawing.Size(34, 20)
         Me.Label42.TabIndex = 2
@@ -2313,7 +2315,7 @@ Partial Class Working_Pro
         '
         Me.Label44.AutoSize = True
         Me.Label44.Font = New System.Drawing.Font("Panton-Trial Black", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.Label44.Location = New System.Drawing.Point(421, 262)
+        Me.Label44.Location = New System.Drawing.Point(421, 238)
         Me.Label44.Name = "Label44"
         Me.Label44.Size = New System.Drawing.Size(34, 20)
         Me.Label44.TabIndex = 4691
@@ -2323,7 +2325,7 @@ Partial Class Working_Pro
         '
         Me.HrPJ.AutoSize = True
         Me.HrPJ.Font = New System.Drawing.Font("Panton-Trial Black", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.HrPJ.Location = New System.Drawing.Point(462, 222)
+        Me.HrPJ.Location = New System.Drawing.Point(463, 176)
         Me.HrPJ.Name = "HrPJ"
         Me.HrPJ.Size = New System.Drawing.Size(26, 20)
         Me.HrPJ.TabIndex = 2
@@ -2333,7 +2335,7 @@ Partial Class Working_Pro
         '
         Me.HrPA.AutoSize = True
         Me.HrPA.Font = New System.Drawing.Font("Panton-Trial Black", 12.0!, System.Drawing.FontStyle.Bold)
-        Me.HrPA.Location = New System.Drawing.Point(459, 263)
+        Me.HrPA.Location = New System.Drawing.Point(460, 238)
         Me.HrPA.Name = "HrPA"
         Me.HrPA.Size = New System.Drawing.Size(26, 20)
         Me.HrPA.TabIndex = 4692
@@ -2343,7 +2345,7 @@ Partial Class Working_Pro
         '
         Me.Label45.AutoSize = True
         Me.Label45.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label45.Location = New System.Drawing.Point(450, 222)
+        Me.Label45.Location = New System.Drawing.Point(451, 176)
         Me.Label45.Name = "Label45"
         Me.Label45.Size = New System.Drawing.Size(13, 20)
         Me.Label45.TabIndex = 4693
@@ -2353,7 +2355,7 @@ Partial Class Working_Pro
         '
         Me.Label46.AutoSize = True
         Me.Label46.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label46.Location = New System.Drawing.Point(451, 263)
+        Me.Label46.Location = New System.Drawing.Point(452, 238)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(13, 20)
         Me.Label46.TabIndex = 4694

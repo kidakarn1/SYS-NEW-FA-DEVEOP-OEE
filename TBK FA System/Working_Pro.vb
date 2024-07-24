@@ -18,7 +18,6 @@ Imports System.Net
 Imports System.Web.Script.Serialization
 Imports Microsoft.Web.WebView2.Core
 Imports Microsoft.Web.WebView2.WinForms
-
 Public Class Working_Pro
     Private WithEvents WebViewProgressbar As WebView2
     Public Shared comportTowerLamp = "COM4"
@@ -43,6 +42,7 @@ Public Class Working_Pro
     Dim Check(7) As CheckBox
     Dim Edit_Up(1) As TextBox
     Dim Edit_Down(7) As TextBox
+    Dim loadingForm As New loadData()
     Dim delay_btn As Integer = 0
     Dim check_bull As Integer = 0
     Public check_in_up_seq As Integer = 0
@@ -73,8 +73,8 @@ Public Class Working_Pro
     Public Shared GoodQty As Double = 0.0
     Public Shared carvity As Integer = MainFrm.cavity.Text
     Public Shared ResultPrint As Integer = 0
+    Public Shared statusPrint As String = "Normal"
     Delegate Sub SetTextCallback(ByVal [text] As String)
-
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         'Label44.Text = TimeOfDay.ToString("H:mm:ss")
         Label17.Text = TimeOfDay.ToString("H:mm:ss")
@@ -105,8 +105,8 @@ Public Class Working_Pro
             Next
         End If
     End Function
-    Public Sub setlvA(line_cd As String, lot_no As String, shift As String, dateStart As String)
-        Dim OEE = New OEE
+    Public Async Function setlvA(line_cd As String, lot_no As String, shift As String, dateStart As String) As Task
+        Dim OEE = New OEE_NODE
         lvA.Items.Clear()
         Dim rslvA = OEE.OEE_GET_Data_LOSS(line_cd, lot_no, shift, dateStart)
         If rslvA <> "0" Then
@@ -122,12 +122,11 @@ Public Class Working_Pro
 
             End Try
         End If
-    End Sub
+    End Function
     Public Sub showWorkker()
         Dim emp_cd As String = List_Emp.ListView1.Items(0).Text
         Dim tclient As New WebClient
         Dim tImage As Bitmap = Nothing ' Initialize tImage to avoid potential null reference exceptions
-
         Try
             Dim url As String = "http://192.168.161.207/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
             Dim data As Byte() = tclient.DownloadData(url)
@@ -185,14 +184,19 @@ Public Class Working_Pro
             progressbarQ.Text = Int(totalProgressbar) & "%"
             progressbarQ.Value = Int(totalProgressbar)
         End If
+
+        If totalProgressbar > 99.5 Then
+            progressbarQ.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
+        ElseIf totalProgressbar < 98 Then
+            progressbarQ.ProgressColor = Color.Red
+        End If
+
         Return totalProgressbar
         'CircularProgressBar2.Text = sum_prg2 & "%"
         'CircularProgressBar2.Value = sum_prg2
     End Function
     Public Sub calProgressOEE(A, Q, P)
-
         Dim total = A + Q + P
-
         If A > 100 Then
             A = 100
         ElseIf A < 0 Then
@@ -216,7 +220,6 @@ Public Class Working_Pro
         Dim result As Double = A * Q * P
         ' ปัดเศษให้เป็นทศนิยม 2 ตำแหน่ง
         Dim roundedResult As Double = Math.Round(result, 2)
-
         Dim flooredResult As Double = Math.Floor(result * 100)
         Dim totalProgressbar As Integer = flooredResult.ToString("F2")
         If totalProgressbar > 100 Then
@@ -229,17 +232,16 @@ Public Class Working_Pro
             progressbarOEE.Text = totalProgressbar & "%"
             progressbarOEE.Value = totalProgressbar
         End If
-        If totalProgressbar > 80 Then
+        If totalProgressbar > 90 Then
             progressbarOEE.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
-        ElseIf totalProgressbar < 80 And totalProgressbar > 65 Then
+        ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
             progressbarOEE.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
-        ElseIf totalProgressbar < 65 Then
+        ElseIf totalProgressbar < 80 Then
             progressbarOEE.ProgressColor = Color.Red
         End If
     End Sub
-
     Public Function cal_progressbarA(line_cd, st_shift, end_shift)
-        Dim OEE = New OEE
+        Dim OEE = New OEE_NODE
         Dim totalProgressbar = OEE.GetDataProgressbarA(st_shift, end_shift, line_cd)
         If totalProgressbar > 100 Then
             progressbarA.Text = Int(100) & "%"
@@ -251,24 +253,44 @@ Public Class Working_Pro
             progressbarA.Text = totalProgressbar & "%"
             progressbarA.Value = totalProgressbar
         End If
+        If totalProgressbar > 90 Then
+            progressbarA.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
+        ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
+            progressbarA.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
+        ElseIf totalProgressbar < 80 Then
+            progressbarA.ProgressColor = Color.Red
+        End If
         Return totalProgressbar
     End Function
-
     Public Function setgetSpeedLoss(NG, Good, timeShift, std_cd, line_cd)
-        Dim OEE = New OEE
+        Dim OEE = New OEE_NODE
         'Dim per = "%"
         'per.Font = New Font("Arial", 20, FontStyle.Bold)
         'Dim rs = OEE.OEE_getSpeedLoss(NG, Good, timeShift, std_cd)
-
         Dim startDate As Date
         Dim rsDateDiff As Long
         ' แปลงข้อความเป็นชนิดข้อมูล Date
         Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd)
+        ' MsgBox("OEE_actual_detailByHour=====>" & OEE_actual_detailByHour)
         actualP.Text = OEE_actual_detailByHour
         ' Try
-
         startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString.Substring(0, 10)) & " " & timeShift
         ' หาความแตกต่างในหน่วยนาที
+        Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
+        Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
+        ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
+        Dim time As String = DateTime.Now.ToString("HH:mm:ss")
+        Dim date_st = DateTime.Now.ToString("yyyy-MM-dd")
+        Dim date_end = DateTime.Now.ToString("yyyy-MM-dd")
+        If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
+            startDate = startDate.AddDays(-1)
+        Else
+            'If time_now > "20:00:00 AM" Then
+            ' date_end = date_now_date.AddDays(1)
+            ' date_end = Convert.ToDateTime(date_end).ToString("yyyy-MM-dd")
+            'End If
+        End If
+        startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
         rsDateDiff = DateDiff("s", startDate, Now())
         Dim minrsDateDiff = rsDateDiff / 60
         If rsDateDiff < 3600 Then
@@ -279,11 +301,9 @@ Public Class Working_Pro
             PanelACTP.Visible = True
             Try
                 lbOverTimePerformance.Text = Math.Ceiling(rsDateDiff / actualP.Text)
-
             Catch ex As Exception
                 lbOverTimePerformance.Text = 1
             End Try
-
         Else
             Dim GetLossByHouseP1 = OEE.OEE_GetLossByHouseP1(line_cd)
             Dim calHour = 0
@@ -313,7 +333,6 @@ Public Class Working_Pro
             totalProgressbar = (actualP.Text / stdJobP.Text) * 100  '((Good + NG) / rscalwork_std)
         End If
         If Math.Ceiling(totalProgressbar) > 100 Then
-
             progressbarP.Text = Int(100) & "%"
             progressbarP.Value = Int(100)
         ElseIf Math.Ceiling(totalProgressbar) < 0 Then
@@ -322,6 +341,13 @@ Public Class Working_Pro
         Else
             progressbarP.Text = Int(totalProgressbar) & "%"
             progressbarP.Value = Int(totalProgressbar)
+        End If
+        If totalProgressbar > 90 Then
+            progressbarP.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
+        ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
+            progressbarP.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
+        ElseIf totalProgressbar < 80 Then
+            progressbarP.ProgressColor = Color.Red
         End If
         Return totalProgressbar
     End Function
@@ -334,20 +360,19 @@ Public Class Working_Pro
         'For Each item As Object In dict3a
         'Next
         'Catch ex As Exception
-        '
         'End Try
         'End If
-        '  lbNG.Text = lbOverTimeQuality.Text
+        'lbNG.Text = lbOverTimeQuality.Text
     End Sub
-    Public Sub set_AccTarget(TimestartShift, std_ct)
-        Dim OEE = New OEE
+    Public Async Function set_AccTarget(TimestartShift, std_ct) As Task
+        Dim OEE = New OEE_NODE
         lbAccTarget.Text = OEE.OEE_GET_Data_AccTarget(TimestartShift, std_ct)
-    End Sub
-    Public Sub setlvQ(line_cd As String, lot_no As String)
+    End Function
+    Public Async Function setlvQ(line_cd As String, lot_no As String) As Task
         lvQ.Items.Clear()
         lbOverTimeQuality.Text = "0"
         lbNG.Text = "0"
-        Dim OEE = New OEE
+        Dim OEE = New OEE_NODE
         Dim sqlite = New ModelSqliteDefect
         Dim rslvQ = sqlite.mSqliteGetDataQuality(line_cd, lot_no, DateTimeStartofShift.Text)
         If rslvQ <> "0" Then
@@ -364,15 +389,31 @@ Public Class Working_Pro
 
             End Try
         End If
-    End Sub
+    End Function
+    Private Async Function ShowLoadingAndLoadData() As Task
+        loadingForm.Show()
+        ' loadingForm.Dock = DockStyle.Fill
+        ' loadingForm.BringToFront()
+        ' เริ่มต้นการโหลดข้อมูลหรือทำงานที่ต้องการ
+        Await LoadDataAsync()
+        ' ปิดหน้าต่างกำลังโหลดเมื่อเสร็จสิ้นการโหลดข้อมูล
+    End Function
 
+    Private Async Function LoadDataAsync() As Task
+        ' จำลองการโหลดข้อมูล (แทนที่ด้วยการโหลดข้อมูลจริง)
+        Await Task.Delay(5000) ' รอ 3 วินาที
+    End Function
     Private Async Sub Working_Pro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Me.Enabled = False
+        statusPrint = "Normal"
         PanelProgressbar.BringToFront()
+        Label29.BringToFront()
+        'Me.Enabled = False
         If CheckOs() Then
             counterNewDIO = New CheckWindow
             counterNewDIO.Per_CheckCounter()
         End If
-        Dim OEE = New OEE
+        Dim OEE = New OEE_NODE
         showWorkker()
         Try
             ' เรียกใช้ฟังก์ชัน loadDataProgressBar แบบ Async
@@ -380,17 +421,17 @@ Public Class Working_Pro
         Catch ex As Exception
             MessageBox.Show($"Failed to load data: {ex.Message}")
         End Try
+        Await ShowLoadingAndLoadData()
         DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
         tag_group_no = Backoffice_model.Get_tag_group_no()
         CircularProgressBar2.Visible = False
         Label7.Text = OEE.OEE_GET_NEW_TARGET(Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5), Label38.Text)
-        setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
-        setlvQ(Label24.Text, Label18.Text)
-        set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
+        Await setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+        Await setlvQ(Label24.Text, Label18.Text)
+        Await set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
         setNgByHour(Label24.Text, Label18.Text)
         'PictureBox12.Visible = False
         PictureBox10.Visible = True
-        Label29.BringToFront()
         'PictureBox11.Visible = False
         Wait_data.Close()
         'Prd_detail.Timer3.Enabled = False
@@ -487,9 +528,10 @@ Public Class Working_Pro
             End If
         End While
         reader_defact_nc.close()
-        While reader_shift.read()
-            LB_COUNTER_SHIP.Text = reader_shift("QTY_SHIFT").ToString()
-        End While
+        'While reader_shift.read()
+        'LB_COUNTER_SHIP.Text = reader_shift("QTY_SHIFT").ToString()
+        'End While
+        LB_COUNTER_SHIP.Text = OEE.OEE_getProduction_actual_detailByShift(MainFrm.Label4.Text)
         If LB_COUNTER_SHIP.Text = "" Then
             LB_COUNTER_SHIP.Text = 0
         Else
@@ -514,6 +556,8 @@ Public Class Working_Pro
         Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
         calProgressOEE(A, Q, P)
         Timer2.Start()
+        Me.Enabled = True
+        loadingForm.Hide()
     End Sub
     Public Sub check_seq_data()
         If CDbl(Val(LB_COUNTER_SEQ.Text)) <> "0" Then
@@ -690,9 +734,7 @@ Public Class Working_Pro
             End If
         End If
     End Sub
-
     Private Sub Label8_Click(sender As Object, e As EventArgs)
-
     End Sub
     Private Sub btn_setup_Click(sender As Object, e As EventArgs) Handles btn_setup.Click, btnSetUp.Click
         Try
@@ -717,7 +759,6 @@ Public Class Working_Pro
         Throw New NotImplementedException()
     End Sub
     Private Sub ProgressBar1_Click(sender As Object, e As EventArgs)
-
     End Sub
     Public Sub stop_working()
         PanelProgressbar.Visible = False
@@ -743,8 +784,6 @@ Public Class Working_Pro
         CircularProgressBar2.Visible = False
         'CircularProgressBar2.BackColor = Color.FromArgb(63, 63, 63)
         'CircularProgressBar2.InnerColor = Color.FromArgb(63, 63, 63)
-
-
         ' Label7.Location = New Point(150, 25)
         '        Label7.BackColor = Color.FromArgb(12, 27, 45)
         ''        Label7.BringToFront()
@@ -756,13 +795,9 @@ Public Class Working_Pro
         ' Label6.Location = New Point(43, 403)
         'Label6.BackColor = Color.FromArgb(12, 27, 45)
         'Label6.BringToFront()
-
         '   Label10.Location = New Point(41, 510)
         'Label10.BackColor = Color.FromArgb(12, 27, 45)
         'Label10.BringToFront()
-
-
-
         Dim line_id As String = MainFrm.line_id.Text
         Try
             If My.Computer.Network.Ping("192.168.161.101") Then
@@ -932,19 +967,14 @@ Public Class Working_Pro
             btnDefect.Enabled = True
             PictureBox11.Enabled = True
             btnInfo.Enabled = True
-
             btnCloseLot.Enabled = True
             redBox.Enabled = True
             'Dim temppo As Double = Label34.Text
             CircularProgressBar2.Text = 0 & "%"
             CircularProgressBar2.Value = 0
-
             Dim value_temps As Double
-
             value_temps = Double.TryParse(Label34.Text, value_temps)
-
             Dim testt As Integer = Label34.Text
-
             Dim newDate As Date = DateAdd("n", testt, Now)
             Label20.Text = newDate.ToString("H : mm")
             'MsgBox(Label20.Text)
@@ -991,7 +1021,8 @@ Public Class Working_Pro
             Backoffice_model.ins_loss_act_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
         End Try
     End Sub
-    Public Sub Start_Production() '
+
+    Public Async Function Start_Production() As Task '
         If check_network_frist = 0 Then
             Try
                 If My.Computer.Network.Ping("192.168.161.101") Then
@@ -1074,7 +1105,8 @@ Public Class Working_Pro
                 Next
             End If
             check_in_up_seq += 1
-            DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
+            DateTimeStartofShift.Text = Await OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
+            LOAD_OEE()
         End If
         Main()
         Try
@@ -1265,7 +1297,6 @@ Public Class Working_Pro
             btnDefect.Enabled = True
             PictureBox11.Enabled = True
             btnInfo.Enabled = True
-
             btnCloseLot.Enabled = True
             redBox.Enabled = True
             'Starting
@@ -1283,8 +1314,9 @@ Public Class Working_Pro
         Else
             'Label32.Text = "0"
         End If
+        statusPrint = "Normal"
         cal_eff()
-        TIME_CAL_EFF.Start()
+        'TIME_CAL_EFF.Start()
         LB_COUNTER_SHIP.Visible = True
         Panel1.BackColor = Color.Green
         Label30.Text = "NORMAL"
@@ -1300,7 +1332,7 @@ Public Class Working_Pro
         redBox.Visible = False
         PanelProgressbar.Visible = True
         'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
-        WebViewProgressbar.Reload()
+        ' WebViewProgressbar.Reload()
         btn_stop.Visible = True
         Prd_detail.Timer3.Enabled = False
         btnStart.Visible = False
@@ -1358,30 +1390,22 @@ Public Class Working_Pro
         'LB_COUNTER_SEQ.BringToFront()
         ' CircularProgressBar2.Visible = True
         connect_counter_qty()
-    End Sub
+    End Function
     Public Async Function loadDataProgressBar(line_cd As String, shift As String) As Task
-        Dim OEE = New OEE
+        Dim OEE = New OEE_NODE
         ' Create a new instance of WebView2 control
         WebViewProgressbar = New WebView2() With {
             .Dock = DockStyle.Fill
         }
         PanelProgressbar.Controls.Add(WebViewProgressbar)
-        ' Add WebView2 control to the form's controls collection
         Try
-            ' Create a WebView2 environment with a user data folder
             Dim webViewEnvironment = Await CoreWebView2Environment.CreateAsync(Nothing, "C:\Temp")
-            ' Initialize the WebView2 control with the created environment
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
-            ' Navigate to a web page
-            '  WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/test_ci/loading.php")
-            ' WebViewProgressbar.CoreWebView2.Navigate("https://www.google.com")
-            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrProgress/?line_cd=" & line_cd & "&shift=" & shift)
-            Console.WriteLine("192.168.161.219/productionHrProgressTest/?line_cd=" & line_cd & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogress/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
+            Console.WriteLine("192.168.161.219/productionHrProgress/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
         Catch ex As Exception
             '   MessageBox.Show($"Failed to initialize WebView2: {ex.Message}")
         End Try
-        ' Me.WebView22.Source = New Uri("http://192.168.161.219/test_ci/loading.php")
-        ' Me.WebView22.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=" & line_cd & "&shift=" & shift)
     End Function
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -1770,6 +1794,7 @@ Public Class Working_Pro
         End If
         Console.WriteLine("TESTTTTTTT INNNNN")
         If comp_flg = 0 Then
+            statusPrint = "Normal_contect_DIO"
             'MsgBox("G")
             Console.WriteLine("delays")
             'Dim result_mod As Double = Integer.Parse(_Edit_Up_0.Text) Mod Integer.Parse(Label27.Text)
@@ -1821,7 +1846,8 @@ Public Class Working_Pro
                     If V_check_line_reprint = "0" Then
                         lb_box_count.Text = lb_box_count.Text + 1
                         Label_bach.Text = Label_bach.Text + 1
-                        GoodQty = Label6.Text
+                        'GoodQty = Label6.Text
+                        GoodQty = lb_good.Text
                         'MsgBox("IF IF ===>" & GoodQty)
                         tag_print()
                     Else
@@ -2034,7 +2060,7 @@ Public Class Working_Pro
                 End If
                 Me.Enabled = False
                 comp_flg = 1
-                Finish_work.Show() ' เกี่ยว
+                'Finish_work.Show() ' เกี่ยว
                 Dim plan_qty As Integer = Label8.Text
                 Dim shift_prd As String = Label14.Text
                 Dim prd_st_datetime As Date = st_time.Text
@@ -2119,6 +2145,7 @@ Public Class Working_Pro
         ' If checkTransection = "1" Then
 
         If comp_flg = 0 Then
+            statusPrint = "Normal_DIO_RS232"
             'Dim result_mod As Double = Integer.Parse(_Edit_Up_0.Text) Mod Integer.Parse(Label27.Text)
             Dim result_mod As Double = Integer.Parse(Act + action_plus) Mod Integer.Parse(Label27.Text) 'Integer.Parse(_Edit_Up_0.Text) Mod Integer.Parse(Label27.Text)
             lb_qty_for_box.Text = lb_qty_for_box.Text + cnt_btn
@@ -2148,7 +2175,8 @@ Public Class Working_Pro
                     If V_check_line_reprint = "0" Then
                         lb_box_count.Text = lb_box_count.Text + 1
                         Label_bach.Text = Label_bach.Text + 1
-                        GoodQty = Label6.Text
+                        'GoodQty = Label6.Text
+                        GoodQty = lb_good.Text
                         tag_print()
                     Else
                         If CDbl(Val(Label27.Text)) = 1 Or CDbl(Val(Label27.Text)) = 999999 Then
@@ -2366,7 +2394,7 @@ Public Class Working_Pro
                 End If
                 Me.Enabled = False
                 comp_flg = 1
-                Finish_work.Show() ' เกี่ยว
+                ' Finish_work.Show() ' เกี่ยว
                 Dim plan_qty As Integer = Label8.Text
                 Dim shift_prd As String = Label14.Text
                 Dim prd_st_datetime As Date = st_time.Text
@@ -2417,12 +2445,12 @@ Public Class Working_Pro
     End Function
 
 
-
     Private Async Function Manage_counter_contect_DIO_RS232() As Task
         ' Simulate an asynchronous operation
         ' If check_bull = 0 Then
         check_bull = 1
         Console.WriteLine("IN FUNCTION")
+
         Await counter_contect_DIO_RS232()
         cal_eff()
         Console.WriteLine("OUT FUNCTION")
@@ -2471,6 +2499,9 @@ Public Class Working_Pro
                 Console.WriteLine("F2")
             End If
             Console.WriteLine("delay_setting========<><><>>>>>>" & delay_setting)
+
+
+
             Await Task.Delay(delay_setting).ContinueWith(Sub(task)
                                                              Me.Invoke(Sub()
                                                                            check_bull = 0
@@ -2535,9 +2566,23 @@ Public Class Working_Pro
     End Sub
     Public Function check_tagprint()
         'Dim result_snp As Integer = CDbl(Val(Label6.Text)) Mod CDbl(Val(Label27.Text))
-        Dim defectAll = CDbl(Val(lb_ng_qty.Text)) + CDbl(Val(lb_nc_qty.Text))
+        ' Dim defectAll = CDbl(Val(lb_ng_qty.Text)) + CDbl(Val(lb_nc_qty.Text))
+        Dim SQLite = New ModelSqliteDefect
+        Dim defectAll = SQLite.mSqlieGetDataNGbyWILot(MainFrm.Label4.Text, Label18.Text, DateTimeStartofShift.Text, Prd_detail.lb_wi.Text)
         ' Dim result_snp As Double = (Integer.Parse(Label6.Text) - defectAll) Mod Integer.Parse(Label27.Text) 'Integer.Parse(_Edit_Up_0.Text) Mod Integer.Parse(Label27.Text)
-        Dim result_snp As Double = (Integer.Parse(GoodQty)) Mod Integer.Parse(Label27.Text)
+        Dim modsucc As Integer
+        If statusPrint = "CloseLot" Then
+            modsucc = (CDbl(Val(GoodQty)))
+        ElseIf statusPrint = "Normal" Then 'manual
+            modsucc = (CDbl(Val(GoodQty)))
+        ElseIf statusPrint = "Normal_contect_DIO" Or statusPrint = "Normal_NI_MAX" Or statusPrint = "Normal_DIO_RS232" Then ' auto counter qty
+            If CDbl(Val(Label10.Text)) = "0" Then ' remain of wi = 0 ให้ ลบ Defect ด้วย ถ้าำม่ลบ จะมีปัญหาตอนออก แท็ก จะไม่เอา Defect ไปลบ
+                modsucc = (CDbl(Val(GoodQty))) - defectAll
+            Else
+                modsucc = (CDbl(Val(GoodQty)))
+            End If
+        End If
+        Dim result_snp As Integer = modsucc Mod CDbl(Val(Label27.Text)) '(CDbl(Val(GoodQty))) Mod CDbl(Val(Label27.Text)) ' Check From Good
         Dim flg_control As Integer = 0
         If check_format_tag = "1" Then ' for tag_type = '2' and tag_issue_flg = '2'  OR K1M183
             flg_control = 1
@@ -2574,11 +2619,28 @@ Public Class Working_Pro
         e.Graphics.DrawString(Label3.Text, lb_font2.Font, Brushes.Black, 152, 25)
         e.Graphics.DrawString("QTY.", lb_font1.Font, Brushes.Black, 492, 13)
         'Dim result_snp As Integer = CDbl(Val(Label6.Text)) Mod CDbl(Val(Label27.Text)) ' Check From Actual
-        Dim defectAll = CDbl(Val(lb_ng_qty.Text)) + CDbl(Val(lb_nc_qty.Text))
-        ' MsgBox("defectAll ===>" & defectAll)
+        'Dim defectAll = CDbl(Val(lb_ng_qty.Text)) + CDbl(Val(lb_nc_qty.Text))
+        Dim SQLite = New ModelSqliteDefect
+        Dim defectAll = SQLite.mSqlieGetDataNGbyWILot(MainFrm.Label4.Text, Label18.Text, DateTimeStartofShift.Text, wi_no.Text)
+        'MsgBox("statusPrint===>" & statusPrint)
+        'MsgBox("defectAll ===>" & defectAll)
+        'MsgBox("GoodQty====>" & GoodQty)
         '  Dim result_snp As Integer = (CDbl(Val(Label6.Text)) - defectAll) Mod CDbl(Val(Label27.Text)) ' Check From Good
-        Dim modsucc As Integer = (CDbl(Val(GoodQty))) - defectAll
+        Dim modsucc As Integer
+        If statusPrint = "CloseLot" Then
+            modsucc = (CDbl(Val(GoodQty)))
+        ElseIf statusPrint = "Normal" Then ' manual
+            modsucc = (CDbl(Val(GoodQty)))
+        ElseIf statusPrint = "Normal_contect_DIO" Or statusPrint = "Normal_NI_MAX" Or statusPrint = "Normal_DIO_RS232" Then ' auto counter qty
+            'MsgBox("Label10.Text====>" & CDbl(Val(Label10.Text)))
+            If CDbl(Val(Label10.Text)) = "0" Then ' remain of wi = 0 ให้ ลบ Defect ด้วย ถ้าำม่ลบ จะมีปัญหาตอนออก แท็ก จะไม่เอา Defect ไปลบ
+                modsucc = (CDbl(Val(GoodQty))) - defectAll
+            Else
+                modsucc = (CDbl(Val(GoodQty)))
+            End If
+        End If
         Dim result_snp As Integer = modsucc Mod CDbl(Val(Label27.Text)) '(CDbl(Val(GoodQty))) Mod CDbl(Val(Label27.Text)) ' Check From Good
+        ' MsgBox("before result_snp===>" & result_snp)
         Dim status_tag As String = "[ Incomplete Tag]"
         If V_check_line_reprint = "0" Then
             If result_snp = "0" Then
@@ -2594,12 +2656,14 @@ Public Class Working_Pro
                     result_snp = Label27.Text
                     status_tag = " "
                 Else
+                    'MsgBox("lb_good.Text=====>" & lb_good.Text)
                     'result_snp = CDbl(Val(Label6.Text)) Mod CDbl(Val(Label27.Text)) 'LB_COUNTER_SEQ.Text
                     result_snp = CDbl(Val(lb_good.Text)) Mod CDbl(Val(Label27.Text))
                     status_tag = "[ Incomplete Tag ]"
                 End If
             End If
         End If
+        ' MsgBox("after result_snp===>" & result_snp)
         e.Graphics.DrawString(result_snp, lb_font2.Font, Brushes.Black, 505, 25)
         e.Graphics.DrawString("PART NAME", lb_font1.Font, Brushes.Black, 152, 67)
         Dim PART_NAME As String = ""
@@ -2761,7 +2825,23 @@ Public Class Working_Pro
         Dim L_Shift As String = ""
         Dim L_flg_control As String = ""
         Dim L_item_cd As String = ""
-        Dim result_snp As Integer = CDbl(Val(GoodQty)) Mod CDbl(Val(Label27.Text))
+        Dim result_snp As Integer
+        ' Dim defectAll = CDbl(Val(lb_ng_qty.Text)) + CDbl(Val(lb_nc_qty.Text))
+        Dim sqlite = New ModelSqliteDefect
+        Dim defectAll = sqlite.mSqlieGetDataNGbyWILot(MainFrm.Label4.Text, Label18.Text, DateTimeStartofShift.Text, wi_no.Text)
+        If statusPrint = "CloseLot" Then
+            result_snp = CDbl(Val(GoodQty)) Mod CDbl(Val(Label27.Text))
+        ElseIf statusPrint = "Normal" Then ' manual
+            result_snp = CDbl(Val(GoodQty)) Mod CDbl(Val(Label27.Text))
+        ElseIf statusPrint = "Normal_contect_DIO" Or statusPrint = "Normal_NI_MAX" Or statusPrint = "Normal_DIO_RS232" Then ' auto counter qty
+            Dim rs
+            If CDbl(Val(Label10.Text)) = "0" Then ' remain of wi = 0 ให้ ลบ Defect ด้วย ถ้าำม่ลบ จะมีปัญหาตอนออก แท็ก จะไม่เอา Defect ไปลบ
+                rs = ((CDbl(Val(GoodQty))) - defectAll)
+            Else
+                rs = ((CDbl(Val(GoodQty))))
+            End If
+            result_snp = CDbl(Val(rs)) Mod CDbl(Val(Label27.Text))
+        End If
         Dim status_tag As String = "[ Incomplete Tag ]"
         If V_check_line_reprint = "0" Then
             If result_snp = "0" Then
@@ -2777,7 +2857,7 @@ Public Class Working_Pro
                     result_snp = Label27.Text
                     status_tag = " "
                 Else
-                    result_snp = CDbl(Val(GoodQty)) Mod CDbl(Val(Label27.Text)) 'LB_COUNTER_SEQ.Text 
+                    'result_snp = CDbl(Val(GoodQty)) Mod CDbl(Val(Label27.Text)) 'LB_COUNTER_SEQ.Text 
                     status_tag = "[ Incomplete Tag ]"
                 End If
             End If
@@ -2792,7 +2872,6 @@ Public Class Working_Pro
         Else
             plan_seq = Label22.Text
         End If
-
         Dim the_box_seq As String
         Dim num_box_seq As Integer
         num_box_seq = lb_box_count.Text.Length
@@ -2844,6 +2923,7 @@ Public Class Working_Pro
         Dim act_date As String
         Dim actdateConv As Date = DateTime.Now.ToString("dd/MM/yyyy")
         act_date = Format(actdateConv, "yyyyMMdd")
+        act_date = Format(actdateConv, "yyyyMMdd")
         Dim qty_num As String
         Dim num_char_qty As Integer
         num_char_qty = Len(Trim(result_snp)) 'Label27.Text.Length 'lb_qty_for_box.Text.Length
@@ -2892,6 +2972,7 @@ Public Class Working_Pro
         End Try
     End Sub
     Public Shared Function tag_print()
+        'asdfasd
         Working_Pro.keep_data_and_gen_qr_tag_fa_completed()
         If check_tag_type = "1" Then
             Working_Pro.PrintDocument1.Print()
@@ -3021,6 +3102,8 @@ Public Class Working_Pro
         End Try
     End Sub
     Public Sub manage_print()
+        Dim SQLite = New ModelSqliteDefect
+        Dim defectAll = SQLite.mSqlieGetDataNGbyWILot(MainFrm.Label4.Text, Label18.Text, DateTimeStartofShift.Text, wi_no.Text)
         Dim result_add As Integer = CDbl(Val(lb_ins_qty.Text)) + CDbl(Val(Label6.Text))
         Dim rsGood As Integer = CDbl(Val(lb_good.Text))
         Dim loop_check As Integer = result_add / CDbl(Val(Label27.Text))
@@ -3061,6 +3144,14 @@ Public Class Working_Pro
                         lb_box_count.Text = lb_box_count.Text + 1
                         GoodQty = tmp_good 'lb_good.Text 'Label6.Text
                         tag_print()
+                    Else
+                        Dim ActBywi = tmp_good + defectAll
+                        If ActBywi = Label8.Text Then ' act = plan
+                            lb_box_count.Text = lb_box_count.Text + 1
+                            Label_bach.Text += 1
+                            GoodQty = lb_good.Text
+                            tag_print()
+                        End If
                     End If
                 Else
                     If CDbl(Val(Label27.Text)) = 1 Or CDbl(Val(Label27.Text)) = 999999 Then
@@ -3078,6 +3169,7 @@ Public Class Working_Pro
         Next
     End Sub
     Public Function ins_qty_fn_manual()
+        statusPrint = "Normal"
         Dim add_value_loop As Integer = 0
         Dim result_add As Integer = CDbl(Val(lb_ins_qty.Text)) + CDbl(Val(Label6.Text))
         Dim loop_check As Integer = result_add / CDbl(Val(Label27.Text))
@@ -3272,72 +3364,49 @@ Public Class Working_Pro
         End If
         cal_eff()
     End Function
+    Async Function LOAD_OEE() As Task
+        Try
+            Console.WriteLine("READY LOAD OEE 2 ")
+            Await Task.Delay(60000).ContinueWith(Sub(task)
+                                                     'Inside the continuation, Invoke on the UI thread
+                                                     Try
+                                                         Me.Invoke(Sub()
+                                                                       Try
+                                                                           Console.WriteLine("READY LOAD OEE call ")
+                                                                           cal_eff()
+                                                                       Catch ex As Exception
+                                                                           Console.WriteLine("CATCH LOAD OEE call ")
+                                                                       End Try
+                                                                   End Sub)
+                                                     Catch ex As Exception
+                                                         Console.WriteLine("CATCH NO LOAD OEE ")
+                                                     End Try
+                                                 End Sub, TaskScheduler.FromCurrentSynchronizationContext())
+        Catch ex As Exception
+            Console.WriteLine("err cal_eff ===>" & ex.Message)
+        End Try
+    End Function
+    Public Async Function cal_eff() As Task
+        Try
+            Console.WriteLine("READY LOAD OEE cal_eff ")
+            ' Inside the continuation, invoke on the UI thread
+            Console.WriteLine("CAL OEE cal_eff")
+            ' Perform various UI operations
+            set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
+            setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+            setlvQ(Label24.Text, Label18.Text)
+            Dim Q = cal_progressbarQ(lbNG.Text, LB_COUNTER_SHIP.Text)
+            Dim A = cal_progressbarA(Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
+            setNgByHour(Label24.Text, Label18.Text)
+            Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
+            'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
+            ' WebViewProgressbar.Reload()
+            calProgressOEE(A, Q, P)
+        Catch ex As Exception
+            Console.WriteLine("err cal_eff ===>" & ex.Message)
+        End Try
+    End Function
 
-    Public Sub cal_eff()
-        set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
-        setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
-        setlvQ(Label24.Text, Label18.Text)
-        Dim Q = cal_progressbarQ(lbNG.Text, LB_COUNTER_SHIP.Text)
-        Dim A = cal_progressbarA(Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
-        setNgByHour(Label24.Text, Label18.Text)
-        Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
-        'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
-        WebViewProgressbar.Reload()
-        calProgressOEE(A, Q, P)
-        ' Dim cnt_btn As Integer = Integer.Parse(MainFrm.cavity.Text)
-        ' Dim Total As Double = 0
-        ' Dim dt11 As DateTime = DateTime.Now
-        ' Dim dt22 As DateTime = st_time.Text
-        ' Dim dtspan1 As TimeSpan = dt11 - dt22
-        ' For I = 0 To ListBox1.Items.Count - 1
-        ' Total += Val(ListBox1.Items(I))
-        ' count += 1
-        ' Next
-        ' Average = Total / count
-        ' Dim avarage_act_prd_time3 As Double = Average
-        ' Dim temppola As Double = ((dtspan1.Seconds / 60) + (dtspan1.Minutes + (dtspan1.Hours * 60)))
-        ' If temppola < 1 Then
-        ' temppola = 1
-        ' End If
-        ' Dim loss_sum As Integer
-        ' Try
-        ' If My.Computer.Network.Ping("192.168.161.101") Then
-        ' Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
-        ' While LoadSQL.Read()
-        ' loss_sum = LoadSQL("sum_loss")
-        ' End While
-        ' Else
-        ' loss_sum = 0
-        ' End If
-        ' Catch ex As Exception
-        ' End Try
-        ' Dim sum_prg2 As Long = 1
-        ' Try
-        ' sum_prg2 = (((Label38.Text * CDbl(Val(LB_COUNTER_SHIP.Text))) / ((temppola * 60) - loss_sum)) * 100)
-        ' Catch ex As Exception
-        ' sum_prg2 = 1
-        ' End Try
-        ' sum_prg2 = sum_prg2 / cnt_btn
-        ' If sum_prg2 > 100 Then
-        ' sum_prg2 = 100
-        ' ElseIf sum_prg2 < 0 Then
-        ' sum_prg2 = 0
-        ' End If
-        ' If sum_prg2 <= 49 Then
-        ' CircularProgressBar2.ProgressColor = Color.Red
-        ' CircularProgressBar2.ForeColor = Color.Black
-        ' ElseIf sum_prg2 >= 50 And sum_prg2 <= 79 Then
-        ' CircularProgressBar2.ProgressColor = Color.Chocolate
-        ' CircularProgressBar2.ForeColor = Color.Black
-        ' ElseIf sum_prg2 >= 80 And sum_prg2 <= 100 Then
-        ' CircularProgressBar2.ProgressColor = Color.Green
-        ' CircularProgressBar2.ForeColor = Color.Black
-        ' End If
-        ' Dim avarage_eff As Double = Format(sum_prg2, "0.00")
-        'lb_sum_prg.Text = avarage_eff
-        'CircularProgressBar2.Text = sum_prg2 & "%"
-        'CircularProgressBar2.Value = sum_prg2
-    End Sub
     Public Function Cal_Use_Time_ins_qty_fn_manual(date_start_data As Date, date_end As Date)
         Dim total_ins_qty As Integer = DateDiff(DateInterval.Second, date_start_data, date_end)
         lb_use_time.Text = total_ins_qty
@@ -3715,6 +3784,7 @@ Public Class Working_Pro
         Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
         Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
         Dim checkTransection As String
+        statusPrint = "Normal_NI_MAX"
         'Try
         'If My.Computer.Network.Ping("192.168.161.101") Then
         'checkTransection = Backoffice_model.checkTransection(pwi_id, CDbl(Val(Label6.Text)) + Integer.Parse(MainFrm.cavity.Text), start_time2)
@@ -3727,7 +3797,9 @@ Public Class Working_Pro
         ' If checkTransection = "1" Then
         If comp_flg = 0 Then
             'Dim result_mod As Double = Integer.Parse(_Edit_Up_0.Text) Mod Integer.Parse(Label27.Text)
+            'MsgBox("Act + action_plus===>" & (Act + action_plus))
             Dim result_mod As Double = Integer.Parse(Act + action_plus) Mod Integer.Parse(Label27.Text) 'Integer.Parse(_Edit_Up_0.Text) Mod Integer.Parse(Label27.Text)
+            ' MsgBox("result_mod===>" & result_mod)
             lb_qty_for_box.Text = lb_qty_for_box.Text + cnt_btn
             Dim textp_result As Integer = Label10.Text
             textp_result = Math.Abs(textp_result) - 1
@@ -3748,16 +3820,17 @@ Public Class Working_Pro
                 If result_mod = "0" Then
                     Label_bach.Text += 1
                     GoodQty = Label6.Text
-                    'MsgBox("IF result_mod ====>" & GoodQty)
+                    '  MsgBox("IF result_mod ====>" & GoodQty)
                     tag_print()
                 End If
             Else
                 If result_mod = 0 And textp_result <> 0 Then
                     If V_check_line_reprint = "0" Then
                         lb_box_count.Text = lb_box_count.Text + 1
-                        Label_bach.Text = Label_bach.Text + 1
-                        GoodQty = Label6.Text
-                        'MsgBox("IF IF result_mod ====>" & GoodQty)
+                        'Label_bach.Text = Label_bach.Text + 1
+                        'GoodQty = Label6.Text
+                        GoodQty = lb_good.Text
+                        'MsgBox("IF IF result_mod  GoodQty ====>" & GoodQty)
                         tag_print()
                     Else
                         If CDbl(Val(Label27.Text)) = 1 Or CDbl(Val(Label27.Text)) = 999999 Then
@@ -3765,7 +3838,7 @@ Public Class Working_Pro
                             lb_box_count.Text = lb_box_count.Text + 1
                             Label_bach.Text = Label_bach.Text + 1
                             GoodQty = Label6.Text
-                            'MsgBox("IF IF result_mod ====>" & GoodQty)
+                            '  MsgBox("IF IF result_mod ====>" & GoodQty)
                             tag_print()
                         End If
                     End If
@@ -3940,7 +4013,6 @@ Public Class Working_Pro
                 'End If
                 Finish_work.Show() ' เกี่ยว
             End If
-            'MsgBox(sum_diff)
             If sum_diff < 1 Then
                 If sum_diff = 0 Then
                     If check_format_tag = "1" Then ' for tag_type = '2' and tag_issue_flg = '2'  OR K1M183
@@ -3965,7 +4037,8 @@ Public Class Working_Pro
                 End If
                 Me.Enabled = False
                 comp_flg = 1
-                Finish_work.Show() ' เกี่ยว
+                ' MsgBox("IN NAJA")
+                ' Finish_work.Show() ' เกี่ยว
                 Dim plan_qty As Integer = Label8.Text
                 Dim shift_prd As String = Label14.Text
                 Dim prd_st_datetime As Date = st_time.Text
@@ -4174,19 +4247,15 @@ Public Class Working_Pro
 
         End Try
     End Sub
-
     Private Sub PictureBox8_Click(sender As Object, e As EventArgs) Handles PictureBox8.Click
 
     End Sub
-
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
 
     End Sub
-
     Private Sub lb_ref_scan_Click(sender As Object, e As EventArgs) Handles lb_ref_scan.Click
 
     End Sub
-
     Private Sub CircularProgressBar2_Click(sender As Object, e As EventArgs) Handles CircularProgressBar2.Click
 
     End Sub
@@ -4200,7 +4269,6 @@ Public Class Working_Pro
         Dim work = New Show_Worker
         work.Show()
     End Sub
-
     Public Shared Function CheckOs()
         Dim arr_os = My.Computer.Info.OSFullName.Split(" ")
         If arr_os(2).ToString = "7" Then
@@ -4225,13 +4293,12 @@ Public Class Working_Pro
     End Sub
     Private Sub TIME_CAL_EFF_Tick(sender As Object, e As EventArgs) Handles TIME_CAL_EFF.Tick
         'If check_cal_eff = 1000 Then
-        cal_eff()
-            check_cal_eff = 1
+        'cal_eff()
+        'งcheck_cal_eff = 1ๅ
         'Else
         'check_cal_eff = check_cal_eff + 1
         'End If
     End Sub
-
     Private Sub Button4_Click(sender As Object, e As EventArgs)
         Main()
     End Sub
@@ -4299,7 +4366,6 @@ Public Class Working_Pro
         '    SerialPortLamp.Open()
         '    SerialPortLamp.WriteLine(9999)
         '    Console.ReadLine()
-        '
         'If SerialPortLamp.IsOpen() Then
         'SerialPortLamp.Close()
         'End If
@@ -4316,22 +4382,15 @@ Public Class Working_Pro
         Working_OEE.Show()
     End Sub
     Private Sub PictureBox11_Click(sender As Object, e As EventArgs) Handles redBox.Click
-
     End Sub
-
     Private Sub lvA_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvA.SelectedIndexChanged
-
     End Sub
-
     Private Sub btn_desc_act_Click_1(sender As Object, e As EventArgs)
-
     End Sub
-
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
         Start_Production()
     End Sub
-
     Private Sub Button4_Click_1(sender As Object, e As EventArgs)
-        WebViewProgressbar.Reload()
+        ' WebViewProgressbar.Reload()
     End Sub
 End Class

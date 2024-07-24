@@ -17,6 +17,7 @@ Public Class ModelSqliteDefect
     End Function
     Public Shared Function mSqliteGetDataQuality(line_cd As String, lot_no As String, startTimeFrith As String)
         Dim api As New api
+        Console.WriteLine("startTimeFrith ===>" & startTimeFrith)
         Try
             Dim Sql = "Select dt_code , sum(dt_qty) AS TotalQ,
                         (SELECT SUM(dt_qty)
@@ -31,6 +32,33 @@ Public Class ModelSqliteDefect
             Return jsonData
         Catch ex As Exception
             MsgBox("Error Files ModelSqliteDefect In Function mSqliteGetDataQuality")
+        End Try
+    End Function
+    Public Shared Function mSqlieGetDataNGbyWILot(line_cd As String, lot_no As String, startFrist As String, wi As String)
+        Dim api As New api
+        Dim dt As DateTime = DateTime.Now
+        Dim dateTimeCurr = dt.ToString("yyyy-MM-dd HH") & ":00:00"
+        Dim dateTimeEND = dt.ToString("yyyy-MM-dd HH") & ":59:59"
+        Try
+            Dim Sql = "SELECT IFNULL(SUM(dt_qty), 0) AS total_qty
+                        FROM defect_transactions
+                        WHERE dt_wi_no = '" & wi & "' 
+                          AND dt_lot_no = '" & lot_no & "' 
+                          AND dt_created_date >= '" & startFrist & "' 
+                          AND dt_item_type = '1' 
+                          AND dt_type  = '1';"
+            Console.WriteLine(Sql)
+            Dim jsonData As String = api.Load_dataSQLite(Sql)
+            If jsonData <> "0" Then
+                Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(jsonData)
+                For Each items As Object In dcResultdata
+                    Return items("total_qty").ToString
+                Next
+            Else
+                Return "0"
+            End If
+        Catch ex As Exception
+            MsgBox("Error Files ModelSqliteDefect In Function mSqlieGetDataNGbyWILot")
         End Try
     End Function
     Public Shared Function mSqliteGetDataNG_BYHOUR(line_cd As String, lot_no As String)
@@ -364,7 +392,8 @@ Public Class ModelSqliteDefect
         Backoffice_model.Check_connect_sqlite()
         Backoffice_model.Clear_sqlite()
         Try
-            Dim created_date = DateTime.Now.ToString("yyyy-MM-dd H:m:s")
+            ' Dim created_date = DateTime.Now.ToString("yyyy-MM-dd H:m:s")
+            Dim created_date = Now.ToString("yyyy-MM-dd HH:mm:ss")
             sqliteConn.Open()
             Dim sva_ip_address As String = ""
             Dim cmd As New SQLiteCommand

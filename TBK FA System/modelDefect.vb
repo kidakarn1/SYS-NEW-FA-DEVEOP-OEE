@@ -31,7 +31,6 @@ Public Class modelDefect
             Return 0
         End Try
     End Function
-
     Public Shared Function mGetPwi_id(WI As String, LOT_NO As String, SEQ_NO As String, SHIFT As String)
         Try
             Dim api = New api()
@@ -257,7 +256,6 @@ Public Class modelDefect
             Return False
         End Try
     End Function
-
     Public Shared Function mUpdateaddjust(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, ItemType As String, PartNo As String)
         Try
             ' MsgBox("dtWino = " & dtWino)

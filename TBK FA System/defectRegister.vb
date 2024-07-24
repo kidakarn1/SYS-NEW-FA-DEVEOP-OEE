@@ -1,4 +1,6 @@
-﻿Public Class defectRegister
+﻿Imports System.Web.Script.Serialization
+
+Public Class defectRegister
     Shared Type As Integer = 0
     Shared dSelectcode As New defectSelectcode()
     Shared dSelecttype As New defectSelecttype()
@@ -130,10 +132,32 @@
                 Working_Pro.lb_nc_qty.Text = dataQty
             End If
             Dim dfAll = CDbl(Val(Working_Pro.lb_ng_qty.Text)) + CDbl(Val(Working_Pro.lb_nc_qty.Text))
+            Working_Pro.set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text)
+            Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+            Working_Pro.setlvQ(Working_Pro.Label24.Text, Working_Pro.Label18.Text)
+            Dim Q = Working_Pro.cal_progressbarQ(Working_Pro.lbNG.Text, Working_Pro.LB_COUNTER_SHIP.Text)
+            Dim A = Working_Pro.cal_progressbarA(Working_Pro.Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
+            Working_Pro.setNgByHour(Working_Pro.Label24.Text, Working_Pro.Label18.Text)
+            Dim P = Working_Pro.setgetSpeedLoss(Working_Pro.lbNG.Text, Working_Pro.lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text, Working_Pro.Label24.Text)
+            'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
+            ' WebViewProgressbar.Reload()
+            Working_Pro.calProgressOEE(A, Q, P)
             Working_Pro.cal_eff()
+            Dim SQLite = New ModelSqliteDefect
             Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) - CDbl(Val(tbQtydefectnc.Text))
             Working_Pro.Enabled = True
             Working_Pro.ResetRed()
+            Dim rslvQ = SQLite.mSqliteGetDataQuality(dtLineno, dtLotno, Working_Pro.DateTimeStartofShift.Text)
+            If rslvQ <> "0" Then
+                Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvQ)
+                Try
+                    For Each item As Object In dict3
+                        Working_Pro.lbNG.Text = item("AllDefect").ToString()
+                    Next
+                Catch ex As Exception
+
+                End Try
+            End If
             Me.Close()
         End If
     End Sub
@@ -163,6 +187,18 @@
             Working_Pro.Enabled = True
             Working_Pro.cal_eff()
             Working_Pro.ResetRed()
+            Dim SQLite = New ModelSqliteDefect
+            Dim rslvQ = SQLite.mSqliteGetDataQuality(dtLineno, dtLotno, Working_Pro.DateTimeStartofShift.Text)
+            If rslvQ <> "0" Then
+                Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvQ)
+                Try
+                    For Each item As Object In dict3
+                        Working_Pro.lbNG.Text = item("AllDefect").ToString()
+                    Next
+                Catch ex As Exception
+
+                End Try
+            End If
             Me.Close()
         End If
     End Sub

@@ -12,7 +12,7 @@ Public Class Prd_detail
     'Dim part4Color As Color = Color.FromArgb(44, 80, 131)
     'Dim part5Color As Color = Color.FromArgb(44, 78, 131)
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        set_shift()
+        'set_shift()
         'Label2.Text = TimeOfDay.ToString("H:mm:ss")
         'Label1.Text = DateTime.Now.ToString("yyyy/MM/dd")
     End Sub
@@ -64,9 +64,9 @@ Public Class Prd_detail
         Label2.Text = i
         QTY_NG.Visible = False
         QTY_NC.Visible = False
-        Timer1.Start()
+        ' Timer1.Start()
         Timer2.Start()
-        Timer3.Enabled = True
+        'Timer3.Enabled = True
         'sc_wi_plan.SerialPort1.Close()
         'If sc_wi_plan.SerialPort1.IsOpen Then sc_wi_plan.SerialPort1.Close()
     End Sub
@@ -441,6 +441,9 @@ Public Class Prd_detail
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub picSpecial_Click(sender As Object, e As EventArgs) Handles picSpecial.Click
 
     End Sub
 End Class

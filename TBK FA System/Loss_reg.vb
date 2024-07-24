@@ -241,6 +241,8 @@ Public Class Loss_reg
                 End Try
                 Working_Pro.ResetRed()
                 Working_Pro.Enabled = True
+                Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+                Dim A = Working_Pro.cal_progressbarA(Working_Pro.Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
                 Me.Close()
             Else
                 load_show.Show()
@@ -285,10 +287,19 @@ Public Class Loss_reg
 
     Private Sub Loss_reg_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Start()
+        GetDefectMenuMaintenance()
         date_time_commit_data.Visible = False
         test_time_loss_time.Visible = False
         Label2.Text = MainFrm.Label4.Text
         Working_Pro.TowerLamp(6, 9800)
+    End Sub
+    Public Sub GetDefectMenuMaintenance()
+        statusDefect = Backoffice_model.GetDefectMenuMaintenance(MainFrm.Label4.Text)
+        If statusDefect = "0" Then
+            Button4.Enabled = False
+        Else
+            Button4.Enabled = True
+        End If
     End Sub
 
     Private Sub Label6_Click(sender As Object, e As EventArgs)

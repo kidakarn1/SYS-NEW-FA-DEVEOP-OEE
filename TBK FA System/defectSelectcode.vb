@@ -20,7 +20,7 @@ Friend Class defectSelectcode
         If dfHome.dtType = "NC" Then
             lvDefectcode.BackColor = Color.Peru
         ElseIf dfHome.dtType = "NG" Then
-            lvDefectcode.BackColor = Color.Tomato
+            'lvDefectcode.BackColor = Color.Tomato
         End If
         If MainFrm.chk_spec_line = "2" Then
             If dSelecttype.type = "1" Then
@@ -139,44 +139,47 @@ Friend Class defectSelectcode
                 Me.sDefectcode = lvDefectcode.Items(lvItem.Index).SubItems(0).Text
                 Me.sDefectdetail = lvDefectcode.Items(lvItem.Index).SubItems(1).Text
             Next
-            '   If dSelecttype.type = "2" Then
-            '   Dim rss = checkDefectCodeSupplier(Me.sDefectcode)
-            '   If rss = "1" Then
-            '   Dim rs = OEE.OEE_EXP_CHECK_SUPP(defectSelectcode.sPart)
-            '   If rs <> "0" Then
-            '   Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rs)
-            '   If CDbl(Val(dcResultdata(0)("OUTSIDE_TYP").ToString())) = 2 Then
-            '   Dim dfSupplier = New defectSelectSupplier
-            '   dfSupplier.show()
-            '   Me.Hide()
-            '   Else
-            '   Dim dfRegister = New defectRegister
-            '   dfRegister.swi = swi
-            ''   dfRegister.SeqSpc = sSeqSpc
-            '  dfRegister.PwiSpc = sPwiSpc
-            '  dfRegister.mainCP = mainCp
-            '  dfRegister.Show()
-            '  Me.Hide()
-            '  End If
-            '  End If
-            '  Else
-            '  Dim dfRegister = New defectRegister
-            '  dfRegister.swi = swi
-            '  dfRegister.SeqSpc = sSeqSpc
-            '  dfRegister.PwiSpc = sPwiSpc
-            '  dfRegister.mainCP = mainCp
-            '  dfRegister.Show()
-            '  Me.Hide()
-            '  End If
-            '  Else
-            Dim dfRegister = New defectRegister
-            dfRegister.swi = swi
-            dfRegister.SeqSpc = sSeqSpc
-            dfRegister.PwiSpc = sPwiSpc
-            dfRegister.mainCP = mainCp
-            dfRegister.Show()
-            Me.Hide()
-            '  End If
+            If dSelecttype.type = "2" Then
+                Dim rss = checkDefectCodeSupplier(Me.sDefectcode)
+                If rss = "1" Then
+                    Dim rs = OEE.OEE_EXP_CHECK_SUPP(defectSelectcode.sPart)
+                    If rs <> "0" Then
+                        Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rs)
+                        If CDbl(Val(dcResultdata(0)("OUTSIDE_TYP").ToString())) = 2 Then
+                            Dim dfSupplier = New defectSelectSupplier
+                            dfSupplier.show()
+                            Me.Hide()
+                        Else
+                            Dim dfRegister = New defectRegister
+                            dfRegister.swi = swi
+                            dfRegister.source_cd_supplier = ""
+                            dfRegister.SeqSpc = sSeqSpc
+                            dfRegister.PwiSpc = sPwiSpc
+                            dfRegister.mainCP = mainCp
+                            dfRegister.Show()
+                            Me.Hide()
+                        End If
+                    End If
+                Else
+                    Dim dfRegister = New defectRegister
+                    dfRegister.swi = swi
+                    dfRegister.SeqSpc = sSeqSpc
+                    dfRegister.PwiSpc = sPwiSpc
+                    dfRegister.mainCP = mainCp
+                    dfRegister.source_cd_supplier = ""
+                    dfRegister.Show()
+                    Me.Hide()
+                End If
+            Else
+                Dim dfRegister = New defectRegister
+                dfRegister.swi = swi
+                dfRegister.SeqSpc = sSeqSpc
+                dfRegister.PwiSpc = sPwiSpc
+                dfRegister.mainCP = mainCp
+                dfRegister.source_cd_supplier = ""
+                dfRegister.Show()
+                Me.Hide()
+            End If
         Catch ex As Exception
             '
         End Try

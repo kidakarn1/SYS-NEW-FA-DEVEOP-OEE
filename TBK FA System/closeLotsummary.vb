@@ -89,6 +89,7 @@ Public Class closeLotsummary
         Try
             If My.Computer.Network.Ping("192.168.161.101") Then
                 aDefectcode.Clear()
+                aDefectQty.Clear()
                 Dim md As New modelDefect()
                 Dim mdSqlite As New ModelSqliteDefect
                 '  rs = md.mGetdatachildpartsummarychild(wi, seq, lot)
@@ -114,7 +115,7 @@ Public Class closeLotsummary
                         datlvDefectsumary.SubItems.Add(item("defect_name").ToString())
                         datlvDefectsumary.SubItems.Add(item("total_nc").ToString())
                         aDefectcode.Add(item("dt_code").ToString())
-                        aDefectcode.Add(item("total_nc").ToString())
+                        aDefectQty.Add(item("total_nc").ToString()) ' ที่ทำการ ปรับเปลี่ยน ตอนแรกเป็น aDefectcode
                         lvSumarychild.Items.Add(datlvDefectsumary)
                         i += 1
                         cBuottndown += 1
@@ -369,7 +370,13 @@ Public Class closeLotsummary
                 load_show.Show()
             End If
         Catch ex As Exception
-            load_show.Show()
+            Working_Pro.Close()
+            Prd_detail.Close()
+            MainFrm.Enabled = True
+            MainFrm.Show()
+            Me.Close() ' add on 
+            '  MsgBox("In Catch Function btnok In CloseLotSummary =>" & ex.Message)
+            ' load_show.Show()
         End Try
     End Sub
     Public Sub checkPrintdefect(wi As String, seq As String, lot As String)
@@ -501,6 +508,7 @@ Public Class closeLotsummary
         'End If
         'End If
         '  Else
+        Working_Pro.statusPrint = "CloseLot"
         If Backoffice_model.check_line_reprint() = "1" Then
             If result_total = "0" Then
                 result_total = "1"
@@ -509,16 +517,17 @@ Public Class closeLotsummary
         If Integer.Parse(lbGood.Text) > 0 And result_mod > 0 And CDbl(Val(Working_Pro.Label10.Text)) < 0 Then
             Working_Pro.lb_box_count.Text = Working_Pro.lb_box_count.Text + 1
             Working_Pro.Label_bach.Text = Working_Pro.Label_bach.Text + 1
-            Dim cupprint
+            Dim cupprint = 0
             Dim rs = (CDbl(Val(lbNc.Text)) + (CDbl(Val(lbNg.Text))))
-            If rs <= Working_Pro.Label27.Text Then
-                cupprint = 1
-            Else
-                '      MsgBox("rs ===>" & rs)
-                '       MsgBox("CDbl(Val(Working_Pro.Label27.Text)) ===>" & CDbl(Val(Working_Pro.Label27.Text)))
-                cupprint = rs / CDbl(Val(Working_Pro.Label27.Text))
+            If rs > 0 Then
+                If rs <= Working_Pro.Label27.Text Then
+                    cupprint = 1
+                Else
+                    '      MsgBox("rs ===>" & rs)
+                    '       MsgBox("CDbl(Val(Working_Pro.Label27.Text)) ===>" & CDbl(Val(Working_Pro.Label27.Text)))
+                    cupprint = rs / CDbl(Val(Working_Pro.Label27.Text))
+                End If
             End If
-            '    MsgBox("cupprint===>" & cupprint)
             If MainFrm.chk_spec_line = "2" Then
                 If result_mod <> 0 Then
                     Working_Pro.GoodQty = lbGood.Text
@@ -529,7 +538,6 @@ Public Class closeLotsummary
                     For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
                         'special
                         Iseq += 1
-
                         Backoffice_model.update_tagprintforDefect(itemPlanData.wi, "2", "1", Working_Pro.Spwi_id(j), (CDbl(Val(Working_Pro.lb_box_count.Text)) - 1), Working_Pro.GoodQty, Math.Ceiling(cupprint))
                         j += 1
                     Next
@@ -537,7 +545,8 @@ Public Class closeLotsummary
             Else
                 Working_Pro.GoodQty = Working_Pro.lb_good.Text
                 Working_Pro.tag_print()
-                Backoffice_model.update_tagprintforDefect(sWi, "2", "1", Working_Pro.pwi_id, (CDbl(Val(Working_Pro.lb_box_count.Text)) - 1), Working_Pro.GoodQty, Math.Ceiling(cupprint))
+                'MsgBox(Math.Ceiling(cupprint))
+                'Backoffice_model.update_tagprintforDefect(sWi, "2", "1", Working_Pro.pwi_id, (CDbl(Val(Working_Pro.lb_box_count.Text)) - 1), Working_Pro.GoodQty, Math.Ceiling(cupprint))
             End If
             ' Working_Pro.Label_bach.Text = Working_Pro.Label_bach.Text + 1
         End If
@@ -621,12 +630,21 @@ Public Class closeLotsummary
         Dim mdSQLite = New ModelSqliteDefect
         Dim cFlg As Integer = comPleteflg(sAct, pQty)
         Dim lastId = md.mInsertdefectactual(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, "1", dtActualdate, pwi_id)
-        Dim getData = mdSQLite.mSqliteGetdefectdetail(dtWino, dtSeqno, dtLotno, dtType, dtItemcd, dtCode)
-        If getData <> "0" Then
-            Dim rsData2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(getData)
-            For Each item As Object In rsData2
-                Dim insData = md.minsertDefectTrascetionSupplier(lastId, item("dt_supplier_code").ToString(), item("total_nc").ToString(), dtLineno)
-            Next
+        If dtItemtype = "2" Then
+            Try
+                Dim getData = mdSQLite.mSqliteGetdefectdetail(dtWino, dtSeqno, dtLotno, dtType, dtItemcd, dtCode)
+                If getData <> "0" Then
+                    Dim rsData2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(getData)
+                    For Each item As Object In rsData2
+                        If item("dt_supplier_code").ToString() = "" Then
+                        Else
+                            Dim insData = md.minsertDefectTrascetionSupplier(lastId, item("dt_supplier_code").ToString(), item("total_nc").ToString(), dtLineno)
+                        End If
+                    Next
+                End If
+            Catch ex As Exception
+
+            End Try
         End If
     End Sub
     Public Function comPleteflg(Act As Integer, Plan As Integer)
@@ -638,7 +656,6 @@ Public Class closeLotsummary
         End If
         Return cFlg
     End Function
-
     Private Sub Label4_Click(sender As Object, e As EventArgs)
 
     End Sub

@@ -69,7 +69,7 @@
     <OptionInfer>Off</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>fa_logo.ico</ApplicationIcon>
+    <ApplicationIcon>ICO_NEW_FA.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -90,7 +90,7 @@
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
@@ -634,13 +634,24 @@
     <Compile Include="Finish_work.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="loadData.Designer.vb">
+      <DependentUpon>loadData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="loadData.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="loadingFA.Designer.vb">
       <DependentUpon>loadingFA.vb</DependentUpon>
     </Compile>
     <Compile Include="loadingFA.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="loadingFrom.Designer.vb">
+      <DependentUpon>loadingFrom.vb</DependentUpon>
+    </Compile>
+    <Compile Include="loadingFrom.vb" />
     <Compile Include="ModelSqliteDefect.vb" />
+    <Compile Include="OEE_NODE.vb" />
     <Compile Include="ProgressBar_Form.Designer.vb">
       <DependentUpon>ProgressBar_Form.vb</DependentUpon>
     </Compile>
@@ -1203,8 +1214,14 @@
     <EmbeddedResource Include="Finish_work.resx">
       <DependentUpon>Finish_work.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="loadData.resx">
+      <DependentUpon>loadData.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="loadingFA.resx">
       <DependentUpon>loadingFA.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="loadingFrom.resx">
+      <DependentUpon>loadingFrom.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressBar_Form.resx">
       <DependentUpon>ProgressBar_Form.vb</DependentUpon>
@@ -1274,6 +1291,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainFA.resx">
       <DependentUpon>MainFA.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrm.resx">
       <DependentUpon>MainFrm.vb</DependentUpon>
@@ -1388,6 +1406,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Working_OEE.resx">
       <DependentUpon>Working_OEE.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Working_Pro.resx">
       <DependentUpon>Working_Pro.vb</DependentUpon>
@@ -1411,6 +1430,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fa_logo.ico" />
+    <Content Include="ICO_NEW_FA.ico" />
+    <None Include="Resources\defectNumpadadjusttNew23.png" />
+    <None Include="Resources\closeLotsummaryNew23.png" />
+    <None Include="Resources\defectNumpadadjustNew23.png" />
+    <None Include="Resources\defectSelectcodeNew23.png" />
+    <None Include="Resources\defectHomeNew231.png" />
+    <None Include="Resources\defectHomeNew23.png" />
+    <None Include="Resources\eadb74787dda41cc6333341e552934322.gif" />
+    <None Include="Resources\eadb74787dda41cc6333341e552934321.gif" />
     <None Include="Resources\startingProd1.png" />
     <None Include="Resources\btnInfoNew.png" />
     <None Include="Resources\btnSetUpNewnew.png" />

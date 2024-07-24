@@ -23,85 +23,54 @@ Partial Class defectHome
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(defectHome))
-        Me.btn_back = New System.Windows.Forms.PictureBox()
-        Me.btnAdjustnc = New System.Windows.Forms.PictureBox()
-        Me.btnRegisternc = New System.Windows.Forms.PictureBox()
-        Me.btnRegisterng = New System.Windows.Forms.PictureBox()
-        Me.btnAdjustng = New System.Windows.Forms.PictureBox()
-        CType(Me.btn_back, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btnAdjustnc, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btnRegisternc, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btnRegisterng, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btnAdjustng, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.PictureBox3 = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'btn_back
+        'PictureBox1
         '
-        Me.btn_back.BackColor = System.Drawing.Color.Transparent
-        Me.btn_back.Location = New System.Drawing.Point(12, 503)
-        Me.btn_back.Name = "btn_back"
-        Me.btn_back.Size = New System.Drawing.Size(198, 98)
-        Me.btn_back.TabIndex = 4565
-        Me.btn_back.TabStop = False
+        Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 513)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(201, 75)
+        Me.PictureBox1.TabIndex = 0
+        Me.PictureBox1.TabStop = False
         '
-        'btnAdjustnc
+        'PictureBox2
         '
-        Me.btnAdjustnc.BackColor = System.Drawing.Color.Transparent
-        Me.btnAdjustnc.Location = New System.Drawing.Point(468, 200)
-        Me.btnAdjustnc.Name = "btnAdjustnc"
-        Me.btnAdjustnc.Size = New System.Drawing.Size(242, 126)
-        Me.btnAdjustnc.TabIndex = 4566
-        Me.btnAdjustnc.TabStop = False
+        Me.PictureBox2.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox2.Location = New System.Drawing.Point(69, 206)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(287, 281)
+        Me.PictureBox2.TabIndex = 1
+        Me.PictureBox2.TabStop = False
         '
-        'btnRegisternc
+        'PictureBox3
         '
-        Me.btnRegisternc.BackColor = System.Drawing.Color.Transparent
-        Me.btnRegisternc.Location = New System.Drawing.Point(88, 189)
-        Me.btnRegisternc.Name = "btnRegisternc"
-        Me.btnRegisternc.Size = New System.Drawing.Size(259, 149)
-        Me.btnRegisternc.TabIndex = 4567
-        Me.btnRegisternc.TabStop = False
-        '
-        'btnRegisterng
-        '
-        Me.btnRegisterng.BackColor = System.Drawing.Color.Transparent
-        Me.btnRegisterng.Location = New System.Drawing.Point(88, 344)
-        Me.btnRegisterng.Name = "btnRegisterng"
-        Me.btnRegisterng.Size = New System.Drawing.Size(259, 153)
-        Me.btnRegisterng.TabIndex = 4568
-        Me.btnRegisterng.TabStop = False
-        '
-        'btnAdjustng
-        '
-        Me.btnAdjustng.BackColor = System.Drawing.Color.Transparent
-        Me.btnAdjustng.Location = New System.Drawing.Point(468, 344)
-        Me.btnAdjustng.Name = "btnAdjustng"
-        Me.btnAdjustng.Size = New System.Drawing.Size(251, 137)
-        Me.btnAdjustng.TabIndex = 4569
-        Me.btnAdjustng.TabStop = False
+        Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
+        Me.PictureBox3.Location = New System.Drawing.Point(436, 206)
+        Me.PictureBox3.Name = "PictureBox3"
+        Me.PictureBox3.Size = New System.Drawing.Size(290, 281)
+        Me.PictureBox3.TabIndex = 2
+        Me.PictureBox3.TabStop = False
         '
         'defectHome
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.CadetBlue
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(800, 600)
-        Me.ControlBox = False
-        Me.Controls.Add(Me.btnAdjustng)
-        Me.Controls.Add(Me.btnRegisterng)
-        Me.Controls.Add(Me.btnRegisternc)
-        Me.Controls.Add(Me.btnAdjustnc)
-        Me.Controls.Add(Me.btn_back)
+        Me.Controls.Add(Me.PictureBox3)
+        Me.Controls.Add(Me.PictureBox2)
+        Me.Controls.Add(Me.PictureBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "defectHome"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "g"
-        CType(Me.btn_back, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btnAdjustnc, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btnRegisternc, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btnRegisterng, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btnAdjustng, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -111,4 +80,7 @@ Partial Class defectHome
 	Friend WithEvents btnRegisternc As PictureBox
 	Friend WithEvents btnRegisterng As PictureBox
 	Friend WithEvents btnAdjustng As PictureBox
+    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents PictureBox3 As PictureBox
 End Class

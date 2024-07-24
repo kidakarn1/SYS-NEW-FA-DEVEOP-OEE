@@ -108,7 +108,6 @@
             sPart = dfDetailsng.dtItemcd '"J107-11820-RM" 'pd.pFg
             dtWino = objDefectdetailng.dtWino
             source_code_supplier = objDefectdetailng.source_code_supplier
-            MsgBox("NG source_code_supplier ===>" & source_code_supplier)
             If MainFrm.chk_spec_line = "2" Then
                 dtLineno = MainFrm.Label4.Text
             Else

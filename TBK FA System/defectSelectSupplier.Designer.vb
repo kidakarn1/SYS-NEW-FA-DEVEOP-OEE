@@ -43,21 +43,20 @@ Partial Class defectSelectSupplier
         Me.lvDefectact.AllowColumnReorder = True
         Me.lvDefectact.AllowDrop = True
         Me.lvDefectact.AutoArrange = False
-        Me.lvDefectact.BackColor = System.Drawing.Color.FromArgb(CType(CType(7, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(35, Byte), Integer))
+        Me.lvDefectact.BackColor = System.Drawing.Color.White
         Me.lvDefectact.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.lvDefectact.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.Supcd, Me.Supcode, Me.supname})
         Me.lvDefectact.Cursor = System.Windows.Forms.Cursors.Default
-        Me.lvDefectact.Font = New System.Drawing.Font("Microsoft Sans Serif", 18.0!, System.Drawing.FontStyle.Bold)
-        Me.lvDefectact.ForeColor = System.Drawing.Color.White
+        Me.lvDefectact.Font = New System.Drawing.Font("Panton-Trial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvDefectact.ForeColor = System.Drawing.Color.Black
         Me.lvDefectact.FullRowSelect = True
-        Me.lvDefectact.GridLines = True
         Me.lvDefectact.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.lvDefectact.HideSelection = False
-        Me.lvDefectact.Location = New System.Drawing.Point(42, 146)
+        Me.lvDefectact.Location = New System.Drawing.Point(38, 162)
         Me.lvDefectact.MultiSelect = False
         Me.lvDefectact.Name = "lvDefectact"
         Me.lvDefectact.ShowGroups = False
-        Me.lvDefectact.Size = New System.Drawing.Size(642, 346)
+        Me.lvDefectact.Size = New System.Drawing.Size(631, 339)
         Me.lvDefectact.TabIndex = 57
         Me.lvDefectact.UseCompatibleStateImageBehavior = False
         Me.lvDefectact.View = System.Windows.Forms.View.Details
@@ -69,7 +68,7 @@ Partial Class defectSelectSupplier
         'Supcode
         '
         Me.Supcode.Text = "PART NO"
-        Me.Supcode.Width = 290
+        Me.Supcode.Width = 281
         '
         'supname
         '
@@ -78,36 +77,36 @@ Partial Class defectSelectSupplier
         'PictureBox1
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox1.Location = New System.Drawing.Point(13, 509)
+        Me.PictureBox1.Location = New System.Drawing.Point(19, 513)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(107, 80)
+        Me.PictureBox1.Size = New System.Drawing.Size(205, 80)
         Me.PictureBox1.TabIndex = 61
         Me.PictureBox1.TabStop = False
         '
         'PictureBox2
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox2.Location = New System.Drawing.Point(685, 503)
+        Me.PictureBox2.Location = New System.Drawing.Point(586, 516)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(107, 85)
+        Me.PictureBox2.Size = New System.Drawing.Size(200, 75)
         Me.PictureBox2.TabIndex = 62
         Me.PictureBox2.TabStop = False
         '
         'btnUp
         '
         Me.btnUp.BackColor = System.Drawing.Color.Transparent
-        Me.btnUp.Location = New System.Drawing.Point(688, 137)
+        Me.btnUp.Location = New System.Drawing.Point(681, 154)
         Me.btnUp.Name = "btnUp"
-        Me.btnUp.Size = New System.Drawing.Size(107, 112)
+        Me.btnUp.Size = New System.Drawing.Size(98, 153)
         Me.btnUp.TabIndex = 63
         Me.btnUp.TabStop = False
         '
         'btnDown
         '
         Me.btnDown.BackColor = System.Drawing.Color.Transparent
-        Me.btnDown.Location = New System.Drawing.Point(688, 386)
+        Me.btnDown.Location = New System.Drawing.Point(683, 364)
         Me.btnDown.Name = "btnDown"
-        Me.btnDown.Size = New System.Drawing.Size(107, 112)
+        Me.btnDown.Size = New System.Drawing.Size(96, 142)
         Me.btnDown.TabIndex = 64
         Me.btnDown.TabStop = False
         '
@@ -125,6 +124,7 @@ Partial Class defectSelectSupplier
         Me.Controls.Add(Me.lvDefectact)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "defectSelectSupplier"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "defectSelectSupplier"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()

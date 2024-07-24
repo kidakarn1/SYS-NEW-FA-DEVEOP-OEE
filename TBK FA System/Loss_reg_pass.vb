@@ -35,7 +35,6 @@ Public Class Loss_reg_pass
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim line_id As String = MainFrm.line_id.Text
-
         Try
             If My.Computer.Network.Ping("192.168.161.101") Then
                 Try
@@ -177,6 +176,8 @@ Public Class Loss_reg_pass
                 End Try
                 Working_Pro.ResetRed()
                 Working_Pro.Enabled = True
+                Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+                Dim A = Working_Pro.cal_progressbarA(Working_Pro.Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
                 Me.Close()
             Else
                 load_show.Show()

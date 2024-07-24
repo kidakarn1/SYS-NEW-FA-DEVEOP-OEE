@@ -130,4 +130,8 @@ Public Class defectNumpadregister
         Dim maxQty = actTotal - (ncTotal + ngTotal)
         Return maxQty
     End Function
+
+    Private Sub lbMaxqty_Click(sender As Object, e As EventArgs) Handles lbMaxqty.Click
+
+    End Sub
 End Class

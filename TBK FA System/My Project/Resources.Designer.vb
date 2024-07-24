@@ -643,6 +643,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property closeLotsummaryNew23() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("closeLotsummaryNew23", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property configLine() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("configLine", resourceCulture)
@@ -1033,9 +1043,49 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property defectHomeNew23() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defectHomeNew23", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property defectHomeNew231() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defectHomeNew231", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property defectNumpadadjust() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("defectNumpadadjust", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property defectNumpadadjustNew23() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defectNumpadadjustNew23", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property defectNumpadadjusttNew23() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defectNumpadadjusttNew23", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -1093,6 +1143,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property defectSelectcodeNew23() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defectSelectcodeNew23", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property defectSelecttype() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("defectSelecttype", resourceCulture)
@@ -1126,6 +1186,26 @@ Namespace My.Resources
         Friend ReadOnly Property eadb74787dda41cc6333341e55293432() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("eadb74787dda41cc6333341e55293432", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property eadb74787dda41cc6333341e552934321() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("eadb74787dda41cc6333341e552934321", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property eadb74787dda41cc6333341e552934322() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("eadb74787dda41cc6333341e552934322", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

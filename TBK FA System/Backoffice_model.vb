@@ -1311,6 +1311,11 @@ recheck:
         Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GetDefectMenu?line_cd=" & line_cd)
         Return rs
     End Function
+    Public Shared Function GetDefectMenuMaintenance(line_cd As String)
+        Dim api = New api()
+        Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GetDefectMenuMaintenance?line_cd=" & line_cd)
+        Return rs
+    End Function
 
     Public Shared Function GET_STATUS_DELAY_BY_LINE(line_cd As String)
         Dim api = New api()
@@ -1384,7 +1389,6 @@ recheck:
         End Try
     End Function
 
-
     Public Shared Function Get_Line_skill_id(line_id As String)
         Dim reader As SqlDataReader
         Dim SQLConn As New SqlConnection() 'The SQL Connection
@@ -1394,15 +1398,10 @@ recheck:
             SQLConn.Open()
             SQLCmd.Connection = SQLConn
             'SQLCmd.CommandText = "SELECT * FROM sys_user WHERE emp_id = '" & usernm & "' AND passwd = '" & passwd & "'"
-
             'Dim line_cd As String = "K1A027"
-
             SQLCmd.CommandText = "SELECT * FROM sys_skill_line_detail WHERE line_id = '" & line_id & "' AND enable = 1 "
-
             reader = SQLCmd.ExecuteReader()
-
             'MsgBox(reader)
-
             Return reader
         Catch ex As Exception
             ' MsgBox("MSSQL Database connect failed. Please contact PC System [Function Get_Line_skill_id]")
@@ -1428,7 +1427,7 @@ recheck:
         Catch ex As Exception
             MsgBox("MSSQL Database connect failed. Please contact PC System [Function chk_user_skill_line]")
             '    SQLConn.Close()
-            '            Application.Exit()
+            '   Application.Exit()
         End Try
     End Function
     Public Shared Function get_all_skill()
@@ -1439,16 +1438,14 @@ recheck:
             SQLConn.ConnectionString = sqlConnect 'Set the Connection String
             SQLConn.Open()
             SQLCmd.Connection = SQLConn
-
             SQLCmd.CommandText = "Select * From sys_skill_chart_mst WHERE enable = '1' ORDER BY sk_id ASC"
             reader = SQLCmd.ExecuteReader()
-
             Return reader
         Catch ex As Exception
-            ' MsgBox("MSSQL Database connect failed. Please contact PC System [Function get_all_skill]")
+            'MsgBox("MSSQL Database connect failed. Please contact PC System [Function get_all_skill]")
             SQLConn.Close()
             load_show.Show()
-            '  Application.Exit()
+            'Application.Exit()
         End Try
     End Function
     Public Shared Function get_department()
@@ -1459,10 +1456,8 @@ recheck:
             SQLConn.ConnectionString = sqlConnect 'Set the Connection String
             SQLConn.Open()
             SQLCmd.Connection = SQLConn
-
             SQLCmd.CommandText = "Select * From sys_department WHERE enable = '1'"
             reader = SQLCmd.ExecuteReader()
-
             Return reader
         Catch ex As Exception
             'MsgBox("MSSQL Database connect failed. Please contact PC System [Function get_department]")
@@ -1486,6 +1481,7 @@ recheck:
             'Return reader
             Dim api = New api()
             Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Console.WriteLine("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
         Catch ex As Exception
             '  SQLConn.Close()
@@ -1550,7 +1546,6 @@ recheck:
             Dim api = New api()
             Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_main?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
-
             'Return reader
         Catch ex As Exception
             ' SQLConn.Close()

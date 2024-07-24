@@ -39,6 +39,12 @@ Partial Class show_detail_production
         Me.Lbversion = New System.Windows.Forms.Label()
         Me.LBGOOD = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.LBREMAIN = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.LBPLAN = New System.Windows.Forms.Label()
+        Me.LBSEQCOUNT = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'LB_PARTNO
@@ -227,7 +233,7 @@ Partial Class show_detail_production
         Me.LBGOOD.BackColor = System.Drawing.Color.Transparent
         Me.LBGOOD.Font = New System.Drawing.Font("Catamaran", 18.0!)
         Me.LBGOOD.ForeColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(141, Byte), Integer))
-        Me.LBGOOD.Location = New System.Drawing.Point(581, 430)
+        Me.LBGOOD.Location = New System.Drawing.Point(666, 434)
         Me.LBGOOD.Name = "LBGOOD"
         Me.LBGOOD.Size = New System.Drawing.Size(27, 26)
         Me.LBGOOD.TabIndex = 16
@@ -239,11 +245,83 @@ Partial Class show_detail_production
         Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Catamaran", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Black
-        Me.Label1.Location = New System.Drawing.Point(422, 430)
+        Me.Label1.Location = New System.Drawing.Point(507, 434)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(153, 26)
         Me.Label1.TabIndex = 17
         Me.Label1.Text = "GOOD QTY : "
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.BackColor = System.Drawing.Color.Transparent
+        Me.Label2.Font = New System.Drawing.Font("Catamaran", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.Black
+        Me.Label2.Location = New System.Drawing.Point(507, 472)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(125, 26)
+        Me.Label2.TabIndex = 18
+        Me.Label2.Text = "REMAIN  : "
+        '
+        'LBREMAIN
+        '
+        Me.LBREMAIN.AutoSize = True
+        Me.LBREMAIN.BackColor = System.Drawing.Color.Transparent
+        Me.LBREMAIN.Font = New System.Drawing.Font("Catamaran", 18.0!)
+        Me.LBREMAIN.ForeColor = System.Drawing.Color.Red
+        Me.LBREMAIN.Location = New System.Drawing.Point(666, 472)
+        Me.LBREMAIN.Name = "LBREMAIN"
+        Me.LBREMAIN.Size = New System.Drawing.Size(27, 26)
+        Me.LBREMAIN.TabIndex = 19
+        Me.LBREMAIN.Text = "0"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.BackColor = System.Drawing.Color.Transparent
+        Me.Label4.Font = New System.Drawing.Font("Catamaran", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.Black
+        Me.Label4.Location = New System.Drawing.Point(225, 472)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(172, 26)
+        Me.Label4.TabIndex = 22
+        Me.Label4.Text = "SEQ COUNT  : "
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.BackColor = System.Drawing.Color.Transparent
+        Me.Label5.Font = New System.Drawing.Font("Catamaran", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.Black
+        Me.Label5.Location = New System.Drawing.Point(225, 434)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(97, 26)
+        Me.Label5.TabIndex = 21
+        Me.Label5.Text = "PLAN  : "
+        '
+        'LBPLAN
+        '
+        Me.LBPLAN.AutoSize = True
+        Me.LBPLAN.BackColor = System.Drawing.Color.Transparent
+        Me.LBPLAN.Font = New System.Drawing.Font("Catamaran", 18.0!)
+        Me.LBPLAN.ForeColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.LBPLAN.Location = New System.Drawing.Point(406, 434)
+        Me.LBPLAN.Name = "LBPLAN"
+        Me.LBPLAN.Size = New System.Drawing.Size(27, 26)
+        Me.LBPLAN.TabIndex = 20
+        Me.LBPLAN.Text = "0"
+        '
+        'LBSEQCOUNT
+        '
+        Me.LBSEQCOUNT.AutoSize = True
+        Me.LBSEQCOUNT.BackColor = System.Drawing.Color.Transparent
+        Me.LBSEQCOUNT.Font = New System.Drawing.Font("Catamaran", 18.0!)
+        Me.LBSEQCOUNT.ForeColor = System.Drawing.Color.FromArgb(CType(CType(24, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(141, Byte), Integer))
+        Me.LBSEQCOUNT.Location = New System.Drawing.Point(406, 472)
+        Me.LBSEQCOUNT.Name = "LBSEQCOUNT"
+        Me.LBSEQCOUNT.Size = New System.Drawing.Size(27, 26)
+        Me.LBSEQCOUNT.TabIndex = 23
+        Me.LBSEQCOUNT.Text = "0"
         '
         'show_detail_production
         '
@@ -252,6 +330,12 @@ Partial Class show_detail_production
         Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.productionListDetail2
         Me.ClientSize = New System.Drawing.Size(785, 515)
         Me.ControlBox = False
+        Me.Controls.Add(Me.LBSEQCOUNT)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.LBPLAN)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.LBREMAIN)
+        Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.LBGOOD)
         Me.Controls.Add(Me.Lbversion)
@@ -295,4 +379,10 @@ Partial Class show_detail_production
     Friend WithEvents Lbversion As Label
     Friend WithEvents LBGOOD As Label
     Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents LBREMAIN As Label
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents LBPLAN As Label
+    Friend WithEvents LBSEQCOUNT As Label
 End Class
