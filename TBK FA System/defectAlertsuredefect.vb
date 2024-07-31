@@ -68,6 +68,7 @@ Public Class defectAlertsuredefect
             Apiw_id = defectAdmindetailng.Apwi_id
         End If
         Dim dtActualdate = DateTime.Now.ToString("yyyy-MM-dd H:m:s")
+        ' asdasd
         Dim rs = defectAdminregister.insertDefectregister(defectAdminregister.dtWino, defectAdminregister.dtLineno, defectAdminregister.dtItemcd, defectAdminregister.dtItemtype, defectAdminregister.dtLotno, defectAdminregister.dtSeqno, dfType, defectAdminregister.dtCode, defectAdminregister.lbQtydefect.Text, "2", dtActualdate, Apiw_id)
         If rs Then
             Dim clSumarry As New closeLotsummary()

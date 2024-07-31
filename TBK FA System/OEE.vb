@@ -6,6 +6,7 @@ Public Class OEE
     Public Shared Function OEE_EXP_CHECK_SUPP(item_cd As String)
         Dim api = New api()
         Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/EXP_CHECK_SUPP?item_cd=" & item_cd)
+        Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/EXP_CHECK_SUPP?item_cd=" & item_cd)
         Return TarGet
     End Function
 

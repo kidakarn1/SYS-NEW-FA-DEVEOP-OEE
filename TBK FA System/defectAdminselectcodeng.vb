@@ -52,25 +52,67 @@ Public Class defectAdminselectcodeng
     Private Sub lvDefectcode_SelectedIndexChanged_1(sender As Object, e As EventArgs)
 
     End Sub
-
+    Public Shared Function checkDefectCodeSupplier(dfCode As String)
+        If dfCode.ToString.Substring(0, 1) = "0" Then
+            Return "1"
+        Else
+            Return "0"
+        End If
+    End Function
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles btnDown.Click
-        If lvDefectcode.SelectedItems.Count > 0 Then
+        Try
             For Each lvItem As ListViewItem In lvDefectcode.SelectedItems
                 Me.sDefectcode = lvDefectcode.Items(lvItem.Index).SubItems(0).Text
                 Me.sDefectdetail = lvDefectcode.Items(lvItem.Index).SubItems(1).Text
             Next
-            ' Dim dfAdminregister = New defectAdminregister
-            defectAdminregister.Show()
-            Me.Hide()
-        Else
+            If defectAdminselecttypeng.type = "2" Then
+                Dim rss = checkDefectCodeSupplier(Me.sDefectcode)
+                If rss = "1" Then
+                    Dim rs = OEE.OEE_EXP_CHECK_SUPP(sPart)
+                    If rs <> "0" Then
+                        Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rs)
+                        If CDbl(Val(dcResultdata(0)("OUTSIDE_TYP").ToString())) = 2 Then
+                            Dim dfSupplier = New AdmindefectSelectSupplier
+                            dfSupplier.show()
+                            Me.Hide()
+                        Else
+                            Dim dfRegister = New defectAdminregister
+                            dfRegister.swi = swi
+                            dfRegister.source_cd_supplier = ""
+                            dfRegister.SeqSpc = sSeqSpc
+                            dfRegister.PwiSpc = sPwiSpc
+                            dfRegister.mainCP = mainCp
+                            dfRegister.Show()
+                            Me.Hide()
+                        End If
+                    End If
+                Else
+                    Dim dfRegister = New defectAdminregister
+                    dfRegister.swi = swi
+                    dfRegister.SeqSpc = sSeqSpc
+                    dfRegister.PwiSpc = sPwiSpc
+                    dfRegister.mainCP = mainCp
+                    dfRegister.source_cd_supplier = ""
+                    dfRegister.Show()
+                    Me.Hide()
+                End If
+            Else
+                Dim dfRegister = New defectAdminregister
+                dfRegister.swi = swi
+                dfRegister.SeqSpc = sSeqSpc
+                dfRegister.PwiSpc = sPwiSpc
+                dfRegister.mainCP = mainCp
+                dfRegister.source_cd_supplier = ""
+                dfRegister.Show()
+                Me.Hide()
+            End If
+        Catch ex As Exception
             MsgBox("PLEASE SELECT ROW.")
-        End If
+        End Try
     End Sub
-
     Private Sub btnDown_Click(sender As Object, e As EventArgs)
 
     End Sub
-
     Private Sub lbPartfg_Click(sender As Object, e As EventArgs)
 
     End Sub

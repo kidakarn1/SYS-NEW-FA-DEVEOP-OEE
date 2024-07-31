@@ -17,11 +17,15 @@
     Public actTotal = dfAdminselecttype.actTotal
     Public ncTotal = dfAdminselecttype.ncTotal
     Public ngTotal = dfAdminselecttype.ngTotal
+    Public Shared swi = ""
     Public Shared dtShift
     Public Shared sPart
     Public Shared GmaxQty As Integer = 0
+    Public Shared source_cd_supplier
+    Public Shared SeqSpc = defectAdminregister.dtSeqno
+    Public Shared PwiSpc
+    Public Shared mainCP
     Private Sub defectRegister_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         setVariable()
         Dim dfType
     End Sub
@@ -164,7 +168,6 @@
         Else
             MsgBox("Please Check QTY Input")
         End If
-
     End Sub
     Public Function updateDefectdata(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, ItemCd As String, dtItemtype As String)
         Dim md As New modelDefect()
@@ -187,10 +190,14 @@
         Try
             Dim mdDefect = New modelDefect()
             Dim mdDefectSqlite = New ModelSqliteDefect()
+            MsgBox("Para OK")
             ' Dim rsData = mdDefect.mInsertdefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, Apwi_id)
             Dim name_en As String = mdDefect.mGetmasterDataDefect(dtCode)
+            MsgBox("Ready 1 ")
             Dim rsData = mdDefectSqlite.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, Apwi_id, name_en)
+            MsgBox("Ready 2")
             mdDefectSqlite.UpdateStatusCloselotSqlite("1", Apwi_id)
+            MsgBox("Ready 3")
             If rsData Then
                 Return True
             Else

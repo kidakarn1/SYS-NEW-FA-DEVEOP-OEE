@@ -289,6 +289,12 @@
     <Compile Include="Add_user.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AdmindefectSelectSupplier.Designer.vb">
+      <DependentUpon>AdmindefectSelectSupplier.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AdmindefectSelectSupplier.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="adminPrintdefect.Designer.vb">
       <DependentUpon>adminPrintdefect.vb</DependentUpon>
     </Compile>
@@ -1050,6 +1056,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Add_user.resx">
       <DependentUpon>Add_user.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdmindefectSelectSupplier.resx">
+      <DependentUpon>AdmindefectSelectSupplier.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="adminPrintdefect.resx">
       <DependentUpon>adminPrintdefect.vb</DependentUpon>
