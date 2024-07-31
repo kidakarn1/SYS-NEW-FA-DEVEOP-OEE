@@ -38,7 +38,7 @@ Partial Class defectAdminhome
         'btn_back
         '
         Me.btn_back.BackColor = System.Drawing.Color.Transparent
-        Me.btn_back.Location = New System.Drawing.Point(4, 521)
+        Me.btn_back.Location = New System.Drawing.Point(12, 512)
         Me.btn_back.Name = "btn_back"
         Me.btn_back.Size = New System.Drawing.Size(192, 76)
         Me.btn_back.TabIndex = 4573
@@ -47,36 +47,38 @@ Partial Class defectAdminhome
         'btnRegisternc
         '
         Me.btnRegisternc.BackColor = System.Drawing.Color.Transparent
-        Me.btnRegisternc.Location = New System.Drawing.Point(109, 193)
+        Me.btnRegisternc.Location = New System.Drawing.Point(136, 21)
         Me.btnRegisternc.Name = "btnRegisternc"
-        Me.btnRegisternc.Size = New System.Drawing.Size(238, 128)
+        Me.btnRegisternc.Size = New System.Drawing.Size(154, 78)
         Me.btnRegisternc.TabIndex = 4574
         Me.btnRegisternc.TabStop = False
+        Me.btnRegisternc.Visible = False
         '
         'btnAdjustnc
         '
         Me.btnAdjustnc.BackColor = System.Drawing.Color.Transparent
-        Me.btnAdjustnc.Location = New System.Drawing.Point(444, 193)
+        Me.btnAdjustnc.Location = New System.Drawing.Point(574, 37)
         Me.btnAdjustnc.Name = "btnAdjustnc"
-        Me.btnAdjustnc.Size = New System.Drawing.Size(236, 128)
+        Me.btnAdjustnc.Size = New System.Drawing.Size(106, 62)
         Me.btnAdjustnc.TabIndex = 4575
         Me.btnAdjustnc.TabStop = False
+        Me.btnAdjustnc.Visible = False
         '
         'btnRegisterng
         '
         Me.btnRegisterng.BackColor = System.Drawing.Color.Transparent
-        Me.btnRegisterng.Location = New System.Drawing.Point(109, 353)
+        Me.btnRegisterng.Location = New System.Drawing.Point(52, 204)
         Me.btnRegisterng.Name = "btnRegisterng"
-        Me.btnRegisterng.Size = New System.Drawing.Size(238, 124)
+        Me.btnRegisterng.Size = New System.Drawing.Size(306, 287)
         Me.btnRegisterng.TabIndex = 4576
         Me.btnRegisterng.TabStop = False
         '
         'btnAdjustng
         '
         Me.btnAdjustng.BackColor = System.Drawing.Color.Transparent
-        Me.btnAdjustng.Location = New System.Drawing.Point(444, 353)
+        Me.btnAdjustng.Location = New System.Drawing.Point(444, 204)
         Me.btnAdjustng.Name = "btnAdjustng"
-        Me.btnAdjustng.Size = New System.Drawing.Size(236, 124)
+        Me.btnAdjustng.Size = New System.Drawing.Size(276, 287)
         Me.btnAdjustng.TabIndex = 4577
         Me.btnAdjustng.TabStop = False
         '

@@ -78,7 +78,7 @@ Public Class defectAdmindetailng
             Apwi_id = lvDefectact.Items(lvItem.Index).SubItems(9).Text
         Next
         Try
-            Dim dfAdminselecttype2 As New defectAdminselecttypeng()
+            Dim dfAdminselecttype2 = New defectAdminselecttypeng()
             dfAdminselecttype2.Show()
             Me.Close()
         Catch ex As Exception
