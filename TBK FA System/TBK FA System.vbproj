@@ -634,6 +634,12 @@
     <Compile Include="Finish_work.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="KeyboardAdmin.Designer.vb">
+      <DependentUpon>KeyboardAdmin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="KeyboardAdmin.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="loadData.Designer.vb">
       <DependentUpon>loadData.vb</DependentUpon>
     </Compile>
@@ -1213,6 +1219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Finish_work.resx">
       <DependentUpon>Finish_work.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyboardAdmin.resx">
+      <DependentUpon>KeyboardAdmin.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="loadData.resx">
       <DependentUpon>loadData.vb</DependentUpon>

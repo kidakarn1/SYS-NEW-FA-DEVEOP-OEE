@@ -75,6 +75,6 @@ Public Class Adm_login
 
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
         Me.Enabled = False
-        Keyboards.Show()
+        KeyboardAdmin.Show()
     End Sub
 End Class
