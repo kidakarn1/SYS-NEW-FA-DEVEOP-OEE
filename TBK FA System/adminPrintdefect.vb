@@ -71,7 +71,6 @@ Public Class adminPrintdefect
         Dim md = New modelDefect()
         Dim sDefect As String = ""
         Dim dfAdminHome As New defectAdminhome
-
         If dfAdminHome.dfType = "NC" Then
             sDefect = "2"
         ElseIf dfAdminHome.dfType = "NG" Then
@@ -216,6 +215,5 @@ outloop:
         Dim date_now = DateTime.Now.ToString("yyyy-MM-dd H:m:s")
         Dim dti_status_flg = "" 'FG = 1 , 2 = CP
         Dim rsInserttagdefect = md.mInserttagdefect(lwi, lLine, lPartno, lItemtype, lLot, lSeq, sDefect, CDbl(Val(lQtydefect)), TypeMenu, bNo, qrDefectinfo, qrDefectcodedetails, lItemtype, date_now, lLine, date_now, lLine, Working_Pro.pwi_id)
-
     End Sub
 End Class

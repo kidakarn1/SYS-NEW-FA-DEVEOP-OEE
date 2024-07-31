@@ -65,6 +65,10 @@ Public Class defectAdminselectcodeng
                 Me.sDefectcode = lvDefectcode.Items(lvItem.Index).SubItems(0).Text
                 Me.sDefectdetail = lvDefectcode.Items(lvItem.Index).SubItems(1).Text
             Next
+            swi = defectAdmindetailng.sWi
+            sSeqSpc = defectAdmindetailng.dSeq
+            mainCp = "1"
+            sPwiSpc = defectAdmindetailng.Apwi_id
             If defectAdminselecttypeng.type = "2" Then
                 Dim rss = checkDefectCodeSupplier(Me.sDefectcode)
                 If rss = "1" Then
@@ -76,34 +80,31 @@ Public Class defectAdminselectcodeng
                             dfSupplier.show()
                             Me.Hide()
                         Else
-                            Dim dfRegister = New defectAdminregister
-                            dfRegister.swi = swi
-                            dfRegister.source_cd_supplier = ""
-                            dfRegister.SeqSpc = sSeqSpc
-                            dfRegister.PwiSpc = sPwiSpc
-                            dfRegister.mainCP = mainCp
-                            dfRegister.Show()
+                            defectAdminregister.swi = swi
+                            defectAdminregister.source_cd_supplier = ""
+                            defectAdminregister.SeqSpc = sSeqSpc
+                            defectAdminregister.PwiSpc = sPwiSpc
+                            defectAdminregister.mainCP = mainCp
+                            defectAdminregister.Show()
                             Me.Hide()
                         End If
                     End If
                 Else
-                    Dim dfRegister = New defectAdminregister
-                    dfRegister.swi = swi
-                    dfRegister.SeqSpc = sSeqSpc
-                    dfRegister.PwiSpc = sPwiSpc
-                    dfRegister.mainCP = mainCp
-                    dfRegister.source_cd_supplier = ""
-                    dfRegister.Show()
+                    defectAdminregister.swi = swi
+                    defectAdminregister.SeqSpc = sSeqSpc
+                    defectAdminregister.PwiSpc = sPwiSpc
+                    defectAdminregister.mainCP = mainCp
+                    defectAdminregister.source_cd_supplier = ""
+                    defectAdminregister.Show()
                     Me.Hide()
                 End If
             Else
-                Dim dfRegister = New defectAdminregister
-                dfRegister.swi = swi
-                dfRegister.SeqSpc = sSeqSpc
-                dfRegister.PwiSpc = sPwiSpc
-                dfRegister.mainCP = mainCp
-                dfRegister.source_cd_supplier = ""
-                dfRegister.Show()
+                defectAdminregister.swi = swi
+                defectAdminregister.SeqSpc = sSeqSpc
+                defectAdminregister.PwiSpc = sPwiSpc
+                defectAdminregister.mainCP = mainCp
+                defectAdminregister.source_cd_supplier = ""
+                defectAdminregister.Show()
                 Me.Hide()
             End If
         Catch ex As Exception

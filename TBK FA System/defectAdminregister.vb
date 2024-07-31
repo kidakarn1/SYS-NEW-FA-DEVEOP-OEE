@@ -57,6 +57,7 @@
             Dim dfAdminng As New defectAdmindetailng
             dtWino = dfAdminng.sWi
             dtLineno = MainFrm.Label4.Text
+            MsgBox("ready dtWino ====>" & dtWino)
             dtItemcd = dfAdminselecttypeng.sPart
             dtShift = dfAdminng.sshift
             dtItemtype = dfAdminselecttypeng.type
@@ -162,6 +163,7 @@
     End Sub
     Private Sub oK_Click(sender As Object, e As EventArgs) Handles oK.Click
         If CDbl(Val(lbQtydefect.Text)) > 0 Then
+            MsgBox(" dtWino ====<>>>>" & dtWino)
             tbQty = lbQtydefect.Text
             Dim dfAlert As New defectAlertsuredefect
             dfAlert.Show()
@@ -193,8 +195,7 @@
             MsgBox("Para OK")
             ' Dim rsData = mdDefect.mInsertdefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, Apwi_id)
             Dim name_en As String = mdDefect.mGetmasterDataDefect(dtCode)
-            MsgBox("Ready 1 ")
-            Dim rsData = mdDefectSqlite.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, Apwi_id, name_en)
+            Dim rsData = mdDefectSqlite.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, Apwi_id, name_en, mainCP, source_cd_supplier)
             MsgBox("Ready 2")
             mdDefectSqlite.UpdateStatusCloselotSqlite("1", Apwi_id)
             MsgBox("Ready 3")

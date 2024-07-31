@@ -204,6 +204,7 @@ Public Class modelDefect
         Try
             Dim api = New api()
             Dim rsData = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDatadefectcodeprint?wi=" & wi & "&lot=" & lot & "&seqNo=" & seqNo & "&itemCd=" & itemCd & "&dfType=" & dfType)
+            MsgBox("model====>" & rsData)
             Console.WriteLine("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDatadefectcodeprint?wi=" & wi & "&lot=" & lot & "&seqNo=" & seqNo & "&itemCd=" & itemCd & "&dfType=" & dfType)
             If rsData <> "0" Then
                 Return rsData
@@ -286,6 +287,7 @@ Public Class modelDefect
     Public Shared Function mUpdatedefectactualAdmin(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, dtItemType As String, ItemCd As String)
         Try
             Dim api = New api()
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/apiShopfloor_test/updateDatadefect/updateDefectactualAdmin?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & dtSeqno & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & dtItemType & "&ItemCd=" & ItemCd)
             Dim rsData = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test/updateDatadefect/updateDefectactualAdmin?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & dtSeqno & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & dtItemType & "&ItemCd=" & ItemCd)
             Return rsData
         Catch ex As Exception
