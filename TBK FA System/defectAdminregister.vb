@@ -57,7 +57,6 @@
             Dim dfAdminng As New defectAdmindetailng
             dtWino = dfAdminng.sWi
             dtLineno = MainFrm.Label4.Text
-            MsgBox("ready dtWino ====>" & dtWino)
             dtItemcd = dfAdminselecttypeng.sPart
             dtShift = dfAdminng.sshift
             dtItemtype = dfAdminselecttypeng.type
@@ -118,7 +117,8 @@
                 GmaxQty = maxQty
             Else
                 Dim md = New modelDefect
-                Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotno, dtType, dtItemcd)
+                'Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotno, dtType, dtItemcd)
+                Dim UseQty = md.mGetdefectdetailPartno(dtWino, dtSeqno, dtLotno, dtType, dtItemcd)
                 maxQty = (999 - Convert.ToInt32(UseQty))
                 maxQty = maxQty
                 GmaxQty = maxQty
@@ -129,7 +129,8 @@
                 GmaxQty = maxQty
             Else
                 Dim md = New modelDefect
-                Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotno, dtType, dtItemcd)
+                '  Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotno, dtType, dtItemcd)
+                Dim UseQty = md.mGetdefectdetailPartno(dtWino, dtSeqno, dtLotno, dtType, dtItemcd)
                 maxQty = (999 - Convert.ToInt32(UseQty))
                 maxQty = maxQty
                 GmaxQty = maxQty
@@ -163,7 +164,6 @@
     End Sub
     Private Sub oK_Click(sender As Object, e As EventArgs) Handles oK.Click
         If CDbl(Val(lbQtydefect.Text)) > 0 Then
-            MsgBox(" dtWino ====<>>>>" & dtWino)
             tbQty = lbQtydefect.Text
             Dim dfAlert As New defectAlertsuredefect
             dfAlert.Show()
@@ -192,13 +192,10 @@
         Try
             Dim mdDefect = New modelDefect()
             Dim mdDefectSqlite = New ModelSqliteDefect()
-            MsgBox("Para OK")
             ' Dim rsData = mdDefect.mInsertdefectregister(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, Apwi_id)
             Dim name_en As String = mdDefect.mGetmasterDataDefect(dtCode)
             Dim rsData = mdDefectSqlite.mSqliteInsertDefectTransection(dtWino, dtLineno, dtItemcd, dtItemtype, dtLotno, dtSeqno, dtType, dtCode, dtQty, dtMenu, dtActualdate, Apwi_id, name_en, mainCP, source_cd_supplier)
-            MsgBox("Ready 2")
             mdDefectSqlite.UpdateStatusCloselotSqlite("1", Apwi_id)
-            MsgBox("Ready 3")
             If rsData Then
                 Return True
             Else

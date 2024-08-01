@@ -15,7 +15,8 @@ Public Class defecAdmintnumpadregister
                 lbMaxqty.Text = calMaxqtyregisternc(actTotal, ncTotal, ngTotal)
             Else
                 Dim md = New modelDefect
-                Dim UseQty = md.mGetdefectdetailncPartno(defectAdmindetailnc.sWi, defectAdmindetailnc.dSeq, defectAdmindetailnc.sLot, "2", lbPartno.Text)
+                ' Dim UseQty = md.mGetdefectdetailncPartno(defectAdmindetailnc.sWi, defectAdmindetailnc.dSeq, defectAdmindetailnc.sLot, "2", lbPartno.Text)
+                Dim UseQty = md.mGetdefectdetailPartno(defectAdmindetailnc.sWi, defectAdmindetailnc.dSeq, defectAdmindetailnc.sLot, "2", lbPartno.Text)
                 maxQty = (999 - Convert.ToInt32(UseQty))
                 lbMaxqty.Text = maxQty
             End If
@@ -24,7 +25,8 @@ Public Class defecAdmintnumpadregister
                 lbMaxqty.Text = calMaxqtyregisterng(actTotal, ncTotal, ngTotal)
             Else
                 Dim md = New modelDefect
-                Dim UseQty = md.mGetdefectdetailncPartno(defectAdmindetailng.sWi, defectAdmindetailng.dSeq, defectAdmindetailng.sLot, "1", lbPartno.Text)
+                ' Dim UseQty = md.mGetdefectdetailncPartno(defectAdmindetailng.sWi, defectAdmindetailng.dSeq, defectAdmindetailng.sLot, "1", lbPartno.Text)
+                Dim UseQty = md.mGetdefectdetailPartno(defectAdmindetailng.sWi, defectAdmindetailng.dSeq, defectAdmindetailng.sLot, "1", lbPartno.Text)
                 maxQty = (999 - Convert.ToInt32(UseQty))
                 lbMaxqty.Text = maxQty
             End If

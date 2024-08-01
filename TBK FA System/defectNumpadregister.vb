@@ -12,7 +12,8 @@ Public Class defectNumpadregister
             lbMaxqty.Text = calMaxqtyregister(actTotal, ncTotal, ngTotal)
         Else
             Dim md = New modelDefect
-            Dim UseQty = md.mGetdefectdetailncPartno(Working_Pro.wi_no.Text, Working_Pro.Label22.Text, Working_Pro.Label18.Text, defectSelecttype.dtType, lbPartno.Text)
+            ' Dim UseQty = md.mGetdefectdetailncPartno(Working_Pro.wi_no.Text, Working_Pro.Label22.Text, Working_Pro.Label18.Text, defectSelecttype.dtType, lbPartno.Text)
+            Dim UseQty = md.mGetdefectdetailPartno(Working_Pro.wi_no.Text, Working_Pro.Label22.Text, Working_Pro.Label18.Text, defectSelecttype.dtType, lbPartno.Text)
             Dim maxQty As Integer = (999 - Convert.ToInt32(UseQty))
             lbMaxqty.Text = maxQty '999 '"Unlimited"
         End If

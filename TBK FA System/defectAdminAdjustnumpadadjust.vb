@@ -143,7 +143,8 @@ Public Class defectAdminAdjustnumpadadjust
                 lbMax.Text = calNumpadadjustNc(actQty, NC, NG, sNc)
             Else
                 Dim md = New modelDefect
-                Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotNo, dtType, lbPart.Text)
+                ' Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotNo, dtType, lbPart.Text)
+                Dim UseQty = md.mGetdefectdetailPartno(dtWino, dtSeqno, dtLotNo, dtType, lbPart.Text)
                 maxQty = (999 - Convert.ToInt32(UseQty)) + sNc
                 lbMax.Text = maxQty
             End If
@@ -152,7 +153,8 @@ Public Class defectAdminAdjustnumpadadjust
                 lbMax.Text = calNumpadadjustNg(actQty, NC, NG, sNg)
             Else
                 Dim md = New modelDefect
-                Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotNo, dtType, lbPart.Text)
+                'Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotNo, dtType, lbPart.Text)
+                Dim UseQty = md.mGetdefectdetailPartno(dtWino, dtSeqno, dtLotNo, dtType, lbPart.Text)
                 maxQty = (999 - Convert.ToInt32(UseQty)) + sNg
                 lbMax.Text = maxQty
             End If

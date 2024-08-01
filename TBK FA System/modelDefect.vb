@@ -336,6 +336,7 @@ Public Class modelDefect
     Public Shared Function mGetdefectdetailncPartno(dtWino As String, dtSeq As String, dtLot As String, Type As String, PartNo As String)
         Try
             Dim api = New api()
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDefectncPartNo?dfWi=" & dtWino & "&dfSeq=" & dtSeq & "&dfLot=" & dtLot & "&dfType=" & Type & "&PartNo=" & PartNo)
             Dim rsData As String = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDefectncPartNo?dfWi=" & dtWino & "&dfSeq=" & dtSeq & "&dfLot=" & dtLot & "&dfType=" & Type & "&PartNo=" & PartNo)
             If rsData <> "0" Then
                 Return rsData
@@ -347,6 +348,22 @@ Public Class modelDefect
             Return False
         End Try
     End Function
+    Public Shared Function mGetdefectdetailPartno(dtWino As String, dtSeq As String, dtLot As String, Type As String, PartNo As String)
+        Try
+            Dim api = New api()
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDefectPartNo?dfWi=" & dtWino & "&dfSeq=" & dtSeq & "&dfLot=" & dtLot & "&dfType=" & Type & "&PartNo=" & PartNo)
+            Dim rsData As String = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDefectPartNo?dfWi=" & dtWino & "&dfSeq=" & dtSeq & "&dfLot=" & dtLot & "&dfType=" & Type & "&PartNo=" & PartNo)
+            If rsData <> "0" Then
+                Return rsData
+            Else
+                Return 0
+            End If
+        Catch ex As Exception
+            MsgBox("connect Api Faill Please check modelDefect in Function mGetdefectdetailPartno = " & ex.Message)
+            Return False
+        End Try
+    End Function
+
     Public Shared Function mGetdefectdetailncPartnoSpc(arrayWI As Array, lengthDataPlan As Integer, dtLot As String, Type As String, PartNo As String, dfWiSel As String, dfSeqSel As String)
         Try
             Dim api = New api()

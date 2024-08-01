@@ -78,11 +78,8 @@ Public Class defectAlertsuredefect
             Dim clFlg As String = "1"
             Dim md As New modelDefect()
             'ก่อน Update Update Defect Actual
-            MsgBox("G1")
             Dim oldQty = md.mGetQtyofdefectcode(defectAdminregister.dtWino, defectAdminregister.dtLotno, defectAdminregister.dtSeqno, dfType, defectAdminregister.dtCode, defectAdminregister.dtItemcd)
-            MsgBox("G2")
             Dim rsDataupdate = defectAdminregister.updateDefectdata(defectAdminregister.dtWino, defectAdminregister.dtLotno, defectAdminregister.dtSeqno, dfType, defectAdminregister.dtCode, defectAdminregister.dtItemcd, defectAdminregister.dtItemtype)
-            MsgBox("G3")
             If dfAdminHome.dfType = "NC" Then
                 manageNc(rsDataupdate, oldQty)
             ElseIf dfAdminHome.dfType = "NG" Then
@@ -230,15 +227,8 @@ Public Class defectAlertsuredefect
             ElseIf dfAdminHome.dfType = "NG" Then
                 Apiw_id = defectAdmindetailng.Apwi_id
             End If
-            MsgBox("G5")
-            MsgBox("defectAdminregister.dtSeqno =====>" & defectAdminregister.dtSeqno)
-            MsgBox("defectAdminregister.dtWino =====>" & defectAdminregister.dtWino)
             Dim rsDatainsert = md.mInsertdefectactual(defectAdminregister.dtWino, defectAdminregister.dtLineno, defectAdminregister.dtItemcd, defectAdminregister.dtItemtype, defectAdminregister.dtLotno, defectAdminregister.dtSeqno, dfType, defectAdminregister.dtCode, dtQty, "2", dtActualdate, Apiw_id)
-            MsgBox("G6")
-            MsgBox("defectAdminregister.dtItemcd ===>" & defectAdminregister.sPart)
-            MsgBox("defectAdminselecttypeng.type ===>" & defectAdminselecttypeng.type)
             Dim rsApi = md.mGetdatepartdetail(defectAdminregister.sPart, defectAdminselecttypeng.type)
-            MsgBox("G7")
             Dim dChild As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rsApi)
             Dim factory_cd As String = "NO DATA"
             Dim plan_cd As String = "NO_DATA"

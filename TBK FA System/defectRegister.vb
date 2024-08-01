@@ -71,7 +71,8 @@ Public Class defectRegister
         Else
             Dim dfNumpadregister As New defectNumpadregister
             Dim md = New modelDefect()
-            Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotno, dtType, lbPart.Text)
+            'Dim UseQty = md.mGetdefectdetailncPartno(dtWino, dtSeqno, dtLotno, dtType, lbPart.Text)
+            Dim UseQty = md.mGetdefectdetailPartno(dtWino, dtSeqno, dtLotno, dtType, lbPart.Text)
             Dim maxQty As Integer = (999 - Convert.ToInt32(UseQty))
             Dim rsCheck = dfNumpadregister.calNumpadregister((tbQtydefectnc.Text + 1), maxQty)
             If rsCheck Then
