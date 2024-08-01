@@ -35,7 +35,8 @@ Public Class OEE_NODE
             'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             Return TarGet
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_GET_NEW_TARGET Please Check API")
+            'MsgBox("ERROR OEE FUNCTION OEE_GET_NEW_TARGET Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_GET_Hour(shift As String)
@@ -53,7 +54,8 @@ Public Class OEE_NODE
             'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             Return TarGet
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_GET_Hour Please Check API")
+            ' MsgBox("ERROR OEE FUNCTION OEE_GET_Hour Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_getProduction_actual_detailByHour(line_cd As String)
@@ -86,7 +88,8 @@ Public Class OEE_NODE
             Dim rs As Integer = data("TotalByHour").ToString
             Return rs
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_getProduction_actual_detailByHour Please Check API")
+            'MsgBox("ERROR OEE FUNCTION OEE_getProduction_actual_detailByHour Please Check API")
+            load_show.Show()
         End Try
     End Function
 
@@ -129,7 +132,8 @@ Public Class OEE_NODE
             Dim rs As Integer = data("TotalActualDetail").ToString
             Return rs
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_getProduction_actual_detailByShift Please Check API")
+            ' MsgBox("ERROR OEE FUNCTION OEE_getProduction_actual_detailByShift Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function GetDataProgressbarA(st_shift As String, end_shift As String, line_cd As String)
@@ -158,7 +162,8 @@ Public Class OEE_NODE
             Dim rs As Integer = data("PercentA").ToString
             Return rs
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION GetDataProgressbarA Please Check API")
+            ' MsgBox("ERROR OEE FUNCTION GetDataProgressbarA Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_GetLossByHouseP1(line_cd As String)
@@ -192,7 +197,8 @@ Public Class OEE_NODE
             Dim rs As Integer = targetValue
             Return rs
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_GetLossByHouseP1 Please Check API")
+            'MsgBox("ERROR OEE FUNCTION OEE_GetLossByHouseP1 Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_GET_Data_LOSS(line_cd As String, lot_no As String, shift As String, dateStart As String)
@@ -218,7 +224,8 @@ Public Class OEE_NODE
             Console.WriteLine(jsonString)
             Return jsonString
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_GET_Data_LOSS Please Check API")
+            ' MsgBox("ERROR OEE FUNCTION OEE_GET_Data_LOSS Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_GET_Data_AccTarget(st_shift As String, std_ct As String)
@@ -245,7 +252,8 @@ Public Class OEE_NODE
             Console.WriteLine("http: //192.168.161.78:3000/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct)
             Return rs
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_GET_Data_AccTarget Please Check API")
+            'MsgBox("ERROR OEE FUNCTION OEE_GET_Data_AccTarget Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_getSpeedLoss(NG As String, Good As String, Timeshift As String, std_cd As String)
@@ -260,7 +268,8 @@ Public Class OEE_NODE
             Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getSpeedLoss?NG=" & NG & "&Good=" & Good & "&Timeshift=" & Timeshift & "&std_cd=" & std_cd)
             Return rs
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_getSpeedLoss Please Check API")
+            ' MsgBox("ERROR OEE FUNCTION OEE_getSpeedLoss Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_getWorkingTime(line_cd As String, Timeshift As String)
@@ -286,7 +295,8 @@ Public Class OEE_NODE
             Dim rs As Integer = data("rs").ToString
             Return rs
         Catch ex As Exception
-            MsgBox("ERROR OEE FUNCTION OEE_getWorkingTime Please Check API")
+            ' MsgBox("ERROR OEE FUNCTION OEE_getWorkingTime Please Check API")
+            load_show.Show()
         End Try
     End Function
     Public Shared Function OEE_getDateTimeStart(st_shift As String, line_cd As String)
