@@ -1418,7 +1418,7 @@ Partial Class Working_Pro
         Me.Label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Label1.Font = New System.Drawing.Font("Panton-Trial ExtraBold", 16.0!, System.Drawing.FontStyle.Bold)
         Me.Label1.ForeColor = System.Drawing.Color.White
-        Me.Label1.Location = New System.Drawing.Point(646, 102)
+        Me.Label1.Location = New System.Drawing.Point(533, 101)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(152, 28)
         Me.Label1.TabIndex = 4641

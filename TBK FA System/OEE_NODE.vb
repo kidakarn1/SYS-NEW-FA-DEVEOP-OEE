@@ -4,7 +4,28 @@ Imports System.Globalization
 Imports System.Data
 Imports System.Web.Script.Serialization
 Public Class OEE_NODE
-    Public Shared Function OEE_GET_NEW_TARGET(st_shift As String, end_shift As String, std_ct As String)
+    Public Shared Function OEE_LOAD_MSTOEE(line_cd As String)
+        Try
+            Dim api = New api()
+            Console.WriteLine("http://192.168.161.78:5000/api/dataGetmstOEE?line_cd=" & line_cd)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataGetmstOEE?line_cd=" & line_cd)
+            Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(jsonString)
+            Dim i As Integer = 1
+            For Each item As Object In dcResultdata
+                If item("moe_min_oee").ToString Is Nothing Then
+                    ' MsgBox("IF")
+                Else
+                    'MsgBox("ELSE")
+                End If
+            Next
+            Return dcResultdata
+        Catch ex As Exception
+            MsgBox("Please Check Master OEE In Table line_mst")
+            ' MsgBox("ERROR OEE FUNCTION OEE_GET_Hour Please Check API")
+            load_show.Show()
+        End Try
+    End Function
+    Public Shared Function OEE_GET_NEW_TARGET(st_shift As String, end_shift As String, std_ct As String, shift As String)
         Try
             Dim api = New api()
             Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
@@ -16,17 +37,21 @@ Public Class OEE_NODE
             If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
                 date_st = date_now_date.AddDays(-1)
             Else
-                If time_now > "20:00:00 AM" Then
+                If shift = "S" Or shift = "Q" Then
                     date_end = date_now_date.AddDays(1)
                     date_end = Convert.ToDateTime(date_end).ToString("yyyy-MM-dd")
                 End If
+                '   If shift = "S" Or shift = "Q" Then
+                ' date_end = date_now_date.AddDays(1)
+                ' date_end = Convert.ToDateTime(date_end).ToString("yyyy-MM-dd")
+                'End If
             End If
             date_st = date_st
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
             ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
-            Console.WriteLine("http://192.168.161.78:3000/api/dataGettarget?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct & "&date_start=" & convertDateStart & "&date_end=" & date_end)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataGettarget?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct & "&date_start=" & convertDateStart & "&date_end=" & date_end)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataGettarget?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct & "&date_start=" & convertDateStart & "&date_end=" & date_end)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataGettarget?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct & "&date_start=" & convertDateStart & "&date_end=" & date_end)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
@@ -44,13 +69,13 @@ Public Class OEE_NODE
             Dim api = New api()
             ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataGetHour?shift=" & shift)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataGetHour?shift=" & shift)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim TarGet As Double = data("WorkHour").ToString
-            Console.WriteLine("http://192.168.161.78:3000/api/dataGetHour?shift=" & shift)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataGetHour?shift=" & shift)
             'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             Return TarGet
         Catch ex As Exception
@@ -79,8 +104,8 @@ Public Class OEE_NODE
             Dim convertnewDateMinutes = Convert.ToDateTime(newDateMinutes).ToString("yyyy-MM-dd HH:mm:ss")
             '  MsgBox("convertDateCrr======>" & convertDateCrr)
             '  MsgBox("convertnewDateMinutes======>" & convertnewDateMinutes)
-            Console.WriteLine("http://192.168.161.78:3000/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
@@ -93,7 +118,7 @@ Public Class OEE_NODE
         End Try
     End Function
 
-    Public Shared Function OEE_getProduction_actual_detailByShift(line_cd As String)
+    Public Shared Function OEE_getProduction_actual_detailByShift(line_cd As String, shift As String)
         Try
 
             Dim api = New api()
@@ -106,7 +131,8 @@ Public Class OEE_NODE
             If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
                 date_st = date_now_date.AddDays(-1)
             Else
-                If time_now > "20:00:00 AM" Then
+                ' If time_now > "20:00:00 AM" Then
+                If shift = "S" Or shift = "Q" Then
                     date_end = date_now_date.AddDays(1)
                     date_end = Convert.ToDateTime(date_end).ToString("yyyy-MM-dd")
                 End If
@@ -123,8 +149,8 @@ Public Class OEE_NODE
             '  MsgBox("convertnewDateMinutes======>" & convertnewDateMinutes)
             Dim st_time = Prd_detail.Label12.Text.Substring(3, 5) & ":00"
             Dim end_time = Prd_detail.Label12.Text.Substring(11, 5) & ":00"
-            Console.WriteLine("http://192.168.161.78:3000/api/dataDetailByShift?line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_end=" & convertDateEnd & "&st_shift=" & st_time & "&end_shift=" & end_time)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataDetailByShift?line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_end=" & convertDateEnd & "&st_shift=" & st_time & "&end_shift=" & end_time)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataDetailByShift?line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_end=" & convertDateEnd & "&st_shift=" & st_time & "&end_shift=" & end_time)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataDetailByShift?line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_end=" & convertDateEnd & "&st_shift=" & st_time & "&end_shift=" & end_time)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
@@ -153,8 +179,8 @@ Public Class OEE_NODE
             dateTimeend = date_end & " " & time
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
             Dim convertDateCrr = Convert.ToDateTime(date_now_date).ToString("yyyy-MM-dd")
-            Console.WriteLine("http://192.168.161.78:3000/api/dataProgressA?st_shift=" & st_shift & "&end_shift=" & end_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_Crr=" & convertDateCrr & "&TimeCrr=" & time)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataProgressA?st_shift=" & st_shift & "&end_shift=" & end_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_Crr=" & convertDateCrr & "&TimeCrr=" & time)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataProgressA?st_shift=" & st_shift & "&end_shift=" & end_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_Crr=" & convertDateCrr & "&TimeCrr=" & time)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataProgressA?st_shift=" & st_shift & "&end_shift=" & end_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_Crr=" & convertDateCrr & "&TimeCrr=" & time)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
@@ -185,8 +211,8 @@ Public Class OEE_NODE
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
             Dim convertnewDateMinutes = Convert.ToDateTime(newDateMinutes).ToString("yyyy-MM-dd HH:mm:ss")
             ' MsgBox("convertnewDateMinutes ===>" & convertnewDateMinutes)
-            Console.WriteLine("http://192.168.161.78:3000/api/dataGetlossbyhouse?line_cd=" & line_cd & "&date_start=" & date_st & "&date_end=" & date_end & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataGetlossbyhouse?line_cd=" & line_cd & "&date_start=" & date_st & "&date_end=" & date_end & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataGetlossbyhouse?line_cd=" & line_cd & "&date_start=" & date_st & "&date_end=" & date_end & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataGetlossbyhouse?line_cd=" & line_cd & "&date_start=" & date_st & "&date_end=" & date_end & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
             ' Deserialize the JSON string to a Dictionary
             Dim jsSerializer As New JavaScriptSerializer()
             Dim data As List(Of Dictionary(Of String, Object)) = jsSerializer.Deserialize(Of List(Of Dictionary(Of String, Object)))(jsonString)
@@ -219,8 +245,8 @@ Public Class OEE_NODE
             'MsgBox("dateTime_end ===>" & date_end)
             'MsgBox("time = " & time)
             Dim st_time = Prd_detail.Label12.Text.Substring(3, 5) & ":00"
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time)
-            Console.WriteLine("http://192.168.161.78:3000/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time)
             Console.WriteLine(jsonString)
             Return jsonString
         Catch ex As Exception
@@ -242,14 +268,14 @@ Public Class OEE_NODE
             End If
             date_st = date_st
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&end_shift=" & time)
-            Console.WriteLine("http://192.168.161.78:3000/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&end_shift=" & time)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&end_shift=" & time)
+            Console.WriteLine("http://192.168.161.78:5000/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&end_shift=" & time)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim rs As Integer = data("ActualTarget").ToString
-            Console.WriteLine("http: //192.168.161.78:3000/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct)
+            Console.WriteLine("http: //192.168.161.78:5000/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct)
             Return rs
         Catch ex As Exception
             'MsgBox("ERROR OEE FUNCTION OEE_GET_Data_AccTarget Please Check API")
@@ -286,8 +312,8 @@ Public Class OEE_NODE
             End If
             date_st = date_st
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
-            Console.WriteLine("http://192.168.161.78:3000/api/dataGetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift & "&date_crr=" & date_end & "&time_crr=" & time & "&dates_start=" & convertDateStart)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataGetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift & "&date_crr=" & date_end & "&time_crr=" & time & "&dates_start=" & convertDateStart)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataGetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift & "&date_crr=" & date_end & "&time_crr=" & time & "&dates_start=" & convertDateStart)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataGetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift & "&date_crr=" & date_end & "&time_crr=" & time & "&dates_start=" & convertDateStart)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
@@ -314,8 +340,8 @@ ReConnect:
             End If
             date_st = date_st
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
-            Console.WriteLine("http://192.168.161.78:3000/api/dataDataTimestart?st_shift=" & st_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&dateCurr=" & date_end & "&TimeCurr=" & time)
-            Dim jsonString = api.Load_data("http://192.168.161.78:3000/api/dataDataTimestart?st_shift=" & st_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&dateCurr=" & date_end & "&TimeCurr=" & time)
+            Console.WriteLine("http://192.168.161.78:5000/api/dataDataTimestart?st_shift=" & st_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&dateCurr=" & date_end & "&TimeCurr=" & time)
+            Dim jsonString = api.Load_data("http://192.168.161.78:5000/api/dataDataTimestart?st_shift=" & st_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&dateCurr=" & date_end & "&TimeCurr=" & time)
             Dim jsSerializer As New JavaScriptSerializer()
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             Dim rs As String = data("formattedDateTime").ToString

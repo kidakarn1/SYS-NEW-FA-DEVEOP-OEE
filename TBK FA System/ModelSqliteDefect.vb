@@ -605,7 +605,9 @@ SELECT
 				dt.dt_name_en AS defect_name,
 				dt.dt_wi_no,
 				dt.dt_seq_no,
-				dt.pwi_id
+				dt.pwi_id,
+				dt.dt_main_cp,
+				dt.dt_supplier_code
 			FROM
 				defect_transactions as dt
 			WHERE
@@ -625,7 +627,9 @@ SELECT
 				dt.dt_wi_no,
 				dt.dt_seq_no,
 				dt.pwi_id,
-                dt.dt_name_en
+                dt.dt_name_en,
+				dt.dt_main_cp,
+				dt.dt_supplier_code
 				order by dt.dt_item_type asc"
             Console.WriteLine(Sql)
             Dim jsonData As String = api.Load_dataSQLite(Sql)

@@ -8,7 +8,7 @@ Imports Newtonsoft.Json.Linq
 Public Class Backoffice_model
     Public Shared total_nc As Integer = 0
     Public Shared flg_cat_layout_line As Integer = 0
-    'Public Shared myConnection As New SqlConnection  'ตัวแปรสำหรับติดต่อฐานข้อมูล
+    'Public Shared myConnection As New SqlConnection 'ตัวแปรสำหรับติดต่อฐานข้อมูล
     'Public Shared sqlConnect As String = "Server=192.168.161.101\PCSDBSV;Initial Catalog=tbkkfa01_dev;User ID=sa;Password=Te@m1nw;"
     Public Shared temp2Str As String
     Public Shared arr_backet_camp As List(Of String) = New List(Of String)
@@ -3297,7 +3297,6 @@ re_insert_rework_act:
         Else
             Check_loss_and_update_flg_loss()
         End If
-
         Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
         Dim reader As SqlDataReader
         Dim SQLConn As New SqlConnection() 'The SQL Connection
@@ -3315,7 +3314,6 @@ re_insert_rework_act:
             Else
                 SQLCmd.CommandText = "INSERT INTO loss_actual (wi,line_cd,item_cd,seq_no,shift_prd,start_loss,end_loss,loss_time,updated_date,loss_type,loss_cd_id,line_op_id,pd,transfer_flg , flg_control , pwi_id) VALUES ('" & wi_plan & "','" & line_cd & "','" & item_cd & "','" & seq_no & "','" & shift_prd & "','" & st_datetime2 & "','" & end_datetime2 & "','" & loss_time & "','" & currdated & "','" & loss_type & "','" & loss_id & "','" & op_id & "','" & pd & "','" & transfer_flg & "','" & flg_control & "','" & pwi_id & "')"
             End If
-
             reader = SQLCmd.ExecuteReader()
             'SQLConn.Dispose()
             SQLConn.Close()

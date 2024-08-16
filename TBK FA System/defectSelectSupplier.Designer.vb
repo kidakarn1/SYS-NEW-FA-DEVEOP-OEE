@@ -79,7 +79,7 @@ Partial Class defectSelectSupplier
         Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox1.Location = New System.Drawing.Point(19, 513)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(205, 80)
+        Me.PictureBox1.Size = New System.Drawing.Size(201, 80)
         Me.PictureBox1.TabIndex = 61
         Me.PictureBox1.TabStop = False
         '

@@ -199,18 +199,17 @@ Public Class modelDefect
             Return 0
         End Try
     End Function
-
     Public Shared Function mGetDatadefectcodeprint(wi As String, lot As String, seqNo As String, itemCd As String, dfType As String)
         Try
             Dim api = New api()
             Dim rsData = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDatadefectcodeprint?wi=" & wi & "&lot=" & lot & "&seqNo=" & seqNo & "&itemCd=" & itemCd & "&dfType=" & dfType)
-            MsgBox("model====>" & rsData)
+            'MsgBox("model====>" & rsData)
             Console.WriteLine("http://" & Backoffice_model.svApi & "/apiShopfloor_test/getDatadefect/getDatadefectcodeprint?wi=" & wi & "&lot=" & lot & "&seqNo=" & seqNo & "&itemCd=" & itemCd & "&dfType=" & dfType)
             If rsData <> "0" Then
                 Return rsData
             Else
-                MsgBox("connect Api Faill Please check modelDefect in Function mGetDatadefectcodeprint Data = 0 ")
-                Return 0
+                '     MsgBox("connect Api Faill Please check modelDefect in Function mGetDatadefectcodeprint Data = 0 ")
+                Return "0"
             End If
         Catch ex As Exception
             MsgBox("connect Api Faill Please check modelDefect in Function mGetDatadefectcodeprint = " & ex.Message)

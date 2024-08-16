@@ -75,6 +75,10 @@ Public Class Working_Pro
     Public Shared ResultPrint As Integer = 0
     Public Shared statusPrint As String = "Normal"
     Delegate Sub SetTextCallback(ByVal [text] As String)
+    Public Shared moe_min_a As Integer = 0
+    Public Shared moe_min_p As Integer = 0
+    Public Shared moe_min_q As Integer = 0
+    Public Shared moe_min_oee As Integer = 0
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         'Label44.Text = TimeOfDay.ToString("H:mm:ss")
         Label17.Text = TimeOfDay.ToString("H:mm:ss")
@@ -185,9 +189,9 @@ Public Class Working_Pro
             progressbarQ.Value = Int(totalProgressbar)
         End If
 
-        If totalProgressbar > 99.5 Then
+        If totalProgressbar >= moe_min_q Then
             progressbarQ.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
-        ElseIf totalProgressbar < 98 Then
+        ElseIf totalProgressbar < moe_min_q Then
             progressbarQ.ProgressColor = Color.Red
         End If
 
@@ -232,11 +236,11 @@ Public Class Working_Pro
             progressbarOEE.Text = totalProgressbar & "%"
             progressbarOEE.Value = totalProgressbar
         End If
-        If totalProgressbar > 90 Then
+        If totalProgressbar >= moe_min_oee Then
             progressbarOEE.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
-        ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
-            progressbarOEE.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
-        ElseIf totalProgressbar < 80 Then
+            '   ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
+            '       progressbarOEE.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
+        ElseIf totalProgressbar < moe_min_oee Then
             progressbarOEE.ProgressColor = Color.Red
         End If
     End Sub
@@ -253,11 +257,11 @@ Public Class Working_Pro
             progressbarA.Text = totalProgressbar & "%"
             progressbarA.Value = totalProgressbar
         End If
-        If totalProgressbar > 90 Then
+        If totalProgressbar >= moe_min_a Then
             progressbarA.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
-        ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
-            progressbarA.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
-        ElseIf totalProgressbar < 80 Then
+            ' ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
+            '     progressbarA.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
+        ElseIf totalProgressbar < moe_min_a Then
             progressbarA.ProgressColor = Color.Red
         End If
         Return totalProgressbar
@@ -342,11 +346,11 @@ Public Class Working_Pro
             progressbarP.Text = Int(totalProgressbar) & "%"
             progressbarP.Value = Int(totalProgressbar)
         End If
-        If totalProgressbar > 90 Then
+        If totalProgressbar >= moe_min_p Then
             progressbarP.ProgressColor = Color.FromArgb(20, 255, 0) ' Green color in RGB
-        ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
-            progressbarP.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
-        ElseIf totalProgressbar < 80 Then
+            'ElseIf totalProgressbar <= 90 And totalProgressbar >= 80 Then
+            '    progressbarP.ProgressColor = Color.FromArgb(255, 97, 0) ' Green orange
+        ElseIf totalProgressbar < moe_min_p Then
             progressbarP.ProgressColor = Color.Red
         End If
         Return totalProgressbar
@@ -422,10 +426,26 @@ Public Class Working_Pro
             MessageBox.Show($"Failed to load data: {ex.Message}")
         End Try
         Await ShowLoadingAndLoadData()
+        Dim mastOEE = OEE.OEE_LOAD_MSTOEE(MainFrm.Label4.Text)
+        Dim i As Integer = 1
+        Try
+            For Each item As Object In mastOEE
+                If item("moe_min_oee").ToString Is Nothing Then 'ไม่ได้ Set OEE ใน Database' 
+                    ' MsgBox("IF")
+                Else
+                    moe_min_a = item("moe_min_a").ToString
+                    moe_min_p = item("moe_min_p").ToString
+                    moe_min_q = item("moe_min_q").ToString
+                    moe_min_oee = item("moe_min_oee").ToString
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
         DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
         tag_group_no = Backoffice_model.Get_tag_group_no()
         CircularProgressBar2.Visible = False
-        Label7.Text = OEE.OEE_GET_NEW_TARGET(Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5), Label38.Text)
+        Label7.Text = OEE.OEE_GET_NEW_TARGET(Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5), Label38.Text,Label14.Text )
         Await setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
         Await setlvQ(Label24.Text, Label18.Text)
         Await set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
@@ -531,7 +551,7 @@ Public Class Working_Pro
         'While reader_shift.read()
         'LB_COUNTER_SHIP.Text = reader_shift("QTY_SHIFT").ToString()
         'End While
-        LB_COUNTER_SHIP.Text = OEE.OEE_getProduction_actual_detailByShift(MainFrm.Label4.Text)
+        LB_COUNTER_SHIP.Text = OEE.OEE_getProduction_actual_detailByShift(MainFrm.Label4.Text, Label4.Text)
         If LB_COUNTER_SHIP.Text = "" Then
             LB_COUNTER_SHIP.Text = 0
         Else
@@ -1021,7 +1041,6 @@ Public Class Working_Pro
             Backoffice_model.ins_loss_act_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
         End Try
     End Sub
-
     Public Async Function Start_Production() As Task '
         If check_network_frist = 0 Then
             Try
@@ -1401,8 +1420,8 @@ Public Class Working_Pro
         Try
             Dim webViewEnvironment = Await CoreWebView2Environment.CreateAsync(Nothing, "C:\Temp")
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
-            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogress/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
-            Console.WriteLine("192.168.161.219/productionHrProgress/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
+            Console.WriteLine("192.168.161.219/productionHrprogressTest/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
         Catch ex As Exception
             '   MessageBox.Show($"Failed to initialize WebView2: {ex.Message}")
         End Try
@@ -2515,7 +2534,6 @@ Public Class Working_Pro
         End Try
     End Function
     Protected Overrides Sub WndProc(ByRef m As Message)
-
         If check_bull = 0 Then
             Dim BitNo As Short
             Dim Id As Short
@@ -3132,7 +3150,7 @@ Public Class Working_Pro
             If check_format_tag = "1" Then ' for tag_type = '2' and tag_issue_flg = '2'  OR K1M183
                 lb_box_count.Text = lb_box_count.Text + 1
                 print_back.PrintDocument2.Print()
-                If result_mod = "0" Then
+                If result_mod = "0" Or Label10.Text = "0" Then
                     Label_bach.Text += 1
                     GoodQty = Label6.Text
                     tag_print()
@@ -4279,6 +4297,7 @@ Public Class Working_Pro
     End Function
     Private Sub PictureBox14_Click(sender As Object, e As EventArgs) Handles PictureBox14.Click, btnInfo.Click
         'Dim showD = New show_detail_production
+        Me.Enabled = False
         show_detail_production.Show()
     End Sub
     Private Sub PictureBox16_Click(sender As Object, e As EventArgs) Handles PictureBox16.Click

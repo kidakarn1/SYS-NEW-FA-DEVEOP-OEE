@@ -1,5 +1,4 @@
 ﻿Imports System.Web.Script.Serialization
-
 Public Class defectSelectSupplier
     Shared dSelectcode As New defectSelectcode()
     Shared Source_cd_supplier As String = ""

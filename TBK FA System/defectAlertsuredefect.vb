@@ -151,7 +151,6 @@ Public Class defectAlertsuredefect
         Dim mdsqlie = New ModelSqliteDefect
         'rsNc = md.GetdatachildpartsummarychildgrouppartAdminAdjust(wi, seq, lot, dfType, obj.SPART) 'NC
         'rsFgNc = md.Getdatachildpartsummaryfggrouppart(wi, seq, lot, dfType) 'NC
-
         rsNc = mdsqlie.mSqliteGetdatachildpartsummarychildgrouppartAdminAdjust(wi, seq, lot, dfType, obj.SPART)
         rsFgNc = mdsqlie.mSqliteGetdatachildpartsummaryfggrouppart(wi, seq, lot, dfType)
         Dim itemType = "1"

@@ -178,8 +178,6 @@ Public Class defectAdminAdjustnumpadadjust
             MsgBox("Please Check QTY.")
         End If
     End Sub
-
-
     Public Function updateAddjustqty(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, dtItemCd As String, pwi_id As String)
         Dim md As New modelDefect()
         Dim mdSqlite As New ModelSqliteDefect()

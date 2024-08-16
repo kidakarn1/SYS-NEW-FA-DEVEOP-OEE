@@ -114,6 +114,8 @@ Public Class defectDetailng
                         dtWino = lvDefectdetails.Items(lvItem.Index).SubItems(6).Text
                         dtSeqno = lvDefectdetails.Items(lvItem.Index).SubItems(7).Text
                         dtpwi_id = lvDefectdetails.Items(lvItem.Index).SubItems(8).Text
+                        Me.mainCP = lvDefectdetails.Items(lvItem.Index).SubItems(9).Text
+                        Me.source_code_supplier = lvDefectdetails.Items(lvItem.Index).SubItems(10).Text
                     End If
                 Next
                 Dim dfNumpadafjust = New defectNumpadadjust

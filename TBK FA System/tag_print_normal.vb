@@ -645,7 +645,6 @@ Public Class tag_print_normal
                 Next
                 Dim qrcode As New MessagingToolkit.QRCode.Codec.QRCodeEncoder
                 qrcode.QRCodeScale = 10
-
                 Dim bitmap_qr_box As Bitmap = qrcode.Encode("TEST")
                 Dim qr_by_model = 120
                 Dim qr_by_model_left = 118
@@ -709,13 +708,17 @@ Public Class tag_print_normal
         'End If
     End Sub
     Private Sub PrintDocument1_PrintPage(sender As Object, e As Printing.PrintPageEventArgs) Handles PrintDocument1.PrintPage
-        Dim Newbox = GenNewBox(CDbl(Val(get_qr.Substring(100, 3))))
-        If MainFrm.chk_spec_line = "2" Then
-            printSpecial(e)
-        Else
-            Adminkeep_data_and_gen_qr_tag_fa_completed(GgoodQty, UseDefect, SNP, Seq, Newbox, dateAct, productType, MainFrm.chk_spec_line, "0", lot)
-            priontNornal(e)
-        End If
+        Try
+            Dim Newbox = GenNewBox(CDbl(Val(get_qr.Substring(100, 3))))
+            If MainFrm.chk_spec_line = "2" Then
+                printSpecial(e)
+            Else
+                Adminkeep_data_and_gen_qr_tag_fa_completed(GgoodQty, UseDefect, SNP, Seq, Newbox, dateAct, productType, MainFrm.chk_spec_line, "0", lot)
+                priontNornal(e)
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
     Public Function GenNewBox(box As Integer)
         Dim newBox As Integer = box + 1
