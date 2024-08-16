@@ -522,7 +522,6 @@ Public Class Working_Pro
             time_st = " 20:00:00"
             time_end = " 08:00:00"
         End If
-
         If time > "23:59:59" Then
             date_st = date_now_date.AddDays(-1)
             date_st = Convert.ToDateTime(date_st).ToString("dd-MM-yyyy")
@@ -577,6 +576,7 @@ Public Class Working_Pro
         calProgressOEE(A, Q, P)
         Timer2.Start()
         Me.Enabled = True
+        Start_Production() ' click frist
         loadingForm.Hide()
     End Sub
     Public Sub check_seq_data()

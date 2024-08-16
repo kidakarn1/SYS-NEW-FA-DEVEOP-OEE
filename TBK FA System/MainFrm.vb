@@ -95,8 +95,7 @@ Public Class MainFrm
             End If
             Insert_list.Label3.Text = Label4.Text
             Prd_detail.Label3.Text = Label4.Text
-
-            '  RobotApppSuport.loadMain()
+            ' RobotApppSuport.loadMain()
         Else
             Application.Exit()
         End If
