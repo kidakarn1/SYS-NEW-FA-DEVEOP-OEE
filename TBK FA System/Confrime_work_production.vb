@@ -253,10 +253,10 @@ re_load:
                         Working_Pro.newPartname.Text = Working_Pro.newPartname.Text.ToString.Substring(0, 17) & "..."
                     End If
                     Working_Pro.Label8.Text = Prd_detail.lb_plan_qty.Text
-                        'Working_Pro.Label6.Text = ListView1.Items(numOfindex).SubItems(4).Text.ToString
-                        'SNP
-                        'Working_Pro.Label27.Text = Prd_detail.lb_snp.Text
-                        Dim cavi_ty As Integer = MainFrm.cavity.Text
+                    'Working_Pro.Label6.Text = ListView1.Items(numOfindex).SubItems(4).Text.ToString
+                    'SNP
+                    'Working_Pro.Label27.Text = Prd_detail.lb_snp.Text
+                    Dim cavi_ty As Integer = MainFrm.cavity.Text
                     'CT = ListBox2
                     Working_Pro.CycleTime.Text = Prd_detail.lb_ct.Text
                     Dim time_req As Double = Prd_detail.lb_ct.Text * Prd_detail.lb_remain_qty.Text

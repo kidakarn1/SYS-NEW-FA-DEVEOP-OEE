@@ -109,12 +109,14 @@ Friend Class defectSelectcode
 
         End Try
     End Sub
-
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         If MainFrm.chk_spec_line = "2" Then
             If dSelecttype.type = "1" Then
-                Dim objdSelectFGSPC As New defectSpecialSelectFG()
-                objdSelectFGSPC.Show()
+                'Dim objdSelectFGSPC As New defectSpecialSelectFG()
+                'objdSelectFGSPC.Show()
+                'Me.Close()
+                Dim objdSelecttype As New defectSelecttype()
+                objdSelecttype.Show()
                 Me.Close()
             Else
                 Dim objdSelecttype As New defectSelecttype()

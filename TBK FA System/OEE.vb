@@ -72,10 +72,12 @@ Public Class OEE
         Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/GetWorkingTime?line_cd=" & line_cd & "&st_shift=" & Timeshift)
         Return rs
     End Function
-    Public Shared Function OEE_getDateTimeStart(st_shift As String, line_cd As String)
+    Public Shared Async Function OEE_getDateTimeStart(st_shift As String, line_cd As String) As Task(Of String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getDateTimeStart?st_shift=" & st_shift & "&line_cd=" & line_cd)
-        Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getDateTimeStart?st_shift=" & st_shift & "&line_cd=" & line_cd)
+        Dim url As String = "http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getDateTimeStart?st_shift=" & st_shift & "&line_cd=" & line_cd
+        Console.WriteLine(url)
+        ' Assuming Load_data is synchronous, use Task.Run to make it asynchronous
+        Dim rs As String = Await Task.Run(Function() api.Load_data(url))
         Return rs
     End Function
 End Class

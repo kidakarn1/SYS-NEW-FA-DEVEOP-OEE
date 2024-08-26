@@ -402,7 +402,6 @@ Public Class Working_Pro
         Await LoadDataAsync()
         ' ปิดหน้าต่างกำลังโหลดเมื่อเสร็จสิ้นการโหลดข้อมูล
     End Function
-
     Private Async Function LoadDataAsync() As Task
         ' จำลองการโหลดข้อมูล (แทนที่ด้วยการโหลดข้อมูลจริง)
         Await Task.Delay(5000) ' รอ 3 วินาที
@@ -576,7 +575,7 @@ Public Class Working_Pro
         calProgressOEE(A, Q, P)
         Timer2.Start()
         Me.Enabled = True
-        Start_Production() ' click frist
+        'Start_Production() ' click frist
         loadingForm.Hide()
     End Sub
     Public Sub check_seq_data()
@@ -1124,8 +1123,7 @@ Public Class Working_Pro
                 Next
             End If
             check_in_up_seq += 1
-            DateTimeStartofShift.Text = Await OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
-            LOAD_OEE()
+            ' Await the completion of setting DateTimeStartofShift.Text
         End If
         Main()
         Try
@@ -1140,11 +1138,13 @@ Public Class Working_Pro
                     Dim end_loss_codex As String = ""
                     Dim start_loss_codex As String = ""
                     Dim Loss_Time_codex As String = ""
+                    Dim Loss_Code As String = ""
                     Try
                         For Each item As Object In dict3
                             start_loss_codex = item("Start_Loss").ToString()
                             end_loss_codex = item("End_Loss").ToString()
                             Loss_Time_codex = item("Loss_Time").ToString()
+                            Loss_Code = item("Loss_Code").ToString()
                             If CDbl(Val(Loss_Time_codex)) > 0 Then
                                 If MainFrm.chk_spec_line = "2" Then
                                     Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -1155,11 +1155,11 @@ Public Class Working_Pro
                                         Dim indRow As String = itemPlanData.IND_ROW
                                         Dim wi As String = itemPlanData.wi
                                         Dim item_cd As String = itemPlanData.item_cd
-                                        ins_loss_code(MainFrm.Label6.Text, Label24.Text, wi, item_cd, Iseq, Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, "36", "0", Spwi_id(j))
+                                        ins_loss_code(MainFrm.Label6.Text, Label24.Text, wi, item_cd, Iseq, Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", Spwi_id(j))
                                         j = j + 1
                                     Next
                                 Else
-                                    ins_loss_code(MainFrm.Label6.Text, Label24.Text, wi_no.Text, Label3.Text, CDbl(Val(Label22.Text)), Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, "36", "0", pwi_id)
+                                    ins_loss_code(MainFrm.Label6.Text, Label24.Text, wi_no.Text, Label3.Text, CDbl(Val(Label22.Text)), Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", pwi_id)
                                 End If
                             End If
                         Next
@@ -1169,7 +1169,6 @@ Public Class Working_Pro
                 End If
             End If
         Catch ex As Exception
-
         End Try
         Dim line_id As String = MainFrm.line_id.Text
         Try
@@ -1409,6 +1408,11 @@ Public Class Working_Pro
         'LB_COUNTER_SEQ.BringToFront()
         ' CircularProgressBar2.Visible = True
         connect_counter_qty()
+        If CDbl(Val(check_in_up_seq)) - 1 = 0 Then
+            DateTimeStartofShift.Text = Await OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
+            ' Await the completion of LOAD_OEE
+            Await LOAD_OEE()
+        End If
     End Function
     Public Async Function loadDataProgressBar(line_cd As String, shift As String) As Task
         Dim OEE = New OEE_NODE
@@ -3384,26 +3388,34 @@ Public Class Working_Pro
     End Function
     Async Function LOAD_OEE() As Task
         Try
-            Console.WriteLine("READY LOAD OEE 2 ")
-            Await Task.Delay(60000).ContinueWith(Sub(task)
-                                                     'Inside the continuation, Invoke on the UI thread
-                                                     Try
-                                                         Me.Invoke(Sub()
-                                                                       Try
-                                                                           Console.WriteLine("READY LOAD OEE call ")
-                                                                           cal_eff()
-                                                                       Catch ex As Exception
-                                                                           Console.WriteLine("CATCH LOAD OEE call ")
-                                                                       End Try
-                                                                   End Sub)
-                                                     Catch ex As Exception
-                                                         Console.WriteLine("CATCH NO LOAD OEE ")
-                                                     End Try
-                                                 End Sub, TaskScheduler.FromCurrentSynchronizationContext())
+            While True
+                ' MsgBox("FFFFF")
+                Console.WriteLine("READY LOAD OEE 2 ")
+                Await Task.Delay(60000).ContinueWith(Sub(task)
+                                                         ' Inside the continuation, Invoke on the UI thread
+                                                         Try
+                                                             Me.Invoke(Sub()
+                                                                           Try
+                                                                               Console.WriteLine("READY LOAD OEE call ")
+                                                                               cal_eff()
+                                                                           Catch ex As Exception
+                                                                               Console.WriteLine("CATCH LOAD OEE call ")
+                                                                           End Try
+                                                                       End Sub)
+                                                         Catch ex As Exception
+                                                             Console.WriteLine("CATCH NO LOAD OEE ")
+                                                         End Try
+                                                     End Sub, TaskScheduler.FromCurrentSynchronizationContext())
+
+                ' Wait for 10 seconds before running the loop again
+                ' Await Task.Delay(120000)
+            End While
         Catch ex As Exception
             Console.WriteLine("err cal_eff ===>" & ex.Message)
         End Try
     End Function
+
+
     Public Async Function cal_eff() As Task
         Try
             Console.WriteLine("READY LOAD OEE cal_eff ")

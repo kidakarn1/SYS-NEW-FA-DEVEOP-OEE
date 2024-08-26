@@ -3633,6 +3633,7 @@ re_insert_rework_act:
         Try
             Dim api = New api()
             Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
+            Console.WriteLine("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
             Return GetData
         Catch ex As Exception
             MsgBox("Error Function Get_MaxManPower In Backoffice_model")
