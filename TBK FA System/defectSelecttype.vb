@@ -1,6 +1,5 @@
 ﻿Imports System.Net
 Imports System.Web.Script.Serialization
-
 Friend Class defectSelecttype
     Public Shared type
     Shared pFG
@@ -188,6 +187,9 @@ Friend Class defectSelecttype
                 ' Me.dfSS = btnPartfg.Text
                 dfSS.Show()
                 Me.Hide()
+            Else
+                MsgBox("Please Enable Line Special.")
+                lvChildpart.Items(0).Selected = True
             End If
         Else
             Dim sDefectcode As New defectSelectcode()
@@ -224,14 +226,18 @@ Friend Class defectSelecttype
 
     Private Sub Label3_Click(sender As Object, e As EventArgs)
     End Sub
+
     Private Sub lbType_Click(sender As Object, e As EventArgs)
     End Sub
+
     Private Sub Label4_Click(sender As Object, e As EventArgs)
 
     End Sub
+
     Private Sub btnDown_Click(sender As Object, e As EventArgs) Handles btnDown.Click
         tbnDown()
     End Sub
+
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
         If lvChildpart.SelectedItems.Count > 0 Then
             Dim sDefectcode As New defectSelectcode()
