@@ -28,6 +28,14 @@ Friend Class defectSelecttype
         sPart = ""
     End Sub
     Private Sub defectSelecttype_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim mdDefect = New modelDefect
+        If mdDefect.mGetDataEnableFGPart(MainFrm.Label4.Text) = "0" Then
+            btnPartfg.Enabled = False
+            ' btnPartfg.Visible = False
+        Else
+            btnPartfg.Enabled = True
+            'btnPartfg.Visible = True
+        End If
         Dim dfHpme As New defectHome()
         If dfHpme.dtType = "NC" Then
             'lvChildpart.BackColor = Color.Peru
@@ -110,7 +118,6 @@ Friend Class defectSelecttype
         'dfHome.show()
         tbnUp()
     End Sub
-
     Public Sub tbnUp()
         If S_index < 0 Then
             S_index = 0
@@ -152,9 +159,7 @@ Friend Class defectSelecttype
         Catch ex As Exception
 
         End Try
-
     End Sub
-
     Private Sub lvChildpart_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lvChildpart.SelectedIndexChanged
         For Each lvItem As ListViewItem In lvChildpart.SelectedItems
             Me.sPart = lvChildpart.Items(lvItem.Index).SubItems(1).Text
@@ -189,7 +194,10 @@ Friend Class defectSelecttype
                 Me.Hide()
             Else
                 MsgBox("Please Enable Line Special.")
-                lvChildpart.Items(0).Selected = True
+                'Dim sDefectcode As New defectSelectcode()
+                'Me.sPart = btnPartfg.Text
+                'lvChildpart.Items(0).Selected = True
+                'lvChildpart.Select()
             End If
         Else
             Dim sDefectcode As New defectSelectcode()

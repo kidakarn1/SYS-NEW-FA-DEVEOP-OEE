@@ -104,7 +104,7 @@ Public Class Sc
     Public Sub checkEmp()
 recheck:
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim total = List_Emp.ListView1.Items.Count
                 If total < List_Emp.MaxManPower Then
                     TextBox2.Text = TextBox2.Text.ToUpper()
@@ -287,7 +287,7 @@ recheck:
     End Sub
     Private Sub TextBox2_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextBox2.KeyDown
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 If e.KeyCode = Keys.Enter Then
                     Dim back = New Backoffice_model
                     List_Emp.MaxManPower = back.Get_MaxManPower(MainFrm.Label4.Text)

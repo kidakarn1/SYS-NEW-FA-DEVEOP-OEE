@@ -462,7 +462,7 @@ Public Class ModelSqliteDefect
     End Function
     Public Shared Function mUpdateaddjust(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, ItemType As String, PartNo As String, supplier_cd As String)
         'Dim api = New api()
-        ' Dim rsData As Boolean = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test/updateDatadefect/updateDatadefectregister?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & CDbl(Val(dtSeqno)) & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & ItemType & "&PartNo=" & PartNo)
+        ' Dim rsData As Boolean = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test_test/updateDatadefect/updateDatadefectregister?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & CDbl(Val(dtSeqno)) & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & ItemType & "&PartNo=" & PartNo)
         Dim sqliteConn As New SQLiteConnection(Backoffice_model.sqliteConnect)
         Backoffice_model.Check_connect_sqlite()
         Backoffice_model.Clear_sqlite()

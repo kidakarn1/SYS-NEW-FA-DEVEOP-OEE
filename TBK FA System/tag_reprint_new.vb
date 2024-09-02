@@ -30,7 +30,7 @@ Public Class tag_reprint_new
     End Sub
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 tag_print()
                 Dim numOfindex As Integer = ListView1.SelectedIndices(0)
                 Dim qr_code As String = ListBox1.Items(numOfindex)
@@ -57,7 +57,7 @@ Public Class tag_reprint_new
         Dim seq_plan = ListView1.Items(g_index).SubItems(2).Text
         Dim seq_box = ListView1.Items(g_index).SubItems(4).Text
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim numOfindex As Integer = ListView1.SelectedIndices(0)
                 Dim qr_code As String = ListBox1.Items(numOfindex)
                 Backoffice_model.update_data_new_qr_detail(qr_code)
@@ -115,7 +115,7 @@ Public Class tag_reprint_new
             lot_no = "NO_DATA"
             aPen.Width = 2.0F
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     If Application.OpenForms().OfType(Of Sel_prd_setup).Any Then
                         part_no = Working_Pro.Label3.Text
                         part_name = Working_Pro.Label12.Text

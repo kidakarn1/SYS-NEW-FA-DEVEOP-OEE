@@ -58,15 +58,13 @@
         End If
 
     End Sub
-
     Protected Overrides Function ProcessCmdKey(ByRef msg As System.Windows.Forms.Message,
-           ByVal keyData As System.Windows.Forms.Keys) _
+                                           ByVal keyData As System.Windows.Forms.Keys) _
                                            As Boolean
         Dim usernm As String = TextBox1.Text
         Dim passwd As String = TextBox2.Text
         Dim numm As Integer = 0
         Dim temppo = Backoffice_model.chkLogin(usernm, passwd)
-
         If msg.WParam.ToInt32() = CInt(Keys.Enter) Then
             If temppo.HasRows = True Then
                 While temppo.Read()

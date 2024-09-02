@@ -346,7 +346,7 @@ Public Class ins_qty_special_time
     End Sub
     Public Sub check_spc_time_time()
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Try
                     Dim timeclickStart As Date
                     Dim DatetimeclickStart

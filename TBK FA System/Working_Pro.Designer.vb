@@ -1376,7 +1376,7 @@ Partial Class Working_Pro
         Me.lbNextTime.BackColor = System.Drawing.Color.Transparent
         Me.lbNextTime.Font = New System.Drawing.Font("Catamaran", 20.0!, System.Drawing.FontStyle.Bold)
         Me.lbNextTime.ForeColor = System.Drawing.Color.FromArgb(CType(CType(1, Byte), Integer), CType(CType(222, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.lbNextTime.Location = New System.Drawing.Point(392, 532)
+        Me.lbNextTime.Location = New System.Drawing.Point(652, 67)
         Me.lbNextTime.Margin = New System.Windows.Forms.Padding(6, 0, 6, 0)
         Me.lbNextTime.Name = "lbNextTime"
         Me.lbNextTime.Size = New System.Drawing.Size(133, 29)
@@ -2412,6 +2412,7 @@ Partial Class Working_Pro
         Me.BackColor = System.Drawing.Color.White
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(800, 600)
+        Me.Controls.Add(Me.lbNextTime)
         Me.Controls.Add(Me.newPartname)
         Me.Controls.Add(Me.Label49)
         Me.Controls.Add(Me.Label29)
@@ -2541,7 +2542,6 @@ Partial Class Working_Pro
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.PictureBox16)
         Me.Controls.Add(Me.PictureBox15)
-        Me.Controls.Add(Me.lbNextTime)
         Me.Controls.Add(Me.lb_good)
         Me.Controls.Add(Me.Panel7)
         Me.Controls.Add(Me.lb_ng_qty)

@@ -528,7 +528,7 @@ Public Class List_Emp
                     avarage_act_prd_time = 0
                 End Try
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         transfer_flg = "1"
                         'Backoffice_model.Insert_prd_close_lot(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
                         Backoffice_model.Insert_prd_close_lot_sqlite(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)

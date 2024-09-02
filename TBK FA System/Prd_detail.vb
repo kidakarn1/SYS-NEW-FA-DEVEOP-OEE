@@ -21,7 +21,7 @@ Public Class Prd_detail
     End Sub
     Public Function check_network()
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 status_check_ping = 1
             Else
                 status_check_ping = 0
@@ -103,7 +103,7 @@ Public Class Prd_detail
     End Sub
     Public Sub check_lot()
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim i = List_Emp.ListView1.Items.Count
                 If i > 0 Then
                     Dim lotSubstYear As String = DateTime.Now.ToString("yyyy").Substring(3, 1)

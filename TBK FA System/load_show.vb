@@ -4,7 +4,7 @@
 recheck:
         If check_net = 15 Then
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     Timer1.Enabled = False
                     Me.Close()
                 End If

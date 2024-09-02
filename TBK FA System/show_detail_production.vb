@@ -29,9 +29,18 @@
         LB_PLAN_DATE.Text = Prd_detail.LB_PLAN_DATE.Text
         LB_WORKER.Text = MainFrm.LB_Number_worker.Text
         LB_WI.Text = Prd_detail.lb_wi.Text
+        lbNextTime.Text = Working_Pro.lbNextTime.Text
     End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Working_Pro.Enabled = True
         Me.Close()
+    End Sub
+
+    Private Sub LB_WI_Click(sender As Object, e As EventArgs) Handles LB_WI.Click
+
+    End Sub
+
+    Private Sub LB_ACT_CT_Click(sender As Object, e As EventArgs) Handles LB_ACT_CT.Click
+
     End Sub
 End Class

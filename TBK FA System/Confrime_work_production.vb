@@ -8,7 +8,7 @@ Public Class Confrime_work_production
     Public Shared Function next_pae()
         Dim count_reload As Integer = 0
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim line_cd_na As String = Prd_detail.Label3.Text
                 Dim LoadSQL1 = Backoffice_model.Get_Last_part(line_cd_na)
                 While LoadSQL1.Read()

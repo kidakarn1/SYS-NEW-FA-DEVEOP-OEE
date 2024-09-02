@@ -13,7 +13,7 @@ Imports System.Drawing.Printing
 Imports System.Configuration
 Imports GenCode128
 Imports BarcodeLib.Barcode
-'Imports NationalInstruments.DAQmx
+'Imports NationalInstruments.DAQmx 
 Imports System.Net
 Imports System.Web.Script.Serialization
 Imports Microsoft.Web.WebView2.Core
@@ -757,7 +757,7 @@ Public Class Working_Pro
     End Sub
     Private Sub btn_setup_Click(sender As Object, e As EventArgs) Handles btn_setup.Click, btnSetUp.Click
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Sel_prd_setup.Show()
                 Me.Enabled = False
             Else
@@ -819,7 +819,7 @@ Public Class Working_Pro
         'Label10.BringToFront()
         Dim line_id As String = MainFrm.line_id.Text
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.line_status_upd(line_id)
             Else
                 Backoffice_model.line_status_upd_sqlite(line_id)
@@ -832,7 +832,7 @@ Public Class Working_Pro
         Dim date_st As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
         Dim date_end As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.line_status_ins(line_id, date_st, date_end, "1", "0", 24, "0", Prd_detail.lb_wi.Text)
             Else
                 Backoffice_model.line_status_ins_sqlite(line_id, date_st, date_end, "1", "0", 24, "0", Prd_detail.lb_wi.Text)
@@ -964,7 +964,7 @@ Public Class Working_Pro
             Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
                     Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_time, number_qty, pwi_id, tr_status)
@@ -1027,7 +1027,7 @@ Public Class Working_Pro
             flg_control = "0"
         End If
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 transfer_flg = "1"
                 Backoffice_model.ins_loss_act(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
                 Backoffice_model.ins_loss_act_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
@@ -1043,7 +1043,7 @@ Public Class Working_Pro
     Public Async Function Start_Production() As Task '
         If check_network_frist = 0 Then
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     Prd_detail.Timer3.Enabled = False
                 End If
             Catch ex As Exception
@@ -1127,7 +1127,7 @@ Public Class Working_Pro
         End If
         Main()
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim bf = New Backoffice_model
                 Dim RsCheckProduction_Plan = bf.Get_Plan_All_By_Line(Backoffice_model.GET_LINE_PRODUCTION(), Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
                 If RsCheckProduction_Plan <> "0" Then
@@ -1172,7 +1172,7 @@ Public Class Working_Pro
         End Try
         Dim line_id As String = MainFrm.line_id.Text
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.line_status_upd(line_id)
                 Backoffice_model.line_status_upd_sqlite(line_id)
             Else
@@ -1191,7 +1191,7 @@ Public Class Working_Pro
                 Iseq += 1
                 Dim wi As String = itemPlanData.wi
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         Backoffice_model.line_status_ins(line_id, date_st, date_end, "2", "0", 0, "0", wi)
                         Backoffice_model.line_status_ins_sqlite(line_id, date_st, date_end, "2", "0", 0, "0", wi)
                     Else
@@ -1203,7 +1203,7 @@ Public Class Working_Pro
             Next
         Else
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     Backoffice_model.line_status_ins(line_id, date_st, date_end, "2", "0", 0, "0", Prd_detail.lb_wi.Text)
                     Backoffice_model.line_status_ins_sqlite(line_id, date_st, date_end, "2", "0", 0, "0", Prd_detail.lb_wi.Text)
                 Else
@@ -1249,7 +1249,7 @@ Public Class Working_Pro
             Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -1427,7 +1427,7 @@ Public Class Working_Pro
             WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
             Console.WriteLine("192.168.161.219/productionHrprogressTest/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
         Catch ex As Exception
-            '   MessageBox.Show($"Failed to initialize WebView2: {ex.Message}")
+            ' MessageBox.Show($"Failed to initialize WebView2: {ex.Message}")
         End Try
     End Function
 
@@ -1558,7 +1558,7 @@ Public Class Working_Pro
 
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -1611,7 +1611,7 @@ Public Class Working_Pro
             Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_time, number_qty, Label18.Text, tr_status)
                     Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, Label18.Text)
@@ -1664,7 +1664,7 @@ Public Class Working_Pro
                 End Try
 
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         transfer_flg = "0"
 
                         Backoffice_model.Insert_prd_close_lot(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
@@ -1771,7 +1771,7 @@ Public Class Working_Pro
     Public count As String = 0
     Public Async Function counter_contect_DIO() As Task
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -1950,7 +1950,7 @@ Public Class Working_Pro
             End If
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -1999,7 +1999,7 @@ Public Class Working_Pro
             Dim number_qty As Integer = Label6.Text
             Dim result_use_time As Double = Cal_Use_Time_ins_qty_fn_manual(start_time2, end_time2)
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -2107,7 +2107,7 @@ Public Class Working_Pro
     Public Async Function counter_contect_DIO_RS232() As Task
         Console.WriteLine("READY NI MAX")
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -2271,7 +2271,7 @@ Public Class Working_Pro
             End If
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -2326,7 +2326,7 @@ Public Class Working_Pro
             'Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_timee, tr_status)
             Dim result_use_time As Double = Cal_Use_Time_ins_qty_fn_manual(start_time2, end_time2)
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -2975,7 +2975,7 @@ Public Class Working_Pro
         End If
         Dim qr_detailss As String = ""
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 If check_tag_type = "2" Then
                     Dim the_Label_bach As String
                     If Trim(Len(Label_bach.Text)) = 1 Then
@@ -3112,7 +3112,7 @@ Public Class Working_Pro
         e.Graphics.DrawString("SEQ:" & plan_seq, lb_font4.Font, Brushes.Black, 430, 252)
         e.Graphics.DrawString("Use @ TBKK(Thailand) Co., Ltd.", lb_font1.Font, Brushes.Black, 525, 282)
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.Insert_tag_print(wi_no.Text, qr_detailss, box_no, 1, plan_seq, Label14.Text, check_tagprint(), Label3.Text, pwi_id, Working_Pro.tag_group_no, GoodQty)
                 'MsgBox("Ping completed")
             Else
@@ -3242,7 +3242,7 @@ Public Class Working_Pro
             End If
             Label10.Text = driff
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -3310,7 +3310,7 @@ Public Class Working_Pro
             comp_flg = 1
             If comp_flg = 1 Then
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         tr_status = "1"
                         If MainFrm.chk_spec_line = "2" Then
                             Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -3463,7 +3463,7 @@ Public Class Working_Pro
         Dim minSt As Integer = st_time.Text.Substring(14, 2)
         Dim secSt As Integer = st_time.Text.Substring(17, 2)
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -3566,7 +3566,7 @@ Public Class Working_Pro
                 End If
                 Dim loss_sum As Integer
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                         While LoadSQL.Read()
                             loss_sum = LoadSQL("sum_loss")
@@ -3617,7 +3617,7 @@ Public Class Working_Pro
                     end_time2 = Backoffice_model.end_check_date_paralell_line
                 End If
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         tr_status = "1"
                         Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
                         Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time2, end_time2, use_time, number_qty, pwi_id, tr_status)
@@ -3666,7 +3666,7 @@ Public Class Working_Pro
                     Dim close_lot_flg As String = "1"
                     Dim avarage_act_prd_time As Double = Average
                     Try
-                        If My.Computer.Network.Ping("192.168.161.101") Then
+                        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                             transfer_flg = "1"
                             Backoffice_model.Insert_prd_close_lot(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
                             Backoffice_model.Insert_prd_close_lot_sqlite(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
@@ -3716,7 +3716,7 @@ Public Class Working_Pro
         End If
         Desc_act.Label1.Text = CDbl(Val(LB_COUNTER_SEQ.Text)) 'result
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.updated_data_to_dbsvr()
                 Desc_act.Show()
                 Me.Enabled = False
@@ -3765,7 +3765,7 @@ Public Class Working_Pro
     Public Async Function counter_data_new_dio() As Task
         Console.WriteLine("READY NI MAX")
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -3920,7 +3920,7 @@ Public Class Working_Pro
             End If
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -3975,7 +3975,7 @@ Public Class Working_Pro
             'Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_timee, tr_status)
             Dim result_use_time As Double = Cal_Use_Time_ins_qty_fn_manual(start_time2, end_time2)
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length

@@ -108,7 +108,7 @@ Public Class tag_print_normal
             lot_no = "NO_DATA"
             aPen.Width = 2.0F
             Try
-                If My.Computer.Network.Ping("192.168.161.101") Then
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 
                     Dim data = qr_detailss.Split(" ")
                     part_no = data(0).Substring(19)
@@ -768,7 +768,7 @@ Public Class tag_print_normal
         lot_no = "NO_DATA"
         aPen.Width = 2.0F
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim data = qr_detailss.Split(" ")
                 part_no = data(0).Substring(19)
                 ' qty = 'qr_detailss.Substring(52, 6)
@@ -1080,7 +1080,7 @@ Public Class tag_print_normal
         box_no = newbox
         Dim qr_detailss As String = ""
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 If specialLine = "2" Then
                     Dim the_Label_bach As String
                     If Trim(Len(batch)) = 1 Then

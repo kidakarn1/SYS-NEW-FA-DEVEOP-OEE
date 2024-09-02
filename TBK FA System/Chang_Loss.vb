@@ -18,9 +18,9 @@ Public Class Chang_Loss
         Dim line_id As String = MainFrm.line_id.Text
         Dim status_loss As Integer = 0
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         Backoffice_model.line_status_upd(line_id)
                         Backoffice_model.line_status_upd_sqlite(line_id)
                     Else
@@ -32,7 +32,7 @@ Public Class Chang_Loss
                 Dim date_st As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                 Dim date_end As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         If MainFrm.chk_spec_line = "2" Then
                             Dim j As Integer = 0
                             For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
@@ -74,7 +74,7 @@ Public Class Chang_Loss
                 If ListBox1.Items(sel_cd) = 1 Then
                     Dim LoadSQL
                     Try
-                        If My.Computer.Network.Ping("192.168.161.101") Then
+                        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                             LoadSQL = Backoffice_model.get_loss_op_mst(MainFrm.Label4.Text)
                             If LoadSQL <> "0" Then
                                 Dim numm As Integer = 0
@@ -121,7 +121,7 @@ Public Class Chang_Loss
                 End If
                 Loss_reg.date_start_data = Date.Parse(TimeOfDay.ToString("H:mm:ss"))
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         transfer_flg = "1"
                         If MainFrm.chk_spec_line = "2" Then
                             Dim j As Integer = 0

@@ -2,7 +2,7 @@
     Dim contDelay As Integer = 0
     Dim flg_check As Integer = 0
     Public date_start_data = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
-    Public Sub SatrtWork()
+    Public Function SatrtWork() As Task
         If PanelShowLoss.Visible Then
             UpdateAutoLoss()
             Dim BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text) ' for set data 
@@ -47,7 +47,7 @@
             Working_Pro.Start_Production()
             Me.Close()
         End If
-    End Sub
+    End Function
     Private Sub btnContinue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click
         SatrtWork()
     End Sub
@@ -68,7 +68,7 @@
         Dim op_id As String = "0"
         Dim loss_cd_id As String = "35"
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svApi) Then
                 transfer_flg = "1"
                 If closeLotsummary.Visible Then
                     loss_cd_id = "36"
@@ -214,7 +214,7 @@
         Dim loss_type As String = "0"  '0:Normally,1:Manual
         Dim op_id As String = "0"
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svApi) Then
                 transfer_flg = "1"
                 If MainFrm.chk_spec_line = "2" Then
                     Dim GenSEQ As Integer = CInt(Working_Pro.Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length

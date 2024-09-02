@@ -15,7 +15,7 @@ Public Class sc_wi_plan
 				'lb_text_wi_seq.Text = TextBox1.Text
 				Working_Pro.lb_ref_scan.Text = TextBox1.Text
 				Try
-					If My.Computer.Network.Ping("192.168.161.101") Then
+					If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 						Dim LoadSQLite = Backoffice_model.Check_sc_inc_dup(lb_text_wi_seq.Text)
 						Dim numq As Integer = 0
 

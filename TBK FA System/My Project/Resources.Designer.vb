@@ -1213,6 +1213,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property eadb74787dda41cc6333341e552934323() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("eadb74787dda41cc6333341e552934323", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property exitProgram() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("exitProgram", resourceCulture)
@@ -1506,6 +1516,16 @@ Namespace My.Resources
         Friend ReadOnly Property productionListDetail2() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("productionListDetail2", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property productionListDetailNewNotext() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("productionListDetailNewNotext", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

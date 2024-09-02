@@ -62,11 +62,12 @@ Public Class Backoffice_model
         Dim result As String = ""
         Try
             Dim api = New api()
-            ' Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA_TEST_SYSTEM/GetTimeAutoBreakTime?lineCd=" & MainFrm.Label4.Text)
+            ' Fetch data from the API
             Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GetTimeAutoBreakTime?lineCd=" & MainFrm.Label4.Text)
             If GetData <> "0" Then
+                ' Deserialize JSON response into a list of objects
                 Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(GetData)
-                Dim i As Integer = 1
+                ' Loop through each item in the deserialized data
                 For Each item As Object In dcResultdata
                     result = item("sltc_show_time").ToString()
                     TimeShowBreakTime = result
@@ -75,11 +76,13 @@ Public Class Backoffice_model
                     CountDelay = item("sltc_rec_time").ToString()
                 Next
             End If
-            Return result
         Catch ex As Exception
+            ' Handle exceptions
             MsgBox("MSSQL Database connect failed. Please contact PC System [Function GetTimeAutoBreakTime]" & ex.Message)
         End Try
+        Return result
     End Function
+
 
     Public Shared Function GET_START_END_PRODUCTION_DETAIL_SPECTAIL_TIME(pwi_id As String)
         Dim api = New api()

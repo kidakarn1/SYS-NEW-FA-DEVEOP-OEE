@@ -5,7 +5,7 @@ Public Class Loss_reg
     Public date_start_data As Date
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Try
                     Chang_Loss.ListView2.View = View.Details
                     'Chang_Loss.ListView2.Scrollable = Size()
@@ -32,7 +32,7 @@ Public Class Loss_reg
                     Dim pd As String = MainFrm.Label6.Text
                     Dim transfer_flg As String = "0"
                     Try
-                        If My.Computer.Network.Ping("192.168.161.101") Then
+                        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                             transfer_flg = 1
                             If MainFrm.chk_spec_line = "2" Then
                                 Dim GenSEQ As Integer = seq_no - 5
@@ -110,10 +110,10 @@ Public Class Loss_reg
     End Sub
     Public Sub Submit_loss()
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim line_id As String = MainFrm.line_id.Text
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         Backoffice_model.line_status_upd(line_id)
                         Backoffice_model.line_status_upd_sqlite(line_id)
                     Else
@@ -125,7 +125,7 @@ Public Class Loss_reg
                 Dim date_st As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                 Dim date_end As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         If MainFrm.chk_spec_line = "2" Then
                             For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
                                 Dim special_wi As String = itemPlanData.wi
@@ -182,7 +182,7 @@ Public Class Loss_reg
                 Dim pd As String = MainFrm.Label6.Text
                 Dim transfer_flg As String = "0"
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         transfer_flg = "1"
                         If MainFrm.chk_spec_line = "2" Then
                             Dim GenSEQ As Integer = seq_no - 5

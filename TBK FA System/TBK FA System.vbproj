@@ -1449,6 +1449,8 @@
   <ItemGroup>
     <Content Include="fa_logo.ico" />
     <Content Include="ICO_NEW_FA.ico" />
+    <None Include="Resources\productionListDetailNewNotext.png" />
+    <None Include="Resources\eadb74787dda41cc6333341e552934323.gif" />
     <None Include="Resources\defectNumpadadjusttNew23.png" />
     <None Include="Resources\closeLotsummaryNew23.png" />
     <None Include="Resources\defectNumpadadjustNew23.png" />

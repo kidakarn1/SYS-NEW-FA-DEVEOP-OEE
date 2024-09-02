@@ -170,7 +170,7 @@ Public Class Defect_nc_adj
 							Working_Pro.Label6.Text = 0
 						End If
 						Try
-							If My.Computer.Network.Ping("192.168.161.101") Then
+							If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 								tr_status = "1"
 								Dim sel_cd As Integer = Sel_defect_cd_nc.ListView2.SelectedIndices(0)
 								NC_ID = Sel_defect_cd_nc.ListView2.Items(sel_cd).SubItems(0).Text
@@ -319,7 +319,7 @@ goto_recheck_data:
 		End If
 		For number_seq As Integer = seq To 1 Step -1
 			Try
-				If My.Computer.Network.Ping("192.168.161.101") Then
+				If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 					reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq)
 				Else
 					reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC_SQLITE(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq)
@@ -362,7 +362,7 @@ goto_recheck_data:
 							tmp_qty_update = 0
 						End If
 						Try
-							If My.Computer.Network.Ping("192.168.161.101") Then
+							If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 								tr_status = "1"
 								Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq, tmp_qty_update)
 								update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq, tmp_qty_update, tr_status)
@@ -377,7 +377,7 @@ goto_recheck_data:
 					If qty_update <= 0 Then
 						' MsgBox("IF DOWN")
 						Try
-							If My.Computer.Network.Ping("192.168.161.101") Then
+							If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 								tr_stataus = "1"
 								Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq, Math.Abs(qty_update))
 								update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq, Math.Abs(qty_update), tr_stataus)
@@ -405,7 +405,7 @@ goto_recheck_data:
 					App_qty_seq = 0
 				End If
 				Try
-					If My.Computer.Network.Ping("192.168.161.101") Then
+					If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 						reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq - 1)
 					Else
 						reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC_SQLITE(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq - 1)
@@ -432,7 +432,7 @@ goto_recheck_data:
 							tmp_qty_update = 0
 						End If
 						Try
-							If My.Computer.Network.Ping("192.168.161.101") Then
+							If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 								tr_status = "0"
 								Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq - 1, tmp_qty_update)
 								update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq - 1, tmp_qty_update, tr_status)
@@ -448,7 +448,7 @@ goto_recheck_data:
 					If qty_update <= 0 Then
 						' MsgBox("IF DOWN3 ")
 						Try
-							If My.Computer.Network.Ping("192.168.161.101") Then
+							If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
 								tr_status = "1"
 								Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq - 1, Math.Abs(qty_update))
 								update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq - 1, Math.Abs(qty_update), tr_status)

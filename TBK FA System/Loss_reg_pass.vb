@@ -15,7 +15,7 @@ Public Class Loss_reg_pass
 
         'List_Emp.ListBox2.Items.Add(Trim(TextBox2.Text))
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim LoadSQL = Backoffice_model.get_loss_mst()
                 While LoadSQL.Read()
                     Change_Loss2.ListView2.ForeColor = Color.Blue
@@ -36,9 +36,9 @@ Public Class Loss_reg_pass
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim line_id As String = MainFrm.line_id.Text
         Try
-            If My.Computer.Network.Ping("192.168.161.101") Then
+            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         Backoffice_model.line_status_upd(line_id)
                         Backoffice_model.line_status_upd_sqlite(line_id)
                     Else
@@ -50,7 +50,7 @@ Public Class Loss_reg_pass
                 Dim date_st As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                 Dim date_end As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         If MainFrm.chk_spec_line = "2" Then
                             Dim j As Integer = 0
                             For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
@@ -122,7 +122,7 @@ Public Class Loss_reg_pass
                 Dim pd As String = MainFrm.Label6.Text
                 Dim transfer_flg As String = "0"
                 Try
-                    If My.Computer.Network.Ping("192.168.161.101") Then
+                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                         transfer_flg = "1"
                         If MainFrm.chk_spec_line = "2" Then
                             Dim j As Integer = 0
