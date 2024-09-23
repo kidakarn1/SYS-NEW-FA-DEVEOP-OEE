@@ -17,6 +17,7 @@ Public Class ModelSqliteDefect
     End Function
     Public Shared Function mSqliteGetDataQuality(line_cd As String, lot_no As String, startTimeFrith As String)
         Dim api As New api
+        startTimeFrith = Convert.ToDateTime(startTimeFrith).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
         Console.WriteLine("startTimeFrith ===>" & startTimeFrith)
         Try
             Dim Sql = "Select dt_code , sum(dt_qty) AS TotalQ,

@@ -2132,10 +2132,11 @@ Partial Class Working_Pro
         '
         Me.PanelACTP.Controls.Add(Me.Label19)
         Me.PanelACTP.Controls.Add(Me.minACTUAL_P)
-        Me.PanelACTP.Location = New System.Drawing.Point(460, 235)
+        Me.PanelACTP.Location = New System.Drawing.Point(454, 238)
         Me.PanelACTP.Name = "PanelACTP"
         Me.PanelACTP.Size = New System.Drawing.Size(66, 26)
         Me.PanelACTP.TabIndex = 4677
+        Me.PanelACTP.Visible = False
         '
         'Label19
         '
@@ -2161,10 +2162,11 @@ Partial Class Working_Pro
         '
         Me.PanelSTDJOBP.Controls.Add(Me.Label21)
         Me.PanelSTDJOBP.Controls.Add(Me.Label25)
-        Me.PanelSTDJOBP.Location = New System.Drawing.Point(460, 172)
+        Me.PanelSTDJOBP.Location = New System.Drawing.Point(454, 172)
         Me.PanelSTDJOBP.Name = "PanelSTDJOBP"
         Me.PanelSTDJOBP.Size = New System.Drawing.Size(66, 27)
         Me.PanelSTDJOBP.TabIndex = 4678
+        Me.PanelSTDJOBP.Visible = False
         '
         'Label21
         '
@@ -2175,6 +2177,7 @@ Partial Class Working_Pro
         Me.Label21.Size = New System.Drawing.Size(31, 18)
         Me.Label21.TabIndex = 1
         Me.Label21.Text = "min"
+        Me.Label21.Visible = False
         '
         'Label25
         '
@@ -2185,6 +2188,7 @@ Partial Class Working_Pro
         Me.Label25.Size = New System.Drawing.Size(35, 18)
         Me.Label25.TabIndex = 0
         Me.Label25.Text = "000"
+        Me.Label25.Visible = False
         '
         'DateTimeStartofShift
         '
@@ -2330,6 +2334,7 @@ Partial Class Working_Pro
         Me.HrPJ.Size = New System.Drawing.Size(26, 20)
         Me.HrPJ.TabIndex = 2
         Me.HrPJ.Text = "Hr"
+        Me.HrPJ.Visible = False
         '
         'HrPA
         '
@@ -2340,6 +2345,7 @@ Partial Class Working_Pro
         Me.HrPA.Size = New System.Drawing.Size(26, 20)
         Me.HrPA.TabIndex = 4692
         Me.HrPA.Text = "Hr"
+        Me.HrPA.Visible = False
         '
         'Label45
         '
@@ -2350,6 +2356,7 @@ Partial Class Working_Pro
         Me.Label45.Size = New System.Drawing.Size(13, 20)
         Me.Label45.TabIndex = 4693
         Me.Label45.Text = "/"
+        Me.Label45.Visible = False
         '
         'Label46
         '
@@ -2360,6 +2367,7 @@ Partial Class Working_Pro
         Me.Label46.Size = New System.Drawing.Size(13, 20)
         Me.Label46.TabIndex = 4694
         Me.Label46.Text = "/"
+        Me.Label46.Visible = False
         '
         'Label48
         '

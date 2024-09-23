@@ -7,12 +7,10 @@ Public Class Loss_reg_pass
         ins_time_loss.TextBox2.Text = ""
         ins_time_loss.Show()
     End Sub
-
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         'Change_Loss2.ListView2.Items(2).Selected = True
         Change_Loss2.ListView2.View = View.Details
         'Chang_Loss.ListView2.Scrollable = Size()
-
         'List_Emp.ListBox2.Items.Add(Trim(TextBox2.Text))
         Try
             If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
@@ -32,7 +30,6 @@ Public Class Loss_reg_pass
             load_show.Show()
         End Try
     End Sub
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim line_id As String = MainFrm.line_id.Text
         Try
@@ -176,7 +173,7 @@ Public Class Loss_reg_pass
                 End Try
                 Working_Pro.ResetRed()
                 Working_Pro.Enabled = True
-                Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+                Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel)
                 Dim A = Working_Pro.cal_progressbarA(Working_Pro.Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
                 Me.Close()
             Else

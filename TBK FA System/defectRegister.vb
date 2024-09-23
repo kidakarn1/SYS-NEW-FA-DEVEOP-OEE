@@ -133,13 +133,14 @@ Public Class defectRegister
                 Working_Pro.lb_nc_qty.Text = dataQty
             End If
             Dim dfAll = CDbl(Val(Working_Pro.lb_ng_qty.Text)) + CDbl(Val(Working_Pro.lb_nc_qty.Text))
-            Working_Pro.set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text)
-            Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
-            Working_Pro.setlvQ(Working_Pro.Label24.Text, Working_Pro.Label18.Text)
+            Dim OEE As New OEE_NODE
+            Working_Pro.set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text, Working_Pro.gobal_stTimeModel)
+            Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel)
+            Working_Pro.setlvQ(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel)
             Dim Q = Working_Pro.cal_progressbarQ(Working_Pro.lbNG.Text, Working_Pro.LB_COUNTER_SHIP.Text)
             Dim A = Working_Pro.cal_progressbarA(Working_Pro.Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
             Working_Pro.setNgByHour(Working_Pro.Label24.Text, Working_Pro.Label18.Text)
-            Dim P = Working_Pro.setgetSpeedLoss(Working_Pro.lbNG.Text, Working_Pro.lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text, Working_Pro.Label24.Text)
+            Dim P = Working_Pro.setgetSpeedLoss(Working_Pro.lbNG.Text, Working_Pro.lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text, Working_Pro.Label24.Text, Working_Pro.gobal_stTimeModel)
             'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
             ' WebViewProgressbar.Reload()
             Working_Pro.calProgressOEE(A, Q, P)

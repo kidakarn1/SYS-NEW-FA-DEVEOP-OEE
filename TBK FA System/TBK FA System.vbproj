@@ -676,6 +676,12 @@
     <Compile Include="RobotApppSuport.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SetStartTime.Designer.vb">
+      <DependentUpon>SetStartTime.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SetStartTime.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Settinglamp.Designer.vb">
       <DependentUpon>Settinglamp.vb</DependentUpon>
     </Compile>
@@ -1247,6 +1253,9 @@
     <EmbeddedResource Include="RobotApppSuport.resx">
       <DependentUpon>RobotApppSuport.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SetStartTime.resx">
+      <DependentUpon>SetStartTime.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settinglamp.resx">
       <DependentUpon>Settinglamp.vb</DependentUpon>
     </EmbeddedResource>
@@ -1313,6 +1322,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrm.resx">
       <DependentUpon>MainFrm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ManagePlan.resx">
       <DependentUpon>ManagePlan.vb</DependentUpon>
@@ -1449,6 +1459,8 @@
   <ItemGroup>
     <Content Include="fa_logo.ico" />
     <Content Include="ICO_NEW_FA.ico" />
+    <None Include="Resources\defectDetailadjustNew231.png" />
+    <None Include="Resources\defectDetailadjustNew23.png" />
     <None Include="Resources\productionListDetailNewNotext.png" />
     <None Include="Resources\eadb74787dda41cc6333341e552934323.gif" />
     <None Include="Resources\defectNumpadadjusttNew23.png" />

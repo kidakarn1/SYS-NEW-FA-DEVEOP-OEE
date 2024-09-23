@@ -3639,7 +3639,7 @@ re_insert_rework_act:
             Console.WriteLine("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
             Return GetData
         Catch ex As Exception
-            MsgBox("Error Function Get_MaxManPower In Backoffice_model")
+            MsgBox("Error Function Get_Plan_All_By_Line In Backoffice_model")
         End Try
         Return 0
     End Function

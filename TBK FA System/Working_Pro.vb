@@ -20,7 +20,7 @@ Imports Microsoft.Web.WebView2.Core
 Imports Microsoft.Web.WebView2.WinForms
 Public Class Working_Pro
     Private WithEvents WebViewProgressbar As WebView2
-    Public Shared comportTowerLamp = "COM4"
+    Public Shared comportTowerLamp = "COM7"
     ' Public Shared ArrayDataSpecial As New List(Of DataPlan)
     Public check_cal_eff As Integer = 0
     Public Gdate_now_date As Date
@@ -79,6 +79,9 @@ Public Class Working_Pro
     Public Shared moe_min_p As Integer = 0
     Public Shared moe_min_q As Integer = 0
     Public Shared moe_min_oee As Integer = 0
+    Public Shared gobal_stTimeModel As String = ""
+    Public Shared statusSwitchModel As String = ""
+    Public Shared IsOnlyone As String = ""
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         'Label44.Text = TimeOfDay.ToString("H:mm:ss")
         Label17.Text = TimeOfDay.ToString("H:mm:ss")
@@ -86,6 +89,7 @@ Public Class Working_Pro
         Label1.Text = DateTime.Now.ToString("yyyy, MMMM dd")
         Label43.Text = DateTime.Now.ToString("yyyy/MM/dd")
         lb_loss_status.Text = lb_loss_status.Text
+        'SetStartTime.Label4.Text = TimeOfDay.ToString("HH:mm:ss")
         If lb_loss_status.Right < 0 Then
             lb_loss_status.Left = Panel6.ClientSize.Width
         Else
@@ -109,10 +113,11 @@ Public Class Working_Pro
             Next
         End If
     End Function
-    Public Async Function setlvA(line_cd As String, lot_no As String, shift As String, dateStart As String) As Task
+    Public Async Function setlvA(line_cd As String, lot_no As String, shift As String, dateStart As String, timeShift As String, stTimeModel As String) As Task
         Dim OEE = New OEE_NODE
         lvA.Items.Clear()
-        Dim rslvA = OEE.OEE_GET_Data_LOSS(line_cd, lot_no, shift, dateStart)
+        'stTimeModel = OEE.OEE_getDataGetWorkingTimeModel(timeShift, line_cd, Label3.Text)
+        Dim rslvA = OEE.OEE_GET_Data_LOSS(line_cd, lot_no, shift, dateStart, stTimeModel, statusSwitchModel, IsOnlyone)
         If rslvA <> "0" Then
             Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvA)
             Try
@@ -123,7 +128,6 @@ Public Class Working_Pro
                     lvA.Items.Add(datlvDefectsumary)
                 Next
             Catch ex As Exception
-
             End Try
         End If
     End Function
@@ -169,7 +173,7 @@ Public Class Working_Pro
             Label48.Text = "2"
         End If
     End Sub
-    Public Function cal_progressbarQ(NGAll, Good)
+    Public Function cal_progressbarQ(NGAll As String, Good As String)
         Dim rs = CInt(NGAll) + CInt(Good)
         Dim totalProgressbar = (Good / rs) * 100
         If Good = "0" And rs = "0" Then
@@ -194,7 +198,6 @@ Public Class Working_Pro
         ElseIf totalProgressbar < moe_min_q Then
             progressbarQ.ProgressColor = Color.Red
         End If
-
         Return totalProgressbar
         'CircularProgressBar2.Text = sum_prg2 & "%"
         'CircularProgressBar2.Value = sum_prg2
@@ -220,7 +223,6 @@ Public Class Working_Pro
         Q = Q / 100
         P = P / 100
         ' Dim totalProgressbar = Int(FormatNumber((A * Q * P), 2) * 100) 'Int((total / 300) * 100)
-
         Dim result As Double = A * Q * P
         ' ปัดเศษให้เป็นทศนิยม 2 ตำแหน่ง
         Dim roundedResult As Double = Math.Round(result, 2)
@@ -244,9 +246,10 @@ Public Class Working_Pro
             progressbarOEE.ProgressColor = Color.Red
         End If
     End Sub
-    Public Function cal_progressbarA(line_cd, st_shift, end_shift)
+    Public Function cal_progressbarA(line_cd As String, st_shift As String, end_shift As String)
         Dim OEE = New OEE_NODE
-        Dim totalProgressbar = OEE.GetDataProgressbarA(st_shift, end_shift, line_cd)
+        'stTimeModel = OEE.OEE_getDataGetWorkingTimeModel(Prd_detail.Label12.Text.Substring(3, 5), line_cd, Label3.Text)
+        Dim totalProgressbar = OEE.GetDataProgressbarA(st_shift, end_shift, line_cd, gobal_stTimeModel, statusSwitchModel, IsOnlyone)
         If totalProgressbar > 100 Then
             progressbarA.Text = Int(100) & "%"
             progressbarA.Value = Int(100)
@@ -266,43 +269,67 @@ Public Class Working_Pro
         End If
         Return totalProgressbar
     End Function
-    Public Function setgetSpeedLoss(NG, Good, timeShift, std_cd, line_cd)
+    Public Function setgetSpeedLoss(NG As String, Good As String, timeShift As String, std_cd As String, line_cd As String, stTimeModel As String)
         Dim OEE = New OEE_NODE
         'Dim per = "%"
         'per.Font = New Font("Arial", 20, FontStyle.Bold)
         'Dim rs = OEE.OEE_getSpeedLoss(NG, Good, timeShift, std_cd)
         Dim startDate As Date
-        Dim rsDateDiff As Long
-        ' แปลงข้อความเป็นชนิดข้อมูล Date
-        Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd)
+        ' MsgBox("DateTimeStartofShift.Text====>" & DateTimeStartofShift.Text)
+        If statusSwitchModel = 0 Then
+            'startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString.Substring(0, 10)) & " " & timeShift
+            startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString)
+            Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
+            Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
+            ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
+            Dim time As String = DateTime.Now.ToString("HH:mm:ss")
+            Dim date_st = DateTime.Now.ToString("yyyy-MM-dd")
+            Dim date_end = DateTime.Now.ToString("yyyy-MM-dd")
+            '   If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
+            '   startDate = startDate.AddDays(-1)
+            'End If
+            startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
+            Console.WriteLine("IFFFFFFFFFFFF0001")
+        ElseIf statusSwitchModel = 1 Or statusSwitchModel = 2 Then
+            If IsOnlyone = "1" Then
+                ' startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString.Substring(0, 10)) & " " & timeShift
+                startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString)
+                Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
+                Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
+                ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
+                Dim time As String = DateTime.Now.ToString("HH:mm:ss")
+                Dim date_st = DateTime.Now.ToString("yyyy-MM-dd")
+                Dim date_end = DateTime.Now.ToString("yyyy-MM-dd")
+                ' If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
+                ' startDate = startDate.AddDays(-1)
+                'End If
+                Console.WriteLine("IFFFFFFFFFFFF0002")
+                startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
+            Else
+                Console.WriteLine("ELSE")
+                startDate = Convert.ToDateTime(stTimeModel).ToString("yyyy-MM-dd HH:mm:ss")
+            End If
+        End If
+        Dim secSwitchmodel = DateDiff("s", startDate, Now())
+        Dim MinSwitchmodel As Integer = secSwitchmodel / 60
+        ' MsgBox("MinSwitchmodel ====>" & MinSwitchmodel)
+        Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd, MinSwitchmodel)
         ' MsgBox("OEE_actual_detailByHour=====>" & OEE_actual_detailByHour)
         actualP.Text = OEE_actual_detailByHour
         ' Try
-        startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString.Substring(0, 10)) & " " & timeShift
         ' หาความแตกต่างในหน่วยนาที
-        Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
-        Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
-        ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
-        Dim time As String = DateTime.Now.ToString("HH:mm:ss")
-        Dim date_st = DateTime.Now.ToString("yyyy-MM-dd")
-        Dim date_end = DateTime.Now.ToString("yyyy-MM-dd")
-        If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
-            startDate = startDate.AddDays(-1)
-        Else
-            'If time_now > "20:00:00 AM" Then
-            ' date_end = date_now_date.AddDays(1)
-            ' date_end = Convert.ToDateTime(date_end).ToString("yyyy-MM-dd")
-            'End If
-        End If
-        startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
+        ' startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss") wait test 
+
+        '   MsgBox("startDate ===>" & startDate)
+        ' MsgBox("Now ===>" & Now())
         rsDateDiff = DateDiff("s", startDate, Now())
         Dim minrsDateDiff = rsDateDiff / 60
         If rsDateDiff < 3600 Then
             stdJobP.Text = Math.Ceiling(rsDateDiff / std_cd)
             Label25.Text = Math.Ceiling(minrsDateDiff)
             minACTUAL_P.Text = Math.Ceiling(minrsDateDiff)
-            PanelSTDJOBP.Visible = True
-            PanelACTP.Visible = True
+            ' PanelSTDJOBP.Visible = True
+            ' PanelACTP.Visible = True
             Try
                 lbOverTimePerformance.Text = Math.Ceiling(rsDateDiff / actualP.Text)
             Catch ex As Exception
@@ -312,13 +339,15 @@ Public Class Working_Pro
             Dim GetLossByHouseP1 = OEE.OEE_GetLossByHouseP1(line_cd)
             Dim calHour = 0
             Dim rsmanage = 0
+            ' MsgBox("stTimeModel====>" & stTimeModel)
+
             If GetLossByHouseP1 <> "0" Then
-                rsmanage = 3600 - GetLossByHouseP1
+                rsmanage = secSwitchmodel - GetLossByHouseP1
             Else
-                rsmanage = 3600
+                rsmanage = secSwitchmodel
             End If
-            PanelSTDJOBP.Visible = False
-            PanelACTP.Visible = False
+            'PanelSTDJOBP.Visible = False
+            'PanelACTP.Visible = False
             stdJobP.Text = Math.Ceiling(rsmanage / std_cd)
             lbOverTimePerformance.Text = Math.Ceiling(rsmanage / actualP.Text)
         End If
@@ -336,6 +365,7 @@ Public Class Working_Pro
         Else
             totalProgressbar = (actualP.Text / stdJobP.Text) * 100  '((Good + NG) / rscalwork_std)
         End If
+        Console.WriteLine(totalProgressbar)
         If Math.Ceiling(totalProgressbar) > 100 Then
             progressbarP.Text = Int(100) & "%"
             progressbarP.Value = Int(100)
@@ -368,23 +398,45 @@ Public Class Working_Pro
         'End If
         'lbNG.Text = lbOverTimeQuality.Text
     End Sub
-    Public Async Function set_AccTarget(TimestartShift, std_ct) As Task
+    Public Async Function set_AccTarget(TimestartShift As String, std_ct As String, stTimeModel As String) As Task
         Dim OEE = New OEE_NODE
         lbAccTarget.Text = OEE.OEE_GET_Data_AccTarget(TimestartShift, std_ct)
     End Function
-    Public Async Function setlvQ(line_cd As String, lot_no As String) As Task
+
+    Public Async Function setlvQ(line_cd As String, lot_no As String, TimeShift As String, stTimeModel As String) As Task
         lvQ.Items.Clear()
         lbOverTimeQuality.Text = "0"
         lbNG.Text = "0"
         Dim OEE = New OEE_NODE
         Dim sqlite = New ModelSqliteDefect
-        Dim rslvQ = sqlite.mSqliteGetDataQuality(line_cd, lot_no, DateTimeStartofShift.Text)
+        Dim startDate As Date
+        If statusSwitchModel = 0 Then
+            startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString)
+            startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Console.WriteLine("setlvQ IFFFFFFFFFFFF0001")
+        ElseIf statusSwitchModel = 1 Or statusSwitchModel = 2 Then
+            If IsOnlyone = "1" Then
+                startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString)
+                Console.WriteLine("setlvQ IFFFFFFFFFFFF0002")
+                startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Else
+                Console.WriteLine("setlvQ ELSE")
+                startDate = Convert.ToDateTime(stTimeModel).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            End If
+        End If
+        Dim rslvQ = sqlite.mSqliteGetDataQuality(line_cd, lot_no, startDate)
+        Dim rsOverAllNG = sqlite.mSqliteGetDataQuality(line_cd, lot_no, DateTimeStartofShift.Text)
+        If rsOverAllNG <> "0" Then
+            Dim dictOverall As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rsOverAllNG)
+            For Each item As Object In dictOverall
+                lbNG.Text = item("AllDefect").ToString()
+            Next
+        End If
         If rslvQ <> "0" Then
             Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvQ)
             Try
                 For Each item As Object In dict3
                     lbOverTimeQuality.Text = item("AllDefect").ToString()
-                    lbNG.Text = lbOverTimeQuality.Text
                     datlvDefectsumary = New ListViewItem(item("dt_code").ToString())
                     datlvDefectsumary.SubItems.Add(item("TotalQ").ToString())
                     lvQ.Items.Add(datlvDefectsumary)
@@ -418,9 +470,10 @@ Public Class Working_Pro
         End If
         Dim OEE = New OEE_NODE
         showWorkker()
+
         Try
             ' เรียกใช้ฟังก์ชัน loadDataProgressBar แบบ Async
-            Await loadDataProgressBar(Label24.Text, Label14.Text)
+            Await loadDataProgressBar(MainFrm.Label4.Text, Label14.Text)
         Catch ex As Exception
             MessageBox.Show($"Failed to load data: {ex.Message}")
         End Try
@@ -441,14 +494,72 @@ Public Class Working_Pro
         Catch ex As Exception
 
         End Try
+        Dim date_now As String = DateTime.Now.ToString("dd-MM-yyyy")
+        Dim date_now_date As Date = DateTime.Now.ToString("dd-MM-yyyy")
+        Gdate_now_date = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
+        Dim time As Date = DateTime.Now.ToString("H:m:s")
+        Dim date_st = DateTime.Now.ToString("dd-MM-yyyy")
+        Dim date_end = DateTime.Now.ToString("dd-MM-yyyy")
+        Dim result_qty = DateTime.Now.ToString("dd-MM-yyyy")
+        Dim time_st = " 00:00:00"
+        Dim time_end = " 23:59:59"
+        If Label14.Text = "A" Then
+            time_st = " 08:00:00"
+            time_end = " 17:00:00"
+        ElseIf Label14.Text = "P" Then
+            time_st = " 08:00:00"
+            time_end = " 20:00:00"
+        ElseIf Label14.Text = "B" Then
+            time_st = " 20:00:00"
+            time_end = " 05:00:00"
+        ElseIf Label14.Text = "Q" Then
+            time_st = " 20:00:00"
+            time_end = " 08:00:00"
+        ElseIf Label14.Text = "S" Then
+            time_st = " 17:00:00"
+            time_end = " 02:00:00"
+        End If
+        If time > "23:59:59" Then
+            date_st = date_now_date.AddDays(-1)
+            date_st = Convert.ToDateTime(date_st).ToString("dd-MM-yyyy")
+            date_end = date_now_date
+            date_end = Convert.ToDateTime(date_end).ToString("dd-MM-yyyy")
+            ' time_st = " 20:00:00"
+            ' time_end = " 08:00:00"
+        End If
+        If time >= "00:00:00" And time <= "08:00:00" Then
+            date_st = date_now_date.AddDays(-1)
+            date_st = Convert.ToDateTime(date_st).ToString("dd-MM-yyyy")
+            date_end = date_now_date
+            date_end = Convert.ToDateTime(date_end).ToString("dd-MM-yyyy")
+            '  time_st = " 20:00:00"
+            '  time_end = " 08:00:00"
+        End If
         DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
+        ' MsgBox("DateTimeStartofShift ===>" & DateTimeStartofShift.Text)
+        Dim DateTimeStartmasterShift As Date = date_st & " " & time_st
         tag_group_no = Backoffice_model.Get_tag_group_no()
         CircularProgressBar2.Visible = False
-        Label7.Text = OEE.OEE_GET_NEW_TARGET(Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5), Label38.Text,Label14.Text )
-        Await setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
-        Await setlvQ(Label24.Text, Label18.Text)
-        Await set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
-        setNgByHour(Label24.Text, Label18.Text)
+        Dim ObjGetmodel = OEE.OEE_getDataGetWorkingTimeModel(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text, Label3.Text)
+        statusSwitchModel = ObjGetmodel("status").ToString()
+        IsOnlyone = ObjGetmodel("IsOnlyone").ToString()
+        Backoffice_model.Get_close_lot_time(Label14.Text)
+        If ObjGetmodel("item_cd").ToString() = "New_Model" Then
+            gobal_stTimeModel = DateTimeStartmasterShift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+        ElseIf ObjGetmodel("item_cd").ToString() = "Switch_Model" Then
+            gobal_stTimeModel = ObjGetmodel("rs").ToString
+        Else
+            If ObjGetmodel("item_cd").ToString = Label3.Text Then
+                gobal_stTimeModel = ObjGetmodel("rs").ToString
+            Else
+                gobal_stTimeModel = DateTimeStartmasterShift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            End If
+        End If
+        Label7.Text = OEE.OEE_GET_NEW_TARGET(Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5), Label38.Text, Label14.Text)
+        Await setlvA(MainFrm.Label4.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), gobal_stTimeModel)
+        Await setlvQ(MainFrm.Label4.Text, Label18.Text, Prd_detail.Label12.Text.ToString.Substring(3, 5), gobal_stTimeModel)
+        Await set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, gobal_stTimeModel)
+        setNgByHour(MainFrm.Label4.Text, Label18.Text)
         'PictureBox12.Visible = False
         PictureBox10.Visible = True
         'PictureBox11.Visible = False
@@ -459,7 +570,7 @@ Public Class Working_Pro
         'sc_prd_plan.SerialPort1.Close()
         wiNo = wi_no.Text
         pFg = Label3.Text
-        lineCd = Label24.Text
+        lineCd = MainFrm.Label4.Text
         lotNo = Label18.Text
         seqNo = Label22.Text
         model = lb_model.Text
@@ -499,44 +610,6 @@ Public Class Working_Pro
         Else
             status_conter = 0
         End If
-        Dim date_now As String = DateTime.Now.ToString("dd-MM-yyyy")
-        Dim date_now_date As Date = DateTime.Now.ToString("dd-MM-yyyy")
-        Gdate_now_date = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
-        Dim time As Date = DateTime.Now.ToString("H:m:s")
-        Dim date_st = DateTime.Now.ToString("dd-MM-yyyy")
-        Dim date_end = DateTime.Now.ToString("dd-MM-yyyy")
-        Dim result_qty = DateTime.Now.ToString("dd-MM-yyyy")
-        Dim time_st = " 00:00:00"
-        Dim time_end = " 23:59:59"
-        If Label14.Text = "A" Then
-            time_st = " 08:00:00"
-            time_end = " 17:00:00"
-        ElseIf Label14.Text = "P" Then
-            time_st = " 08:00:00"
-            time_end = " 20:00:00"
-        ElseIf Label14.Text = "B" Then
-            time_st = " 20:00:00"
-            time_end = " 05:00:00"
-        ElseIf Label14.Text = "Q" Then
-            time_st = " 20:00:00"
-            time_end = " 08:00:00"
-        End If
-        If time > "23:59:59" Then
-            date_st = date_now_date.AddDays(-1)
-            date_st = Convert.ToDateTime(date_st).ToString("dd-MM-yyyy")
-            date_end = date_now_date
-            date_end = Convert.ToDateTime(date_end).ToString("dd-MM-yyyy")
-            time_st = " 20:00:00"
-            time_end = " 08:00:00"
-        End If
-        If time >= "00:00:00" And time <= "08:00:00" Then
-            date_st = date_now_date.AddDays(-1)
-            date_st = Convert.ToDateTime(date_st).ToString("dd-MM-yyyy")
-            date_end = date_now_date
-            date_end = Convert.ToDateTime(date_end).ToString("dd-MM-yyyy")
-            time_st = " 20:00:00"
-            time_end = " 08:00:00"
-        End If
         Dim reader_shift = Backoffice_model.GET_QTY_SHIFT(MainFrm.Label4.Text, wi_no.Text, Label14.Text, date_st, date_end, time_st, time_end, Label18.Text) '
         Dim reader_defact_nc = Backoffice_model.GET_QTY_DEFACT_NC(wi_no.Text, MainFrm.Label4.Text)
         While reader_defact_nc.read()
@@ -549,7 +622,7 @@ Public Class Working_Pro
         'While reader_shift.read()
         'LB_COUNTER_SHIP.Text = reader_shift("QTY_SHIFT").ToString()
         'End While
-        LB_COUNTER_SHIP.Text = OEE.OEE_getProduction_actual_detailByShift(MainFrm.Label4.Text, Label4.Text)
+        LB_COUNTER_SHIP.Text = OEE.OEE_getProduction_actual_detailByShift(MainFrm.Label4.Text, Label14.Text)
         If LB_COUNTER_SHIP.Text = "" Then
             LB_COUNTER_SHIP.Text = 0
         Else
@@ -569,14 +642,14 @@ Public Class Working_Pro
         lb_good.Text = mdDf.mGetGoodWILot(wi_no.Text, Label18.Text)
         Main()
         Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, LB_COUNTER_SHIP.Text)
-        Dim A = cal_progressbarA(Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
-        Backoffice_model.Get_close_lot_time(Label14.Text)
-        Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
+        Dim A = cal_progressbarA(MainFrm.Label4.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
+        Dim P = setgetSpeedLoss(lbOverTimeQuality.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, MainFrm.Label4.Text, gobal_stTimeModel)
         calProgressOEE(A, Q, P)
         Timer2.Start()
         Me.Enabled = True
         'Start_Production() ' click frist
         loadingForm.Hide()
+        ' SetStartTime.Show()
     End Sub
     Public Sub check_seq_data()
         If CDbl(Val(LB_COUNTER_SEQ.Text)) <> "0" Then
@@ -1122,6 +1195,9 @@ Public Class Working_Pro
                     'MsgBox(List_Emp.ListView1.Items(i).Text)
                 Next
             End If
+            Dim OEE = New OEE_NODE
+            'Dim ObjGetmodel = OEE.OEE_getDataGetWorkingTimeModel(Prd_detail.Label12.Text.Substring(3, 5), Label24.Text, Label3.Text)
+            'gobal_stTimeModel = ObjGetmodel("rs").ToString
             check_in_up_seq += 1
             ' Await the completion of setting DateTimeStartofShift.Text
         End If
@@ -1155,11 +1231,11 @@ Public Class Working_Pro
                                         Dim indRow As String = itemPlanData.IND_ROW
                                         Dim wi As String = itemPlanData.wi
                                         Dim item_cd As String = itemPlanData.item_cd
-                                        ins_loss_code(MainFrm.Label6.Text, Label24.Text, wi, item_cd, Iseq, Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", Spwi_id(j))
+                                        ins_loss_code(MainFrm.Label6.Text, MainFrm.Label4.Text, wi, item_cd, Iseq, Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", Spwi_id(j))
                                         j = j + 1
                                     Next
                                 Else
-                                    ins_loss_code(MainFrm.Label6.Text, Label24.Text, wi_no.Text, Label3.Text, CDbl(Val(Label22.Text)), Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", pwi_id)
+                                    ins_loss_code(MainFrm.Label6.Text, MainFrm.Label4.Text, wi_no.Text, Label3.Text, CDbl(Val(Label22.Text)), Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", pwi_id)
                                 End If
                             End If
                         Next
@@ -1408,26 +1484,33 @@ Public Class Working_Pro
         'LB_COUNTER_SEQ.BringToFront()
         ' CircularProgressBar2.Visible = True
         connect_counter_qty()
-        If CDbl(Val(check_in_up_seq)) - 1 = 0 Then
+        If (CDbl(Val(check_in_up_seq)) - 1) = 0 Then
             DateTimeStartofShift.Text = Await OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
             ' Await the completion of LOAD_OEE
             Await LOAD_OEE()
         End If
     End Function
     Public Async Function loadDataProgressBar(line_cd As String, shift As String) As Task
-        Dim OEE = New OEE_NODE
+        ' ตรวจสอบว่ามี WebView2 instance ที่ใช้งานอยู่หรือไม่ ถ้ามีให้ Dispose ก่อน
+        ' If WebViewProgressbar IsNot Nothing Then
+        ' WebViewProgressbar.Dispose()
+        ' End If
         ' Create a new instance of WebView2 control
         WebViewProgressbar = New WebView2() With {
-            .Dock = DockStyle.Fill
-        }
+        .Dock = DockStyle.Fill
+    }
         PanelProgressbar.Controls.Add(WebViewProgressbar)
         Try
+            ' กำหนดไดเรกทอรีสำหรับ environment
             Dim webViewEnvironment = Await CoreWebView2Environment.CreateAsync(Nothing, "C:\Temp")
+            ' สร้าง instance ของ WebView2 control
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
-            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
-            Console.WriteLine("192.168.161.219/productionHrprogressTest/?line_cd=" & MainFrm.Label4.Text & "&shift=" & shift)
+            ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
+            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("Navigating to: http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
         Catch ex As Exception
-            ' MessageBox.Show($"Failed to initialize WebView2: {ex.Message}")
+            ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
+            Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
         End Try
     End Function
 
@@ -3422,14 +3505,14 @@ Public Class Working_Pro
             ' Inside the continuation, invoke on the UI thread
             Console.WriteLine("CAL OEE cal_eff")
             ' Perform various UI operations
-            set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text)
-            setlvA(Label24.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
-            setlvQ(Label24.Text, Label18.Text)
-            Dim Q = cal_progressbarQ(lbNG.Text, LB_COUNTER_SHIP.Text)
-            Dim A = cal_progressbarA(Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
-            setNgByHour(Label24.Text, Label18.Text)
-            Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, Label24.Text)
-            'Dim rswebview = loadDataProgressBar(Label24.Text, Label14.Text)
+            set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, gobal_stTimeModel)
+            setlvA(MainFrm.Label4.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), gobal_stTimeModel)
+            setlvQ(MainFrm.Label4.Text, Label18.Text, Prd_detail.Label12.Text.Substring(3, 5), gobal_stTimeModel)
+            Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, LB_COUNTER_SHIP.Text)
+            Dim A = cal_progressbarA(MainFrm.Label4.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
+            setNgByHour(MainFrm.Label4.Text, Label18.Text)
+            Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, MainFrm.Label4.Text, gobal_stTimeModel)
+            'Dim rswebview = loadDataProgressBar(MainFrm.Label4.Text, Label14.Text)
             ' WebViewProgressbar.Reload()
             calProgressOEE(A, Q, P)
         Catch ex As Exception
@@ -3741,7 +3824,7 @@ Public Class Working_Pro
                 If btn_start.Enabled Then
                     stop_working()
                 End If
-                Dim rs = Backoffice_model.AlertCheck_close_lot(Label24.Text, MainFrm.Label6.Text)
+                Dim rs = Backoffice_model.AlertCheck_close_lot(MainFrm.Label4.Text, MainFrm.Label6.Text)
                 closeLotsummary.Show()
             End If
         End If
@@ -4370,44 +4453,44 @@ Public Class Working_Pro
         End If
     End Sub
     Public Sub TowerLamp(DataBits As Integer, WriteLine As Integer)
-        ' If SerialPortLamp.IsOpen() Then
-        ' SerialPortLamp.Close()
-        ' End If
-        ' Try
-        ' SerialPortLamp.PortName = comportTowerLamp
-        ' SerialPortLamp.BaudRate = 9600
-        ' SerialPortLamp.Parity = IO.Ports.Parity.None
-        ' SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        ' SerialPortLamp.DataBits = DataBits
-        ' SerialPortLamp.Open()
-        ' SerialPortLamp.WriteLine(WriteLine)
-        ' Catch ex As Exception
-        ' MsgBox(ex.Message)
-        ' End Try
+        'If SerialPortLamp.IsOpen() Then
+        'SerialPortLamp.Close()
+        'End If
+        'Try
+        'SerialPortLamp.PortName = comportTowerLamp
+        'SerialPortLamp.BaudRate = 9600
+        'SerialPortLamp.Parity = IO.Ports.Parity.None
+        'SerialPortLamp.StopBits = IO.Ports.StopBits.One
+        'SerialPortLamp.DataBits = DataBits
+        'SerialPortLamp.Open()
+        'SerialPortLamp.WriteLine(WriteLine)
+        'Catch ex As Exception
+        'MsgBox(ex.Message)
+        '  End Try
     End Sub
     Public Sub ResetRed()
-        '    If SerialPortLamp.IsOpen() Then
-        '    SerialPortLamp.Close()
-        '    End If
-        '    SerialPortLamp.PortName = comportTowerLamp
-        '    SerialPortLamp.BaudRate = 9600
-        '    SerialPortLamp.Parity = IO.Ports.Parity.None
-        '    SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        '    SerialPortLamp.DataBits = 5
-        '    SerialPortLamp.Open()
-        '    SerialPortLamp.WriteLine(9999)
-        '    Console.ReadLine()
         'If SerialPortLamp.IsOpen() Then
         'SerialPortLamp.Close()
         'End If
         'SerialPortLamp.PortName = comportTowerLamp
         'SerialPortLamp.BaudRate = 9600
-        ' SerialPortLamp.Parity = IO.Ports.Parity.None
-        ' SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        ' SerialPortLamp.DataBits = 6
-        ' SerialPortLamp.Open()
+        'SerialPortLamp.Parity = IO.Ports.Parity.None
+        'SerialPortLamp.StopBits = IO.Ports.StopBits.One
+        'SerialPortLamp.DataBits = 5
+        'SerialPortLamp.Open()
+        'SerialPortLamp.WriteLine(9999)
+        'Console.ReadLine()
+        'If SerialPortLamp.IsOpen() Then
+        'SerialPortLamp.Close()
+        'End If
+        'SerialPortLamp.PortName = comportTowerLamp
+        'SerialPortLamp.BaudRate = 9600
+        'SerialPortLamp.Parity = IO.Ports.Parity.None
+        'SerialPortLamp.StopBits = IO.Ports.StopBits.One
+        'SerialPortLamp.DataBits = 6
+        'SerialPortLamp.Open()
         'SerialPortLamp.WriteLine(11)
-        ' Console.ReadLine()
+        'Console.ReadLine()
     End Sub
     Public Sub Load_Working_OEE()
         Working_OEE.Show()

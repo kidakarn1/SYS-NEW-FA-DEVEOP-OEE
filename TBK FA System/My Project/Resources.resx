@@ -130,8 +130,8 @@
   <data name="btnstartbreaktime2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnstartbreaktime2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MainMenu4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MainMenu4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="productionListDetailNewNotext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\productionListDetailNewNotext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="productionStopped" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\productionStopped.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -156,6 +156,9 @@
   </data>
   <data name="addActualNumpad2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\addActualNumpad2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="btnClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\btnClose.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btnUser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnUser.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -198,6 +201,9 @@
   </data>
   <data name="btnSetting1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnSetting1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eadb74787dda41cc6333341e552934323" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eadb74787dda41cc6333341e552934323.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="addActualNumpad4" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\addActualNumpad4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -244,8 +250,8 @@
   <data name="2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="defectAdminnumpadadjust" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\defectAdminnumpadadjust.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MainMenu4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MainMenu4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="productionStarting1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\productionStarting1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -336,9 +342,6 @@
   </data>
   <data name="selectShift" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\selectShift.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="defectNumpadadjusttNew23" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\defectNumpadadjusttNew23.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="defectAdmindetailNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectAdmindetailNG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -538,8 +541,8 @@
   <data name="selectLoss2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\selectLoss2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="setupMenu1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\setupMenu1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="defectAdminnumpadadjust" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defectAdminnumpadadjust.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="man" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\man.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -625,8 +628,14 @@
   <data name="manualLossAfter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\manualLossAfter.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="btnClose" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btnClose.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="defectDetailadjustNew23" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defectDetailadjustNew23.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="defectNumpadadjusttNew23" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defectNumpadadjusttNew23.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="setupMenu1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\setupMenu1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="productionStart3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\productionStart3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -691,10 +700,7 @@
   <data name="MainMenu2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MainMenu2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="eadb74787dda41cc6333341e552934323" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\eadb74787dda41cc6333341e552934323.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="productionListDetailNewNotext" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\productionListDetailNewNotext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="defectDetailadjustNew231" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defectDetailadjustNew231.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

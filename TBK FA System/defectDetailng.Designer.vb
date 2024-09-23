@@ -22,7 +22,6 @@ Partial Class defectDetailng
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(defectDetailng))
         Me.lvDefectdetails = New System.Windows.Forms.ListView()
         Me.NO = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.PARTNO = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -162,7 +161,7 @@ Partial Class defectDetailng
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
+        Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.defectDetailadjustNew231
         Me.ClientSize = New System.Drawing.Size(800, 600)
         Me.Controls.Add(Me.lbType)
         Me.Controls.Add(Me.btnOk)

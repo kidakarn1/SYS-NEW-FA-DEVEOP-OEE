@@ -746,20 +746,20 @@ Public Class ins_time_loss
 		Button10.Enabled = True
 	End Sub
 
-	Private Sub allena()
-		Button1.Enabled = True
-		Button2.Enabled = True
-		Button3.Enabled = True
-		Button4.Enabled = True
-		Button5.Enabled = True
-		Button6.Enabled = True
-		Button7.Enabled = True
-		Button8.Enabled = True
-		Button9.Enabled = True
-		Button13.Enabled = True
-	End Sub
+    Private Sub allena()
+        Button1.Enabled = True
+        Button2.Enabled = True
+        Button3.Enabled = True
+        Button4.Enabled = True
+        Button5.Enabled = True
+        Button6.Enabled = True
+        Button7.Enabled = True
+        Button8.Enabled = True
+        Button9.Enabled = True
+        Button13.Enabled = True
+    End Sub
 
-	Private Sub chk_ins()
+    Private Sub chk_ins()
 		If TextBox1.Text.Length = 1 Then
 			If TextBox1.Text = "0" Or TextBox1.Text = "1" Then
 				allena()

@@ -32,7 +32,7 @@
         Me.Close()
     End Sub
 
-    Private Sub defectHome_Load(sender As Object, e As EventArgs)
+    Private Sub defectHome_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Working_Pro.TowerLamp(8, 0)
     End Sub
 

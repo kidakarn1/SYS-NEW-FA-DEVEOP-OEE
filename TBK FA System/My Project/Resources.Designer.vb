@@ -933,6 +933,26 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property defectDetailadjustNew23() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defectDetailadjustNew23", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property defectDetailadjustNew231() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defectDetailadjustNew231", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property defectDetailnc() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("defectDetailnc", resourceCulture)
