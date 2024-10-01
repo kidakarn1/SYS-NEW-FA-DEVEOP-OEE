@@ -18,6 +18,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,7 +33,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -662,7 +662,25 @@
       <DependentUpon>loadingFrom.vb</DependentUpon>
     </Compile>
     <Compile Include="loadingFrom.vb" />
+    <Compile Include="load_show_OEE.Designer.vb">
+      <DependentUpon>load_show_OEE.vb</DependentUpon>
+    </Compile>
+    <Compile Include="load_show_OEE.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ModelSqliteDefect.vb" />
+    <Compile Include="numPadSetQTY.Designer.vb">
+      <DependentUpon>numPadSetQTY.vb</DependentUpon>
+    </Compile>
+    <Compile Include="numPadSetQTY.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="numPadSetStartTime.Designer.vb">
+      <DependentUpon>numPadSetStartTime.vb</DependentUpon>
+    </Compile>
+    <Compile Include="numPadSetStartTime.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="OEE_NODE.vb" />
     <Compile Include="ProgressBar_Form.Designer.vb">
       <DependentUpon>ProgressBar_Form.vb</DependentUpon>
@@ -1247,6 +1265,15 @@
     <EmbeddedResource Include="loadingFrom.resx">
       <DependentUpon>loadingFrom.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="load_show_OEE.resx">
+      <DependentUpon>load_show_OEE.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="numPadSetQTY.resx">
+      <DependentUpon>numPadSetQTY.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="numPadSetStartTime.resx">
+      <DependentUpon>numPadSetStartTime.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgressBar_Form.resx">
       <DependentUpon>ProgressBar_Form.vb</DependentUpon>
     </EmbeddedResource>
@@ -1459,6 +1486,26 @@
   <ItemGroup>
     <Content Include="fa_logo.ico" />
     <Content Include="ICO_NEW_FA.ico" />
+    <None Include="Resources\0s-200px-200px-unscreen1.gif" />
+    <None Include="Resources\OEE WAIT DATA %281%291.png" />
+    <None Include="Resources\0s-200px-200px-unscreen.gif" />
+    <None Include="Resources\OEE WAIT DATA %281%29.png" />
+    <None Include="Resources\Loading_image1.png" />
+    <None Include="Resources\Loading_image.png" />
+    <None Include="Resources\ErrorTImeOld.png" />
+    <None Include="Resources\ErrorTime2.png" />
+    <None Include="Resources\NumSettingActual1.png" />
+    <None Include="Resources\NumSettingTime3.png" />
+    <None Include="Resources\NumSettingActual.png" />
+    <None Include="Resources\JU.PNG" />
+    <None Include="Resources\NumSettingTime2.png" />
+    <None Include="Resources\NumSettingTime1.png" />
+    <None Include="Resources\NumSettingTime.png" />
+    <None Include="Resources\giphy.gif" />
+    <None Include="Resources\ErrorTime1.png" />
+    <None Include="Resources\936b3a9a817fed848e7025c0430cbb-unscreen.gif" />
+    <None Include="Resources\936b3a9a817fed848e7025c0430cbb10.gif" />
+    <None Include="Resources\ErrorTime.png" />
     <None Include="Resources\defectDetailadjustNew231.png" />
     <None Include="Resources\defectDetailadjustNew23.png" />
     <None Include="Resources\productionListDetailNewNotext.png" />

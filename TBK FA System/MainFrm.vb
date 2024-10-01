@@ -99,6 +99,7 @@ Public Class MainFrm
         Else
             Application.Exit()
         End If
+
         'Me.WebView21.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=K1A003&shift=P")
     End Sub
 
@@ -287,7 +288,7 @@ Public Class MainFrm
         Return critical_flg
     End Function
     Private Sub menu1_Click_1(sender As Object, e As EventArgs) Handles menu1.Click
-        Backoffice_model.Check_detail_actual_insert_act() 'กรณีเครื่องดับ'
+        Backoffice_model.gobal_Flg_autoTranferProductions = Backoffice_model.Check_detail_actual_insert_act() 'กรณีเครื่องดับ'
         check_lot()
         'Prd_detail.Label2.Text = ListView1.Items.Count
         Working_Pro.Label24.Text = Label4.Text
@@ -549,8 +550,7 @@ Public Class MainFrm
     Private Sub PictureBox12_Click(sender As Object, e As EventArgs) Handles PictureBox12.Click
 
     End Sub
-
-    Private Async Sub Button1_Click_3(sender As Object, e As EventArgs) 
+    Private Async Sub Button1_Click_3(sender As Object, e As EventArgs)
         Await AnotherAsyncMethod()
     End Sub
     Public Async Function AnotherAsyncMethod() As Task

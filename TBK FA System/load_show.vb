@@ -16,7 +16,6 @@ recheck:
             check_net = check_net + 1
         End If
     End Sub
-
     Private Sub load_show_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Start()
     End Sub

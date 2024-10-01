@@ -80,6 +80,7 @@ Public Class List_Emp
         Dim i As Integer = ListView1.Items.Count
         lb_count_emp.Text = i
         MainFrm.LB_Number_worker.Text = lb_count_emp.Text
+        Backoffice_model.gobal_DateTimeComputerDown = "" ' set คือ ให้เวลา com ดับ ไม่มีผล
         If i > 0 Then
             flag_emp.Text = "1"
         ElseIf i = 0 Then

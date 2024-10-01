@@ -18,16 +18,24 @@ Public Class OEE_NODE
                     'MsgBox("ELSE")
                 End If
             Next
+            load_show_OEE.Close()
             Return dcResultdata
         Catch ex As Exception
             MsgBox("Please Check Master OEE In Table line_mst")
-            ' MsgBox("ERROR OEE FUNCTION OEE_GET_Hour Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_GET_NEW_TARGET(st_shift As String, end_shift As String, std_ct As String, shift As String)
         Try
-
             Dim api = New api()
             Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
             ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
@@ -48,6 +56,7 @@ Public Class OEE_NODE
                 'End If
             End If
             date_st = date_st
+
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
             ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
@@ -59,10 +68,19 @@ Public Class OEE_NODE
             ' Access the value
             Dim TarGet As Integer = data("Target").ToString
             'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            load_show_OEE.Close()
             Return TarGet
         Catch ex As Exception
-            'MsgBox("ERROR OEE FUNCTION OEE_GET_NEW_TARGET Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_GET_Hour(shift As String)
@@ -71,6 +89,7 @@ Public Class OEE_NODE
             ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/dataGetHour?shift=" & shift)
+
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
@@ -78,13 +97,22 @@ Public Class OEE_NODE
             Dim TarGet As Double = data("WorkHour").ToString
             Console.WriteLine("http://192.168.161.78:6100/api/dataGetHour?shift=" & shift)
             'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            load_show_OEE.Close()
             Return TarGet
         Catch ex As Exception
-            ' MsgBox("ERROR OEE FUNCTION OEE_GET_Hour Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
-    Public Shared Function OEE_getProduction_actual_detailByHour(line_cd As String, minSwitchModel As Integer)
+    Public Shared Function OEE_getProduction_actual_detailByHour(line_cd As String, minSwitchModel As Integer, start_date As String)
         Try
             Dim api = New api()
             Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
@@ -100,12 +128,14 @@ Public Class OEE_NODE
             Dim dateTimeend As Date
             dateTimeend = date_end & " " & time
             '  Dim newDateMinutes As DateTime = dateTimeend.AddMinutes(-60)
-            Dim newDateMinutes As DateTime = dateTimeend.AddMinutes(-minSwitchModel)
+            Dim newDateMinutes As DateTime = start_date 'dateTimeend.AddMinutes(-minSwitchModel)
+            'MsgBox("start Date ======>" & start_date)
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
             Dim convertDateCrr = Convert.ToDateTime(date_now_date).ToString("yyyy-MM-dd")
             Dim convertnewDateMinutes = Convert.ToDateTime(newDateMinutes).ToString("yyyy-MM-dd HH:mm:ss")
-            '  MsgBox("convertDateCrr======>" & convertDateCrr)
+            ' MsgBox("convertDateStart======>" & convertDateStart)
             '  MsgBox("convertnewDateMinutes======>" & convertnewDateMinutes)
+
             Console.WriteLine("http://192.168.161.78:6100/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
             Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
             Dim jsSerializer As New JavaScriptSerializer()
@@ -113,10 +143,19 @@ Public Class OEE_NODE
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim rs As Integer = data("TotalByHour").ToString
+            load_show_OEE.Close()
             Return rs
         Catch ex As Exception
-            'MsgBox("ERROR OEE FUNCTION OEE_getProduction_actual_detailByHour Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_getProduction_actual_detailByShift(line_cd As String, shift As String)
@@ -128,6 +167,7 @@ Public Class OEE_NODE
             Dim date_st = DateTime.Now.ToString("yyyy-MM-dd")
             Dim date_end = DateTime.Now.ToString("yyyy-MM-dd")
             Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
+
             If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
                 date_st = date_now_date.AddDays(-1)
             Else
@@ -156,10 +196,19 @@ Public Class OEE_NODE
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim rs As Integer = data("TotalActualDetail").ToString
+            load_show_OEE.Close()
             Return rs
         Catch ex As Exception
-            ' MsgBox("ERROR OEE FUNCTION OEE_getProduction_actual_detailByShift Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function GetDataProgressbarA(st_shift As String, end_shift As String, line_cd As String, dateTimeswmodel As String, statusSwitchModel As String, IsOnlyone As String)
@@ -179,6 +228,7 @@ Public Class OEE_NODE
             dateTimeend = date_end & " " & time
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
             Dim convertDateCrr = Convert.ToDateTime(date_now_date).ToString("yyyy-MM-dd")
+
             Console.WriteLine("http://192.168.161.78:6100/api/dataProgressA?st_shift=" & st_shift & "&end_shift=" & end_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_Crr=" & convertDateCrr & "&TimeCrr=" & time & "&dateTimeswmodel=" & dateTimeswmodel & "&statusSwitchModel=" & statusSwitchModel & "&IsOnlyone=" & IsOnlyone)
             Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/dataProgressA?st_shift=" & st_shift & "&end_shift=" & end_shift & "&line_cd=" & line_cd & "&date_start=" & convertDateStart & "&date_Crr=" & convertDateCrr & "&TimeCrr=" & time & "&dateTimeswmodel=" & dateTimeswmodel & "&statusSwitchModel=" & statusSwitchModel & "&IsOnlyone=" & IsOnlyone)
             Dim jsSerializer As New JavaScriptSerializer()
@@ -186,10 +236,19 @@ Public Class OEE_NODE
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim rs As Integer = data("PercentA").ToString
+            load_show_OEE.Close()
             Return rs
         Catch ex As Exception
-            ' MsgBox("ERROR OEE FUNCTION GetDataProgressbarA Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_GetLossByHouseP1(line_cd As String)
@@ -210,6 +269,7 @@ Public Class OEE_NODE
             Dim newDateMinutes As DateTime = dateTimeend.AddMinutes(-60)
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
             Dim convertnewDateMinutes = Convert.ToDateTime(newDateMinutes).ToString("yyyy-MM-dd HH:mm:ss")
+
             ' MsgBox("convertnewDateMinutes ===>" & convertnewDateMinutes)
             Console.WriteLine("http://192.168.161.78:6100/api/dataGetlossbyhouse?line_cd=" & line_cd & "&date_start=" & date_st & "&date_end=" & date_end & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
             Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/dataGetlossbyhouse?line_cd=" & line_cd & "&date_start=" & date_st & "&date_end=" & date_end & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
@@ -221,10 +281,19 @@ Public Class OEE_NODE
             ' Retrieve the integer value from the dictionary
             ' Access the value
             Dim rs As Integer = targetValue
+            load_show_OEE.Close()
             Return rs
         Catch ex As Exception
-            'MsgBox("ERROR OEE FUNCTION OEE_GetLossByHouseP1 Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_GET_Data_LOSS(line_cd As String, lot_no As String, shift As String, dateStart As String, dateTimeswModel As String, statusSwitchModel As String, IsOnlyone As String)
@@ -245,13 +314,23 @@ Public Class OEE_NODE
             'MsgBox("dateTime_end ===>" & date_end)
             'MsgBox("time = " & time)
             Dim st_time = Prd_detail.Label12.Text.Substring(3, 5) & ":00"
+
             Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time & "&dateTimeswModel=" & dateTimeswModel & "&statusSwitchModel=" & statusSwitchModel & "&IsOnlyone=" & IsOnlyone)
             Console.WriteLine("http://192.168.161.78:6100/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time & "&dateTimeswModel=" & dateTimeswModel & "&statusSwitchModel=" & statusSwitchModel & "&IsOnlyone=" & IsOnlyone)
             Console.WriteLine(jsonString)
+            load_show_OEE.Close()
             Return jsonString
         Catch ex As Exception
-            ' MsgBox("ERROR OEE FUNCTION OEE_GET_Data_LOSS Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_GET_Data_AccTarget(st_shift As String, std_ct As String)
@@ -268,6 +347,7 @@ Public Class OEE_NODE
             End If
             date_st = date_st
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
+
             Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&end_shift=" & time)
             Console.WriteLine("http://192.168.161.78:6100/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&end_shift=" & time)
             Dim jsSerializer As New JavaScriptSerializer()
@@ -276,15 +356,26 @@ Public Class OEE_NODE
             ' Access the value
             Dim rs As Integer = data("ActualTarget").ToString
             Console.WriteLine("http: //192.168.161.78:6100/api/datagetAccTarget?st_shift=" & st_shift & "&std_ct=" & std_ct)
+            load_show_OEE.Close()
             Return rs
         Catch ex As Exception
             'MsgBox("ERROR OEE FUNCTION OEE_GET_Data_AccTarget Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_getSpeedLoss(NG As String, Good As String, Timeshift As String, std_cd As String)
         Try
             Dim api = New api()
+
             Dim jsonString = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getSpeedLoss?NG=" & NG & "&Good=" & Good & "&Timeshift=" & Timeshift & "&std_cd=" & std_cd)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
@@ -292,15 +383,24 @@ Public Class OEE_NODE
             ' Access the value
             Dim rs As Integer = data("ActualTarget")
             Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getSpeedLoss?NG=" & NG & "&Good=" & Good & "&Timeshift=" & Timeshift & "&std_cd=" & std_cd)
+            load_show_OEE.Close()
             Return rs
         Catch ex As Exception
-            ' MsgBox("ERROR OEE FUNCTION OEE_getSpeedLoss Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_getWorkingTime(line_cd As String, Timeshift As String)
         Try
             Dim api = New api()
+
             Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
             ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
             Dim time As String = DateTime.Now.ToString("HH:mm:ss")
@@ -319,10 +419,19 @@ Public Class OEE_NODE
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim rs As Integer = data("rs").ToString
+            load_show_OEE.Close()
             Return rs
         Catch ex As Exception
-            ' MsgBox("ERROR OEE FUNCTION OEE_getWorkingTime Please Check API")
-            load_show.Show()
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
     Public Shared Function OEE_getDateTimeStart(st_shift As String, line_cd As String)
@@ -375,6 +484,48 @@ ReConnect:
             Return data
         Catch ex As Exception
             GoTo ReConnect
+        End Try
+    End Function
+    Public Shared Function OEE_getDataProductionActual(st_shift As String, line_cd As String, item_cd As String)
+        Try
+ReConnect:
+            Dim api = New api()
+
+            Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
+            ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
+            Dim time As String = DateTime.Now.ToString("HH:mm:ss")
+            Dim date_st = DateTime.Now.ToString("yyyy-MM-dd")
+            Dim date_end = DateTime.Now.ToString("yyyy-MM-dd")
+            Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
+            If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
+                date_st = date_now_date.AddDays(-1)
+            End If
+            date_st = date_st
+            Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
+            Console.WriteLine("http://192.168.161.78:6100/api/dataDataProductionActual?st_shift=" & st_shift & "&line_cd=" & line_cd & "&dates_start=" & convertDateStart & "&date_crr=" & date_end & "&time_crr=" & time & "&item_cd=" & item_cd)
+            Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/dataDataProductionActual?st_shift=" & st_shift & "&line_cd=" & line_cd & "&dates_start=" & convertDateStart & "&date_crr=" & date_end & "&time_crr=" & time & "&item_cd=" & item_cd)
+            Dim jsSerializer As New JavaScriptSerializer()
+            Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
+            Dim endDate As String = "NO DATA"
+            Dim startDate As String = "NO DATA"
+            'Dim prdStartDate As DateTime = data("prd_start_date").ToString
+            Dim prdEndDate As DateTime = data("prd_end_date").ToString
+            'startDate = prdStartDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            'MsgBox("startDate====>" & startDate)
+            endDate = prdEndDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            load_show_OEE.Close()
+            Return endDate
+        Catch ex As Exception
+            Try
+                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    load_show_OEE.Show()
+                Else
+                    load_show.Show()
+                End If
+            Catch ex2 As Exception
+                load_show_OEE.Close()
+                load_show.Show()
+            End Try
         End Try
     End Function
 End Class

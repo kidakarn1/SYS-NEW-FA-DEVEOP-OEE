@@ -45,6 +45,9 @@ Public Class Backoffice_model
     Public Shared svApi As String = ""
     Public Shared svDatabase As String = ""
     Public Shared user_pd As String = ""
+    Public Shared gobal_Flg_autoTranferProductions As Integer = 0
+    Public Shared gobal_DateTimeComputerDown As String = ""
+    Public Shared gobal_QTYComputerDown As String = ""
     Public Shared WithEvents serialPort As New SerialPort
     Public Shared Function OpenRS232(mec_name)
         If serialPort.IsOpen Then
@@ -841,11 +844,12 @@ re_insert_rework_act:
             'Application.Exit()
         End Try
     End Function
-    Public Shared Sub Check_detail_actual_insert_act()
+    Public Shared Function Check_detail_actual_insert_act()
         updated_data_to_dbsvr()
         Dim api = New api()
         Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/TESTAPITRANFER/Get_detail_act?line_cd=" & MainFrm.Label4.Text)
-    End Sub
+        Return result_update_count_pro
+    End Function
     Public Shared Sub Check_detail_actual_insert_act_no_api()
         updated_data_to_dbsvr()
     End Sub
@@ -1483,8 +1487,8 @@ recheck:
             '  reader.Close()
             'Return reader
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
-            Console.WriteLine("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Console.WriteLine("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
         Catch ex As Exception
             '  SQLConn.Close()
@@ -1504,10 +1508,10 @@ recheck:
             '  reader.Close()
             'Return reader
             Dim mdDefect = New modelDefect
-            Console.WriteLine("http: //" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
+            Console.WriteLine("http: //" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
             If mdDefect.mGetDataEnableFGPart(MainFrm.Label4.Text) = "1" Then
                 Dim api = New api()
-                Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
+                Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
                 Return result
             Else
                 Return 0
@@ -1528,7 +1532,7 @@ recheck:
             '  reader = SQLCmd.ExecuteReader()
             '  reader.Close()
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_sub?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_sub?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
         Catch ex As Exception
             '    SQLConn.Close()
@@ -1547,7 +1551,7 @@ recheck:
             '   reader = SQLCmd.ExecuteReader()
             '   reader.Close()
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_main?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/updateDatadefect/update_tagprint_main?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
             'Return reader
         Catch ex As Exception

@@ -6,7 +6,6 @@ Public Class ins_qty
         Try
             TextBox1.Text = TextBox1.Text.Substring(0, txt_lenght - 1)
         Catch ex As Exception
-
         End Try
     End Sub
     Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
@@ -362,27 +361,27 @@ Public Class ins_qty
             End If
         End If
     End Sub
-    Public Sub insert_qty()
+    Public Sub insert_qty(tb As String)
         If Wait_data.check_load_wit_data = "1" Then
-            Dim ins_qtyy As Integer = TextBox1.Text
+            Dim ins_qtyy As Integer = tb
             Dim max_val As String = Working_Pro.Label10.Text
             max_val = max_val.Substring(1, max_val.Length - 1)
             If Working_Pro.check_tag_type = "3" Then
                 Dim delayInSeconds As Integer = 2 ' เวลารอระหว่างการปริ้น (วินาที)
-                For i As Integer = 1 To CDbl(Val(TextBox1.Text))
+                For i As Integer = 1 To CDbl(Val(tb))
                     Dim break = Working_Pro.lbPosition1.Text & " " & Working_Pro.lbPosition2.Text
                     Dim plb = New PrintLabelBreak
                     plb.loadData(Working_Pro.Label3.Text, break, Working_Pro.Label18.Text, Working_Pro.Label22.Text, CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) + i)
                     'Thread.Sleep(delayInSeconds * 1000) ' รอเป็นมิลลิวินาที
                 Next i
             End If
-            Working_Pro.LB_COUNTER_SHIP.Text = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) + CDbl(Val(TextBox1.Text))
-            Working_Pro.LB_COUNTER_SEQ.Text = CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) + CDbl(Val(TextBox1.Text))
-            Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) + CDbl(Val(TextBox1.Text))
+            Working_Pro.LB_COUNTER_SHIP.Text = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) + CDbl(Val(tb))
+            Working_Pro.LB_COUNTER_SEQ.Text = CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) + CDbl(Val(tb))
+            Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) + CDbl(Val(tb))
             Dim max_val_int As Integer = Convert.ToInt32(max_val)
             Backoffice_model.qty_int = ins_qtyy
             If ins_qtyy > 0 And ins_qtyy <= max_val_int Then
-                Working_Pro.lb_ins_qty.Text = TextBox1.Text
+                Working_Pro.lb_ins_qty.Text = tb
                 Working_Pro.ins_qty_fn_manual()
                 Working_Pro.Enabled = True
                 select_int_qty.Close()
@@ -406,16 +405,14 @@ Public Class ins_qty
             End If
         End If
     End Sub
-
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         count_time += 1
         If count_time = 20 Then
             Timer1.Enabled = False
-            insert_qty()
+            insert_qty(TextBox1.Text)
             count_time = 0
         End If
     End Sub
-
     Private Sub ins_qty_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         show_remain_qty.Text = CDbl(Val(Working_Pro.Label8.Text)) - CDbl(Val(Working_Pro.Label6.Text))
         lbpartNo.Text = Working_Pro.Label3.Text

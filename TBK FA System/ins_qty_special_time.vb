@@ -15,8 +15,8 @@ Imports GenCode128
 Imports BarcodeLib.Barcode
 Public Class ins_qty_special_time
 	Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-		Dim text_now As String = TextBox1.Text
-		If text_now.Length > 4 Then
+        Dim text_now As String = TextBox1.Text
+        If text_now.Length > 4 Then
 			Dim text_to2 As String = TextBox2.Text
 			If text_to2.Length = 2 Then
 				text_to2 = text_to2 & ":1"
@@ -436,7 +436,7 @@ Public Class ins_qty_special_time
                     ' MsgBox("start_time==>" & start_time)
                     ' MsgBox("end_time==>" & end_time)
                     Dim date_cerrunt As Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                    date_cerrunt1 = date_cerrunt.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) & ":00"
+                    date_cerrunt1 = date_cerrunt.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) & ":00"
                     Dim result_date_click_start = Backoffice_model.date_time_click_start.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                     Dim Minutes1 As Long = DateDiff(DateInterval.Minute, date1, date2)
                     ' MsgBox("DatetimeclickStart ===>" & DatetimeclickStart)
@@ -753,9 +753,9 @@ Public Class ins_qty_special_time
         Dim date_start_shift As Date = Backoffice_model.date_time_start_master_shift
         If Backoffice_model.S_chk_spec_line = 0 Then
             Dim timestart As Date = Working_Pro.Label16.Text
-            show_time_add_qty.Text = timestart.ToString("HH:mm", CultureInfo.InvariantCulture)
+            show_time_add_qty.Text = timestart.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
         Else
-            show_time_add_qty.Text = Backoffice_model.date_time_start_master_shift.ToString("HH:mm", CultureInfo.InvariantCulture)
+            show_time_add_qty.Text = Backoffice_model.date_time_start_master_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
         End If
         chk_ins()
     End Sub

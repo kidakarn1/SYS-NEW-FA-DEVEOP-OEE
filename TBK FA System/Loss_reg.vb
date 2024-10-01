@@ -338,7 +338,7 @@ Public Class Loss_reg
             Shell("C:\TicketMaintenances\TicketMaintenances\MaintenanceSystem.exe")
             Await AnotherAsyncMethod()
         Catch ex As Exception
-            MsgBox("Maintenance System Open.")
+            '  MsgBox("Maintenance System Open.")
         End Try
     End Sub
     Public Sub Wait_DATA()

@@ -89,7 +89,10 @@ Public Class Working_Pro
         Label1.Text = DateTime.Now.ToString("yyyy, MMMM dd")
         Label43.Text = DateTime.Now.ToString("yyyy/MM/dd")
         lb_loss_status.Text = lb_loss_status.Text
-        'SetStartTime.Label4.Text = TimeOfDay.ToString("HH:mm:ss")
+        If Backoffice_model.gobal_Flg_autoTranferProductions = 1 Then
+            SetStartTime.Crr_time.Text = TimeOfDay.ToString("HH:mm:ss")
+            SetStartTime.lb_dateCrr.Text = DateTime.Now.ToString("yyyy-MM-dd")
+        End If
         If lb_loss_status.Right < 0 Then
             lb_loss_status.Left = Panel6.ClientSize.Width
         Else
@@ -174,6 +177,8 @@ Public Class Working_Pro
         End If
     End Sub
     Public Function cal_progressbarQ(NGAll As String, Good As String)
+        '  MsgBox("NGAll===>" & NGAll)
+        '  MsgBox("Good===>" & Good)
         Dim rs = CInt(NGAll) + CInt(Good)
         Dim totalProgressbar = (Good / rs) * 100
         If Good = "0" And rs = "0" Then
@@ -270,6 +275,7 @@ Public Class Working_Pro
         Return totalProgressbar
     End Function
     Public Function setgetSpeedLoss(NG As String, Good As String, timeShift As String, std_cd As String, line_cd As String, stTimeModel As String)
+        'MsgBox("DateTimeStartofShift.Text======>" & DateTimeStartofShift.Text)
         Dim OEE = New OEE_NODE
         'Dim per = "%"
         'per.Font = New Font("Arial", 20, FontStyle.Bold)
@@ -310,16 +316,44 @@ Public Class Working_Pro
                 startDate = Convert.ToDateTime(stTimeModel).ToString("yyyy-MM-dd HH:mm:ss")
             End If
         End If
+        ' MsgBox("Special -- MainFrm.chk_spec_line ===>" & MainFrm.chk_spec_line)
+        ' If Backoffice_model.S_chk_spec_line = 0 Then ' Normal
+
+        ' ElseIf MainFrm.chk_spec_line = "2" Then ' for M083
+        ' startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
+        ' startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
+        ' 'MsgBox("IF ")
+        ' If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
+        ' startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
+        ' End If
+        ' Else 'for line Special M025
+        ' 'Backoffice_model.date_time_start_master_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+        ' startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
+        ' startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
+        ' 'MsgBox("IF ")
+        ' If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
+        ' If Backoffice_model.S_chk_spec_line = 0 Then ' Normal 
+        ' 'MsgBox("IF 0000")
+        ' Else 'for line M025
+        ' ' MsgBox("IF 2222")
+        ' startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
+        ' End If
+        ' End If
+        ' ' MsgBox("startDate2222===>" & startDate)
+        ' End If
+
+
         Dim secSwitchmodel = DateDiff("s", startDate, Now())
+        ' MsgBox("secSwitchmodel====>" & secSwitchmodel)
+
         Dim MinSwitchmodel As Integer = secSwitchmodel / 60
         ' MsgBox("MinSwitchmodel ====>" & MinSwitchmodel)
-        Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd, MinSwitchmodel)
+        Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd, MinSwitchmodel, startDate)
         ' MsgBox("OEE_actual_detailByHour=====>" & OEE_actual_detailByHour)
         actualP.Text = OEE_actual_detailByHour
         ' Try
         ' หาความแตกต่างในหน่วยนาที
         ' startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss") wait test 
-
         '   MsgBox("startDate ===>" & startDate)
         ' MsgBox("Now ===>" & Now())
         rsDateDiff = DateDiff("s", startDate, Now())
@@ -339,8 +373,6 @@ Public Class Working_Pro
             Dim GetLossByHouseP1 = OEE.OEE_GetLossByHouseP1(line_cd)
             Dim calHour = 0
             Dim rsmanage = 0
-            ' MsgBox("stTimeModel====>" & stTimeModel)
-
             If GetLossByHouseP1 <> "0" Then
                 rsmanage = secSwitchmodel - GetLossByHouseP1
             Else
@@ -354,6 +386,7 @@ Public Class Working_Pro
         ' Catch ex As Exception
         '
         ' End Try
+
         ' stdJobP.Text = Math.Ceiling(3600 / std_cd) ' CInt((CDbl(Val(Label7.Text)) / CDbl(Val(HourOverAllShift.Text))))
         Dim workingTime = OEE.OEE_getWorkingTime(line_cd, timeShift)
         Dim workingTimemin = workingTime * 60
@@ -365,6 +398,10 @@ Public Class Working_Pro
         Else
             totalProgressbar = (actualP.Text / stdJobP.Text) * 100  '((Good + NG) / rscalwork_std)
         End If
+        ' MsgBox("actualP.Text===>" & actualP.Text)
+        'MsgBox("stdJobP.Text===>" & stdJobP.Text)
+        ' MsgBox("totalProgressbar===>" & totalProgressbar)
+
         Console.WriteLine(totalProgressbar)
         If Math.Ceiling(totalProgressbar) > 100 Then
             progressbarP.Text = Int(100) & "%"
@@ -470,7 +507,6 @@ Public Class Working_Pro
         End If
         Dim OEE = New OEE_NODE
         showWorkker()
-
         Try
             ' เรียกใช้ฟังก์ชัน loadDataProgressBar แบบ Async
             Await loadDataProgressBar(MainFrm.Label4.Text, Label14.Text)
@@ -641,15 +677,17 @@ Public Class Working_Pro
         Dim mdDf = New modelDefect
         lb_good.Text = mdDf.mGetGoodWILot(wi_no.Text, Label18.Text)
         Main()
-        Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, LB_COUNTER_SHIP.Text)
-        Dim A = cal_progressbarA(MainFrm.Label4.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
         Dim P = setgetSpeedLoss(lbOverTimeQuality.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, MainFrm.Label4.Text, gobal_stTimeModel)
+        Dim GoodByPartNo As Integer = CDbl(Val(actualP.Text)) - CDbl(Val(lbOverTimeQuality.Text))
+        Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, GoodByPartNo)
+        Dim A = cal_progressbarA(MainFrm.Label4.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
         calProgressOEE(A, Q, P)
         Timer2.Start()
         Me.Enabled = True
-        'Start_Production() ' click frist
         loadingForm.Hide()
-        ' SetStartTime.Show()
+        If Backoffice_model.gobal_Flg_autoTranferProductions = 1 Then
+            SetStartTime.Show()
+        End If
     End Sub
     Public Sub check_seq_data()
         If CDbl(Val(LB_COUNTER_SEQ.Text)) <> "0" Then
@@ -1044,12 +1082,12 @@ Public Class Working_Pro
                     'MsgBox("Ping completed")
                 Else
                     tr_status = "0"
-                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, Label18.Text)
+                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
                     'MsgBox("Ping incompleted")
                 End If
             Catch ex As Exception
                 tr_status = "0"
-                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, Label18.Text)
+                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
             End Try
             st_time.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
             st_count_ct.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
@@ -1126,7 +1164,14 @@ Public Class Working_Pro
         If check_in_up_seq = 0 Then
             Dim date_st1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
             Dim date_end1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
-            Backoffice_model.date_time_click_start = DateTime.Now.ToString("yyyy-MM-dd HH:mm") & ":00"
+            ' MsgBox("Backoffice_model.gobal_DateTimeComputerDown===:>" & Backoffice_model.gobal_DateTimeComputerDown)
+            If Backoffice_model.gobal_DateTimeComputerDown = "" Then
+                Backoffice_model.date_time_click_start = DateTime.Now.ToString("yyyy-MM-dd HH:mm") & ":00"
+            Else
+                Dim dateTimeconvert As DateTime = Backoffice_model.gobal_DateTimeComputerDown.ToString
+                Backoffice_model.date_time_click_start = dateTimeconvert.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) ' มาจาก คอมดับ 
+            End If
+            'MsgBox("asdasd=================>" & Backoffice_model.date_time_click_start)
             Dim rsTime As Integer = calTimeBreakTime(Backoffice_model.date_time_click_start, lbNextTime.Text)
             '  TimerCountBT.Interval = rsTime * 1000
             '  If rsTime <> 0 Then
@@ -1299,7 +1344,12 @@ Public Class Working_Pro
         'Button1.Visible = True
         Dim st_counter As String = Label32.Text
         If st_counter = "0" Then
-            Label16.Text = TimeOfDay.ToString("H : mm")
+            If Backoffice_model.gobal_DateTimeComputerDown = "" Then
+                Label16.Text = TimeOfDay.ToString("H:mm:ss")
+            Else
+                Dim dateTimeconvert As DateTime = Backoffice_model.gobal_DateTimeComputerDown.ToString
+                Label16.Text = dateTimeconvert.ToString("H:mm:ss", CultureInfo.InvariantCulture) ' มาจาก คอมดับ 
+            End If
             Label32.Text = "1"
             btn_back.Enabled = False
             If lb_ch_man_flg.Text = "1" Then
@@ -1317,7 +1367,15 @@ Public Class Working_Pro
             Dim staff_no As String = Label29.Text
             seq_no = Label22.Text
             Dim prd_qty As Integer = 0
-            Dim start_time As Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+            Dim start_time As Date
+            'MsgBox("Backoffice_model.gobal_DateTimeComputerDown ===>" & Backoffice_model.gobal_DateTimeComputerDown)
+            If Backoffice_model.gobal_DateTimeComputerDown = "" Then
+                start_time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                'MsgBox("start_time===>" & start_time)
+            Else
+                Dim dateTimeconvert As DateTime = Backoffice_model.gobal_DateTimeComputerDown.ToString
+                start_time = dateTimeconvert.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) ' มาจาก คอมดับ 
+            End If
             Dim end_time As Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Dim use_time As Double = 0.00
             Dim tr_status As String = "0"
@@ -1325,6 +1383,7 @@ Public Class Working_Pro
             Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Try
+                'MsgBox("Backoffice_model.gobal_QTYComputerDown===>" & Backoffice_model.gobal_QTYComputerDown)
                 If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
@@ -1338,11 +1397,24 @@ Public Class Working_Pro
                             Dim special_item_name As String = itemPlanData.item_name
                             Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, Spwi_id(j))
                             Backoffice_model.Insert_prd_detail(pd, line_cd, wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty, start_time, end_time, use_time, number_qty, Spwi_id(j), tr_status)
+                            If Backoffice_model.gobal_DateTimeComputerDown = "0" Then
+
+                            Else
+                                If Backoffice_model.gobal_QTYComputerDown > "0" Then
+                                    insComputerDown(Backoffice_model.gobal_DateTimeComputerDown)
+                                End If
+                            End If
                             j = j + 1
                         Next
                     Else
                         Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
                         Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_time, number_qty, pwi_id, tr_status)
+                        If Backoffice_model.gobal_DateTimeComputerDown = "" Then
+                        Else
+                            If Backoffice_model.gobal_QTYComputerDown > "0" Then
+                                insComputerDown(Backoffice_model.gobal_DateTimeComputerDown)
+                            End If
+                        End If
                     End If
                     'MsgBox("Ping completed")
                 Else
@@ -1379,7 +1451,7 @@ Public Class Working_Pro
                         j = j + 1
                     Next
                 Else
-                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, Label18.Text)
+                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
                 End If
             End Try
             st_time.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
@@ -1490,6 +1562,20 @@ Public Class Working_Pro
             Await LOAD_OEE()
         End If
     End Function
+    Public Sub insComputerDown(tb As String)
+        'MsgBox("tb===>" & tb)
+        LB_COUNTER_SHIP.Text = CDbl(Val(LB_COUNTER_SHIP.Text)) + CDbl(Val(tb))
+        LB_COUNTER_SEQ.Text = CDbl(Val(LB_COUNTER_SEQ.Text)) + CDbl(Val(tb))
+        lb_good.Text = CDbl(Val(lb_good.Text)) + CDbl(Val(tb))
+        Dim max_val As String = Label10.Text
+        max_val = max_val.Substring(1, max_val.Length - 1)
+        Dim max_val_int As Integer = Convert.ToInt32(max_val)
+        Backoffice_model.qty_int = tb
+        lb_ins_qty.Text = tb
+        'MsgBox("tb2222===>" & tb)
+        ins_qty_fn_manual()
+
+    End Sub
     Public Async Function loadDataProgressBar(line_cd As String, shift As String) As Task
         ' ตรวจสอบว่ามี WebView2 instance ที่ใช้งานอยู่หรือไม่ ถ้ามีให้ Dispose ก่อน
         ' If WebViewProgressbar IsNot Nothing Then
@@ -1506,8 +1592,8 @@ Public Class Working_Pro
             ' สร้าง instance ของ WebView2 control
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
             ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
-            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
-            Console.WriteLine("Navigating to: http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("Navigating to: http://192.168.161.219/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
         Catch ex As Exception
             ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
             Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
@@ -1697,14 +1783,14 @@ Public Class Working_Pro
                 If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                     tr_status = "1"
                     Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_time, number_qty, Label18.Text, tr_status)
-                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, Label18.Text)
+                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, pwi_id)
                 Else
                     tr_status = "0"
-                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, Label18.Text)
+                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, pwi_id)
                 End If
             Catch ex As Exception
                 tr_status = "0"
-                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, Label18.Text)
+                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, pwi_id)
             End Try
             Dim sum_diff As Integer = Label8.Text - Label6.Text
             If sum_diff < 0 Then
@@ -3293,6 +3379,7 @@ Public Class Working_Pro
                 manage_print()
             End If
         Else
+            'MsgBox("ready")
             manage_print()
         End If
         Dim pd As String = MainFrm.Label6.Text
@@ -3508,10 +3595,12 @@ Public Class Working_Pro
             set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, gobal_stTimeModel)
             setlvA(MainFrm.Label4.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), gobal_stTimeModel)
             setlvQ(MainFrm.Label4.Text, Label18.Text, Prd_detail.Label12.Text.Substring(3, 5), gobal_stTimeModel)
-            Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, LB_COUNTER_SHIP.Text)
+             Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, MainFrm.Label4.Text, gobal_stTimeModel)
+            Dim GoodByPartNo As Integer = CDbl(Val(actualP.Text)) - CDbl(Val(lbOverTimeQuality.Text))
+            Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, GoodByPartNo)
             Dim A = cal_progressbarA(MainFrm.Label4.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
             setNgByHour(MainFrm.Label4.Text, Label18.Text)
-            Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, MainFrm.Label4.Text, gobal_stTimeModel)
+
             'Dim rswebview = loadDataProgressBar(MainFrm.Label4.Text, Label14.Text)
             ' WebViewProgressbar.Reload()
             calProgressOEE(A, Q, P)
@@ -4353,11 +4442,10 @@ Public Class Working_Pro
                         Me.Enabled = False
                     End If
                 Else
-                    '  TimerLossBT.Enabled = False
+                    ' TimerLossBT.Enabled = False
                 End If
             End If
         Catch ex As Exception
-
         End Try
     End Sub
     Private Sub PictureBox8_Click(sender As Object, e As EventArgs) Handles PictureBox8.Click
@@ -4408,7 +4496,7 @@ Public Class Working_Pro
     Private Sub TIME_CAL_EFF_Tick(sender As Object, e As EventArgs) Handles TIME_CAL_EFF.Tick
         'If check_cal_eff = 1000 Then
         'cal_eff()
-        'งcheck_cal_eff = 1ๅ
+        'check_cal_eff = 1
         'Else
         'check_cal_eff = check_cal_eff + 1
         'End If

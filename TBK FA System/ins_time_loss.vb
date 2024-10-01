@@ -203,27 +203,25 @@ Public Class ins_time_loss
 		End If
 		chk_ins()
 		Dim text_to2_now As String = TextBox2.Text
-		If text_to2_now.Length > 4 Then
-			alldis()
-
-		End If
-	End Sub
+        If text_to2_now.Length > 4 Then
+            alldis()
+        End If
+    End Sub
 
 	Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
 		Dim text_now As String = TextBox1.Text
-		If text_now.Length > 4 Then
-			Dim text_to2 As String = TextBox2.Text
+        If text_now.Length > 4 Then
+            Dim text_to2 As String = TextBox2.Text
 
-			If text_to2.Length = 2 Then
-				text_to2 = text_to2 & ":7"
-				TextBox2.Text = text_to2
-			Else
-				text_to2 = text_to2 & "7"
-				TextBox2.Text = text_to2
-			End If
-
-		Else
-			If text_now.Length = 2 Then
+            If text_to2.Length = 2 Then
+                text_to2 = text_to2 & ":7"
+                TextBox2.Text = text_to2
+            Else
+                text_to2 = text_to2 & "7"
+                TextBox2.Text = text_to2
+            End If
+        Else
+            If text_now.Length = 2 Then
 				text_now = text_now & ":7"
 				TextBox1.Text = text_now
 			Else
@@ -233,11 +231,10 @@ Public Class ins_time_loss
 		End If
 		chk_ins()
 		Dim text_to2_now As String = TextBox2.Text
-		If text_to2_now.Length > 4 Then
-			alldis()
-
-		End If
-	End Sub
+        If text_to2_now.Length > 4 Then
+            alldis()
+        End If
+    End Sub
 
 	Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
 		Dim text_now As String = TextBox1.Text
@@ -329,7 +326,7 @@ Public Class ins_time_loss
 		End If
 	End Sub
 
-	Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
+    Private Sub Button12_Click(sender As Object, e As EventArgs) Handles Button12.Click
 		TextBox1.Clear()
 		TextBox2.Clear()
 		ena012()
@@ -406,12 +403,9 @@ Public Class ins_time_loss
 
                     Dim date_start_shift As Date = Backoffice_model.date_time_start_master_shift
                     Dim date_end_shift As Date = Backoffice_model.date_time_end_check_date_paralell_linet
-
                     Dim date_start_time As String = date_start_shift.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
-
                     Dim convert_date_start_time As String = date_start_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                     Dim convert_date_end_time As String = date_end_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-
                     Dim date_end_time As String = date_end_shift.ToString("dd/mm/yy", CultureInfo.InvariantCulture)
                     Dim convert_date_time_start As String = date_start_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
                     Dim convert_date_end_shift As String = date_end_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)

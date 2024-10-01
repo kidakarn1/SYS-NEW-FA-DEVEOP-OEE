@@ -7,6 +7,7 @@ Public Class Confrime_work_production
     Public Shared ArrayDataPlan As New List(Of DataPlan)
     Public Shared Function next_pae()
         Dim count_reload As Integer = 0
+        Backoffice_model.gobal_DateTimeComputerDown = "" ' ห้ามลบ ตัวเช็คคอมดับ
         Try
             If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
                 Dim line_cd_na As String = Prd_detail.Label3.Text
@@ -24,7 +25,7 @@ Public Class Confrime_work_production
                         Backoffice_model.line_status_ins(line_id, date_st, date_end, "1", "0", "24", "0", Prd_detail.lb_wi.Text)
 re_load:
                         If count_reload = 200 Then
-                            Backoffice_model.Check_detail_actual_insert_act() 'กรณีเครื่องดับ'
+                            Dim a = Backoffice_model.Check_detail_actual_insert_act() 'กรณีเครื่องดับ'
                         Else
                             count_reload += 1
                             GoTo re_load
