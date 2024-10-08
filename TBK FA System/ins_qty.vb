@@ -320,6 +320,7 @@ Public Class ins_qty
             Label2.BringToFront()
             Label2.Show()
             TextBox1.Text = ""
+            pb_ok.Visible = True
         Else
             If Trim(TextBox1.Text) <= 0 Then
                 'MsgBox("Please check QTY.")
@@ -336,6 +337,7 @@ Public Class ins_qty
                 Label2.BringToFront()
                 Label2.Show()
                 TextBox1.Text = ""
+                pb_ok.Visible = True
             Else
                 If TextBox1.Text = "" Then
                     'MsgBox("Please check QTY.")
@@ -352,18 +354,25 @@ Public Class ins_qty
                     Label2.BringToFront()
                     Label2.Show()
                     TextBox1.Text = ""
+                    pb_ok.Visible = True
                 Else
                     ' Wait_data.Label1.Text = "กรุณารอสักครู่ ระบบกำลังบันทึกข้อมูล"
                     ' Wait_data.Label2.Text = "PLEASE WAIT SYSTEM SAVING DATA."
-                    Wait_data.Show()
-                    Timer1.Enabled = True
+                    ' MsgBox("TEST 1 ")
+                    '  Wait_data.Show()
+                    'MsgBox("TEST 2")
+                    '  Timer1.Enabled = True
+                    pb_ok.Visible = False
+                    insert_qty(TextBox1.Text)
                 End If
             End If
         End If
     End Sub
     Public Sub insert_qty(tb As String)
-        If Wait_data.check_load_wit_data = "1" Then
-            Dim ins_qtyy As Integer = tb
+        'MsgBox("TEST 5 ")
+        '  MsgBox("Wait_data.check_load_wit_data====> " & Wait_data.check_load_wit_data)
+        'If Wait_data.check_load_wit_data = "1" Then
+        Dim ins_qtyy As Integer = tb
             Dim max_val As String = Working_Pro.Label10.Text
             max_val = max_val.Substring(1, max_val.Length - 1)
             If Working_Pro.check_tag_type = "3" Then
@@ -375,7 +384,8 @@ Public Class ins_qty
                     'Thread.Sleep(delayInSeconds * 1000) ' รอเป็นมิลลิวินาที
                 Next i
             End If
-            Working_Pro.LB_COUNTER_SHIP.Text = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) + CDbl(Val(tb))
+        'MsgBox("TEST 6 ")
+        Working_Pro.LB_COUNTER_SHIP.Text = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) + CDbl(Val(tb))
             Working_Pro.LB_COUNTER_SEQ.Text = CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) + CDbl(Val(tb))
             Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) + CDbl(Val(tb))
             Dim max_val_int As Integer = Convert.ToInt32(max_val)
@@ -403,12 +413,14 @@ Public Class ins_qty
                 TextBox1.Text = ""
                 Working_Pro.Enabled = False
             End If
-        End If
+        'End If
     End Sub
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         count_time += 1
-        If count_time = 20 Then
+        '  MsgBox("count_time ==>" & count_time)
+        If count_time >= 20 Then
             Timer1.Enabled = False
+            ' MsgBox("Timer 4 ")
             insert_qty(TextBox1.Text)
             count_time = 0
         End If

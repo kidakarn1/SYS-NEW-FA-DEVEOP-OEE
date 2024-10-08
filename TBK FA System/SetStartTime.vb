@@ -79,7 +79,6 @@ Public Class SetStartTime
         numPadSetStartTime.Down_time.Text = downTime.substring(10)
         numPadSetStartTime.Show()
     End Sub
-
     Private Sub btnNumpadQTY_Click(sender As Object, e As EventArgs)
         numPadSetQTY.Show()
     End Sub

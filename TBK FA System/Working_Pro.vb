@@ -316,36 +316,28 @@ Public Class Working_Pro
                 startDate = Convert.ToDateTime(stTimeModel).ToString("yyyy-MM-dd HH:mm:ss")
             End If
         End If
-        ' MsgBox("Special -- MainFrm.chk_spec_line ===>" & MainFrm.chk_spec_line)
-        ' If Backoffice_model.S_chk_spec_line = 0 Then ' Normal
+        If MainFrm.chk_spec_line = 2 Then ' for M083
+            startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
+            startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
+            If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
+                startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
+            End If
+        End If
+        If Backoffice_model.S_chk_spec_line = 0 Then 'normal
+        Else ' For K1M025
+            startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
+            startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
+            'MsgBox("IF ")
+            If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
+                If Backoffice_model.S_chk_spec_line = 0 Then ' Normal 
+                Else 'for line M025
+                    startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
+                End If
+            End If
 
-        ' ElseIf MainFrm.chk_spec_line = "2" Then ' for M083
-        ' startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
-        ' startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
-        ' 'MsgBox("IF ")
-        ' If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
-        ' startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
-        ' End If
-        ' Else 'for line Special M025
-        ' 'Backoffice_model.date_time_start_master_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-        ' startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
-        ' startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
-        ' 'MsgBox("IF ")
-        ' If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
-        ' If Backoffice_model.S_chk_spec_line = 0 Then ' Normal 
-        ' 'MsgBox("IF 0000")
-        ' Else 'for line M025
-        ' ' MsgBox("IF 2222")
-        ' startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
-        ' End If
-        ' End If
-        ' ' MsgBox("startDate2222===>" & startDate)
-        ' End If
-
-
+        End If
         Dim secSwitchmodel = DateDiff("s", startDate, Now())
         ' MsgBox("secSwitchmodel====>" & secSwitchmodel)
-
         Dim MinSwitchmodel As Integer = secSwitchmodel / 60
         ' MsgBox("MinSwitchmodel ====>" & MinSwitchmodel)
         Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd, MinSwitchmodel, startDate)
@@ -357,6 +349,8 @@ Public Class Working_Pro
         '   MsgBox("startDate ===>" & startDate)
         ' MsgBox("Now ===>" & Now())
         rsDateDiff = DateDiff("s", startDate, Now())
+        'MsgBox("startDate====>" & startDate)
+        'MsgBox("rsDateDiff===>> + ==>" & rsDateDiff)
         Dim minrsDateDiff = rsDateDiff / 60
         If rsDateDiff < 3600 Then
             stdJobP.Text = Math.Ceiling(rsDateDiff / std_cd)
@@ -386,7 +380,6 @@ Public Class Working_Pro
         ' Catch ex As Exception
         '
         ' End Try
-
         ' stdJobP.Text = Math.Ceiling(3600 / std_cd) ' CInt((CDbl(Val(Label7.Text)) / CDbl(Val(HourOverAllShift.Text))))
         Dim workingTime = OEE.OEE_getWorkingTime(line_cd, timeShift)
         Dim workingTimemin = workingTime * 60
@@ -401,7 +394,6 @@ Public Class Working_Pro
         ' MsgBox("actualP.Text===>" & actualP.Text)
         'MsgBox("stdJobP.Text===>" & stdJobP.Text)
         ' MsgBox("totalProgressbar===>" & totalProgressbar)
-
         Console.WriteLine(totalProgressbar)
         If Math.Ceiling(totalProgressbar) > 100 Then
             progressbarP.Text = Int(100) & "%"
@@ -447,6 +439,7 @@ Public Class Working_Pro
         Dim OEE = New OEE_NODE
         Dim sqlite = New ModelSqliteDefect
         Dim startDate As Date
+        'MsgBox("DateTimeStartofShift.Text.ToString=====>" & DateTimeStartofShift.Text.ToString)
         If statusSwitchModel = 0 Then
             startDate = DateTime.Parse(DateTimeStartofShift.Text.ToString)
             startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
@@ -463,6 +456,7 @@ Public Class Working_Pro
         End If
         Dim rslvQ = sqlite.mSqliteGetDataQuality(line_cd, lot_no, startDate)
         Dim rsOverAllNG = sqlite.mSqliteGetDataQuality(line_cd, lot_no, DateTimeStartofShift.Text)
+        ' MsgBox("DateTimeStartofShift ===>" & DateTimeStartofShift.Text)
         If rsOverAllNG <> "0" Then
             Dim dictOverall As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rsOverAllNG)
             For Each item As Object In dictOverall
@@ -572,7 +566,8 @@ Public Class Working_Pro
             '  time_end = " 08:00:00"
         End If
         DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
-        ' MsgBox("DateTimeStartofShift ===>" & DateTimeStartofShift.Text)
+        'MsgBox("DateTimeStartofShift.Text===>" & DateTimeStartofShift.Text)
+        ' MsgBox("LOAD 1 DateTimeStartofShift ===>" & DateTimeStartofShift.Text)
         Dim DateTimeStartmasterShift As Date = date_st & " " & time_st
         tag_group_no = Backoffice_model.Get_tag_group_no()
         CircularProgressBar2.Visible = False
@@ -1555,10 +1550,16 @@ Public Class Working_Pro
         'LB_COUNTER_SEQ.Visible = True
         'LB_COUNTER_SEQ.BringToFront()
         ' CircularProgressBar2.Visible = True
+        'MsgBox("ready load")
         connect_counter_qty()
+        ' MsgBox("ready load2")
+        'MsgBox("CDbl(Val(check_in_up_seq)) - 1)====>" & CDbl(Val(check_in_up_seq)) - 1)
         If (CDbl(Val(check_in_up_seq)) - 1) = 0 Then
-            DateTimeStartofShift.Text = Await OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
+            Dim OEE = New OEE_NODE
+            DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
+            '  MsgBox("DateTimeStartofShift.Text load seq ====>" & DateTimeStartofShift.Text)
             ' Await the completion of LOAD_OEE
+            ' MsgBox("frith start ===>")
             Await LOAD_OEE()
         End If
     End Function
@@ -1574,7 +1575,6 @@ Public Class Working_Pro
         lb_ins_qty.Text = tb
         'MsgBox("tb2222===>" & tb)
         ins_qty_fn_manual()
-
     End Sub
     Public Async Function loadDataProgressBar(line_cd As String, shift As String) As Task
         ' ตรวจสอบว่ามี WebView2 instance ที่ใช้งานอยู่หรือไม่ ถ้ามีให้ Dispose ก่อน
@@ -1592,8 +1592,8 @@ Public Class Working_Pro
             ' สร้าง instance ของ WebView2 control
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
             ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
-            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
-            Console.WriteLine("Navigating to: http://192.168.161.219/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("Navigating to: http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
         Catch ex As Exception
             ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
             Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
@@ -2602,19 +2602,19 @@ Public Class Working_Pro
         End If
 
     End Function
-    '_Edit_Up_0.Text = 0
     Private Async Function Manage_counter_contect_DIO() As Task
-        ' Simulate an asynchronous operation
-        ' If check_bull = 0 Then
         check_bull = 1
         Console.WriteLine("ssss IN FUNCTION")
+        ' เรียกใช้งานฟังก์ชัน counter_contect_DIO
         Await counter_contect_DIO()
+        ' คำนวณประสิทธิภาพ
         cal_eff()
         Console.WriteLine("OUT FUNCTION")
-        'Timer3.Enabled = True
+
         Dim delay_setting As Integer = 0
         Console.WriteLine("G1")
         Console.WriteLine("status_conter====>" & status_conter)
+        ' กำหนดค่า delay_setting ตามสถานะของ status_conter
         If status_conter = "0" Then
             delay_setting = s_delay * 100
             Console.WriteLine("AF1")
@@ -2623,33 +2623,44 @@ Public Class Working_Pro
             Console.WriteLine("AF2")
         End If
         Console.WriteLine("DELAY SETTTTTING=====>" & delay_setting)
+        ' สร้าง CancellationTokenSource
+        Dim cts As New CancellationTokenSource()
+
         Try
-            Await Task.Delay(delay_setting).ContinueWith(Sub(task)
-                                                             Me.Invoke(Sub()
-                                                                           check_bull = 0
-                                                                           Console.WriteLine("Asynchronous operation completed.")
-                                                                       End Sub)
-                                                         End Sub, TaskScheduler.FromCurrentSynchronizationContext())
+            ' รอหน่วงเวลาแบบ Asynchronous พร้อมกับ Token สำหรับการยกเลิก
+            Await Task.Delay(delay_setting, cts.Token).ContinueWith(Sub(task)
+                                                                        ' ตรวจสอบว่าถ้า Task ไม่ถูกยกเลิก
+                                                                        If Not task.IsCanceled Then
+                                                                            ' ตรวจสอบว่า Handle ของฟอร์มยังถูกสร้างอยู่และไม่ถูก Dispose
+                                                                            If Me.IsHandleCreated AndAlso Not Me.IsDisposed Then
+                                                                                ' เรียกใช้ Me.Invoke เพื่ออัพเดท UI อย่างปลอดภัยบน UI Thread
+                                                                                Me.Invoke(Sub()
+                                                                                              check_bull = 0
+                                                                                              Console.WriteLine("Asynchronous operation completed.")
+                                                                                          End Sub)
+                                                                            End If
+                                                                        End If
+                                                                    End Sub, TaskScheduler.FromCurrentSynchronizationContext())
         Catch ex As Exception
+            ' จัดการข้อผิดพลาดและแสดงข้อความใน Console
             Console.WriteLine("err===>" & ex.Message)
         End Try
-        ' End If
     End Function
-
 
     Private Async Function Manage_counter_contect_DIO_RS232() As Task
-        ' Simulate an asynchronous operation
-        ' If check_bull = 0 Then
+        ' เริ่มต้นการทำงานแบบ Asynchronous
         check_bull = 1
         Console.WriteLine("IN FUNCTION")
-
+        ' เรียกใช้งานฟังก์ชัน counter_contect_DIO_RS232
         Await counter_contect_DIO_RS232()
+        ' คำนวณประสิทธิภาพ
         cal_eff()
         Console.WriteLine("OUT FUNCTION")
-        'Timer3.Enabled = True
+
         Dim delay_setting As Integer = 0
         Console.WriteLine("G1")
         Console.WriteLine("status_conter====>" & status_conter)
+        ' กำหนดค่า delay_setting ตามสถานะของ status_conter
         If status_conter = "0" Then
             delay_setting = s_delay * 100
             Console.WriteLine("AF1")
@@ -2657,31 +2668,49 @@ Public Class Working_Pro
             delay_setting = s_delay * 1000
             Console.WriteLine("AF2")
         End If
+
         Console.WriteLine("DELAY SETTTTTING=====>" & delay_setting)
+
+        ' สร้าง CancellationTokenSource
+        Dim cts As New CancellationTokenSource()
+
         Try
-            Await Task.Delay(delay_setting).ContinueWith(Sub(task)
-                                                             Try
-                                                                 Me.Invoke(Sub()
-                                                                               check_bull = 0
-                                                                               Console.WriteLine("Asynchronous operation completed.")
-                                                                           End Sub)
-                                                             Catch ex As Exception
-                                                                 check_bull = 0
-                                                             End Try
-                                                         End Sub, TaskScheduler.FromCurrentSynchronizationContext())
+            ' รอหน่วงเวลาแบบ Asynchronous พร้อมกับ Token สำหรับการยกเลิก
+            Await Task.Delay(delay_setting, cts.Token).ContinueWith(Sub(task)
+                                                                        ' ตรวจสอบว่าถ้า Task ไม่ถูกยกเลิก
+                                                                        If Not task.IsCanceled Then
+                                                                            ' ตรวจสอบว่า Handle ของฟอร์มยังถูกสร้างอยู่และไม่ถูก Dispose
+                                                                            If Me.IsHandleCreated AndAlso Not Me.IsDisposed Then
+                                                                                Try
+                                                                                    ' เรียกใช้ Me.Invoke เพื่ออัพเดท UI อย่างปลอดภัยบน UI Thread
+                                                                                    Me.Invoke(Sub()
+                                                                                                  check_bull = 0
+                                                                                                  Console.WriteLine("Asynchronous operation completed.")
+                                                                                              End Sub)
+                                                                                Catch ex As Exception
+                                                                                    ' จัดการข้อผิดพลาดภายใน Invoke
+                                                                                    check_bull = 0
+                                                                                End Try
+                                                                            End If
+                                                                        End If
+                                                                    End Sub, TaskScheduler.FromCurrentSynchronizationContext())
         Catch ex As Exception
+            ' จัดการข้อผิดพลาดและแสดงข้อความใน Console
             Console.WriteLine("err===>" & ex.Message)
         End Try
-        ' End If
     End Function
+
     Private Async Function Manage_counter_NI_MAX() As Task
         Try
-            ' Simulate an asynchronous operation
-            ' If check_bull = 0 Then
+            ' เริ่มต้นการทำงานแบบ Asynchronous
             check_bull = 1
+
+            ' เรียกใช้งานฟังก์ชัน counter_data_new_dio
             Await counter_data_new_dio()
+
+            ' คำนวณประสิทธิภาพ
             cal_eff()
-            'Timer3.Enabled = True
+
             Dim delay_setting As Integer = 0
             If status_conter = "0" Then
                 delay_setting = s_delay * 100
@@ -2690,22 +2719,38 @@ Public Class Working_Pro
                 delay_setting = s_delay * 1000
                 Console.WriteLine("F2")
             End If
+
             Console.WriteLine("delay_setting========<><><>>>>>>" & delay_setting)
 
+            ' สร้าง CancellationTokenSource
+            Dim cts As New CancellationTokenSource()
 
+            ' รอหน่วงเวลาแบบ Asynchronous พร้อมกับ Token สำหรับการยกเลิก
+            Await Task.Delay(delay_setting, cts.Token).ContinueWith(Sub(task)
+                                                                        ' ตรวจสอบว่าถ้า Task ไม่ถูกยกเลิก
+                                                                        If Not task.IsCanceled Then
+                                                                            ' ตรวจสอบว่า Handle ของฟอร์มยังถูกสร้างอยู่และไม่ถูก Dispose
+                                                                            If Me.IsHandleCreated AndAlso Not Me.IsDisposed Then
+                                                                                Try
+                                                                                    ' เรียกใช้ Me.Invoke เพื่ออัพเดท UI อย่างปลอดภัยบน UI Thread
+                                                                                    Me.Invoke(Sub()
+                                                                                                  check_bull = 0
+                                                                                                  Console.WriteLine("Asynchronous operation completed.")
+                                                                                              End Sub)
+                                                                                Catch ex As Exception
+                                                                                    ' จัดการข้อผิดพลาดภายใน Invoke
+                                                                                    check_bull = 0
+                                                                                End Try
+                                                                            End If
+                                                                        End If
+                                                                    End Sub, TaskScheduler.FromCurrentSynchronizationContext())
 
-            Await Task.Delay(delay_setting).ContinueWith(Sub(task)
-                                                             Me.Invoke(Sub()
-                                                                           check_bull = 0
-                                                                           Console.WriteLine("Asynchronous operation completed.")
-                                                                       End Sub)
-                                                         End Sub, TaskScheduler.FromCurrentSynchronizationContext())
-            ' End If
         Catch ex As Exception
-            'check_bull = 0
+            ' จัดการข้อผิดพลาดและแสดงข้อความใน Console
             Console.WriteLine(ex.Message)
         End Try
     End Function
+
     Protected Overrides Sub WndProc(ByRef m As Message)
         If check_bull = 0 Then
             Dim BitNo As Short
@@ -3556,34 +3601,44 @@ Public Class Working_Pro
         End If
         cal_eff()
     End Function
+    Private cts As CancellationTokenSource = New CancellationTokenSource()
     Async Function LOAD_OEE() As Task
+        ' MsgBox("load oee")
         Try
             While True
-                ' MsgBox("FFFFF")
                 Console.WriteLine("READY LOAD OEE 2 ")
-                Await Task.Delay(60000).ContinueWith(Sub(task)
-                                                         ' Inside the continuation, Invoke on the UI thread
-                                                         Try
-                                                             Me.Invoke(Sub()
-                                                                           Try
-                                                                               Console.WriteLine("READY LOAD OEE call ")
-                                                                               cal_eff()
-                                                                           Catch ex As Exception
-                                                                               Console.WriteLine("CATCH LOAD OEE call ")
-                                                                           End Try
-                                                                       End Sub)
-                                                         Catch ex As Exception
-                                                             Console.WriteLine("CATCH NO LOAD OEE ")
-                                                         End Try
-                                                     End Sub, TaskScheduler.FromCurrentSynchronizationContext())
-
-                ' Wait for 10 seconds before running the loop again
-                ' Await Task.Delay(120000)
+                ' รอ 60 วินาที
+                Await Task.Delay(60000, cts.Token).ContinueWith(Sub(task)
+                                                                    ' ตรวจสอบว่า Task ไม่ถูกยกเลิก
+                                                                    If Not task.IsCanceled Then
+                                                                        ' ตรวจสอบว่า Handle ของฟอร์มยังถูกสร้างอยู่และไม่ถูก Dispose
+                                                                        If Me.IsHandleCreated AndAlso Not Me.IsDisposed Then
+                                                                            Try
+                                                                                Me.Invoke(Sub()
+                                                                                              Try
+                                                                                                  Console.WriteLine("READY LOAD OEE call ")
+                                                                                                  cal_eff()
+                                                                                              Catch ex As Exception
+                                                                                                  Console.WriteLine("CATCH LOAD OEE call: " & ex.Message)
+                                                                                              End Try
+                                                                                          End Sub)
+                                                                            Catch ex As Exception
+                                                                                Console.WriteLine("CATCH NO LOAD OEE: " & ex.Message)
+                                                                            End Try
+                                                                        End If
+                                                                    End If
+                                                                End Sub, TaskScheduler.FromCurrentSynchronizationContext())
             End While
         Catch ex As Exception
             Console.WriteLine("err cal_eff ===>" & ex.Message)
         End Try
     End Function
+    ' ฟังก์ชันสำหรับยกเลิกการโหลด OEE
+    Public Sub CancelLOAD_OEE()
+        cts.Cancel()
+        cts = New CancellationTokenSource() ' สร้าง CancellationTokenSource ใหม่
+    End Sub
+
 
 
     Public Async Function cal_eff() As Task
@@ -4256,10 +4311,13 @@ Public Class Working_Pro
         End If
     End Function
     Private Async Sub Tiemr_new_dio_Tick(sender As Object, e As EventArgs) Handles Timer_new_dio.Tick
+        Console.WriteLine("check_bull=======>" & check_bull)
+        Console.WriteLine("start_flg=======>" & start_flg)
         If rsWindow Then
             Try
                 'ReadSingleSamplePortUInt32
                 data_new_dio = counterNewDIO.reader_new_dio.ReadSingleSamplePortUInt32
+                Console.WriteLine("data_new_dio.ToString=======>" & data_new_dio.ToString)
                 If data_new_dio.ToString = "254" Then
                     If check_bull = 0 Then
                         'Timer3.Enabled = True
@@ -4494,6 +4552,7 @@ Public Class Working_Pro
         btn_back.Enabled = True
     End Sub
     Private Sub TIME_CAL_EFF_Tick(sender As Object, e As EventArgs) Handles TIME_CAL_EFF.Tick
+
         'If check_cal_eff = 1000 Then
         'cal_eff()
         'check_cal_eff = 1
@@ -4542,43 +4601,43 @@ Public Class Working_Pro
     End Sub
     Public Sub TowerLamp(DataBits As Integer, WriteLine As Integer)
         'If SerialPortLamp.IsOpen() Then
-        'SerialPortLamp.Close()
+        '    SerialPortLamp.Close()
         'End If
         'Try
-        'SerialPortLamp.PortName = comportTowerLamp
-        'SerialPortLamp.BaudRate = 9600
-        'SerialPortLamp.Parity = IO.Ports.Parity.None
-        'SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        'SerialPortLamp.DataBits = DataBits
-        'SerialPortLamp.Open()
-        'SerialPortLamp.WriteLine(WriteLine)
+        '    SerialPortLamp.PortName = comportTowerLamp
+        '    SerialPortLamp.BaudRate = 9600
+        '    SerialPortLamp.Parity = IO.Ports.Parity.None
+        '    SerialPortLamp.StopBits = IO.Ports.StopBits.One
+        '    SerialPortLamp.DataBits = DataBits
+        '    SerialPortLamp.Open()
+        '    SerialPortLamp.WriteLine(WriteLine)
         'Catch ex As Exception
-        'MsgBox(ex.Message)
+        '    MsgBox(ex.Message)
         '  End Try
     End Sub
     Public Sub ResetRed()
-        'If SerialPortLamp.IsOpen() Then
-        'SerialPortLamp.Close()
-        'End If
-        'SerialPortLamp.PortName = comportTowerLamp
-        'SerialPortLamp.BaudRate = 9600
-        'SerialPortLamp.Parity = IO.Ports.Parity.None
-        'SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        'SerialPortLamp.DataBits = 5
-        'SerialPortLamp.Open()
-        'SerialPortLamp.WriteLine(9999)
-        'Console.ReadLine()
-        'If SerialPortLamp.IsOpen() Then
-        'SerialPortLamp.Close()
-        'End If
-        'SerialPortLamp.PortName = comportTowerLamp
-        'SerialPortLamp.BaudRate = 9600
-        'SerialPortLamp.Parity = IO.Ports.Parity.None
-        'SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        'SerialPortLamp.DataBits = 6
-        'SerialPortLamp.Open()
-        'SerialPortLamp.WriteLine(11)
-        'Console.ReadLine()
+        ' If SerialPortLamp.IsOpen() Then
+        ' SerialPortLamp.Close()
+        ' End If
+        ' SerialPortLamp.PortName = comportTowerLamp
+        ' SerialPortLamp.BaudRate = 9600
+        ' SerialPortLamp.Parity = IO.Ports.Parity.None
+        ' SerialPortLamp.StopBits = IO.Ports.StopBits.One
+        ' SerialPortLamp.DataBits = 5
+        ' SerialPortLamp.Open()
+        ' SerialPortLamp.WriteLine(9999)
+        ' Console.ReadLine()
+        ' If SerialPortLamp.IsOpen() Then
+        ' SerialPortLamp.Close()
+        ' End If
+        ' SerialPortLamp.PortName = comportTowerLamp
+        ' SerialPortLamp.BaudRate = 9600
+        ' SerialPortLamp.Parity = IO.Ports.Parity.None
+        ' SerialPortLamp.StopBits = IO.Ports.StopBits.One
+        ' SerialPortLamp.DataBits = 6
+        ' SerialPortLamp.Open()
+        ' SerialPortLamp.WriteLine(11)
+        ' Console.ReadLine()
     End Sub
     Public Sub Load_Working_OEE()
         Working_OEE.Show()

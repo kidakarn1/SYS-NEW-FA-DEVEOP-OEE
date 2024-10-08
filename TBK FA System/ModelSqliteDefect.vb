@@ -10,7 +10,6 @@ Public Class ModelSqliteDefect
             Dim Sql = " Update defect_transactions set dt_status_close_lot = '" & status & "' where pwi_id = '" & pwi_id & "'"
             Dim jsonData As String = api.Load_dataSQLite(Sql)
             Return jsonData
-
         Catch ex As Exception
             MsgBox("Error Files ModelSqliteDefect In Function UpdateStatusCloselotSqlite")
         End Try
@@ -22,7 +21,7 @@ Public Class ModelSqliteDefect
         Try
             Dim Sql = "Select dt_code , sum(dt_qty) AS TotalQ,
                         (SELECT SUM(dt_qty)
-                             FROM defect_transactions  
+                             FROM defect_transactions
                              I where 
 		                        dt_line_cd ='" & line_cd & "' and dt_lot_no ='" & lot_no & "' and dt_main_cp = '1' and dt_type ='1' and dt_status_flg = '1' and dt_created_date >= '" & startTimeFrith & "'  
 	                         ) AS AllDefect

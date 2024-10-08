@@ -167,7 +167,6 @@ Public Class OEE_NODE
             Dim date_st = DateTime.Now.ToString("yyyy-MM-dd")
             Dim date_end = DateTime.Now.ToString("yyyy-MM-dd")
             Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
-
             If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
                 date_st = date_now_date.AddDays(-1)
             Else
@@ -314,7 +313,6 @@ Public Class OEE_NODE
             'MsgBox("dateTime_end ===>" & date_end)
             'MsgBox("time = " & time)
             Dim st_time = Prd_detail.Label12.Text.Substring(3, 5) & ":00"
-
             Dim jsonString = api.Load_data("http://192.168.161.78:6100/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time & "&dateTimeswModel=" & dateTimeswModel & "&statusSwitchModel=" & statusSwitchModel & "&IsOnlyone=" & IsOnlyone)
             Console.WriteLine("http://192.168.161.78:6100/api/dataGetDataAvailabillty?line_cd=" & line_cd & "&lot_no=" & lot_no & "&shift=" & shift & "&dateStart=" & convertDateStart & "&dateEnd=" & date_end & "&st_shift=" & st_time & "&end_shift=" & time & "&dateTimeswModel=" & dateTimeswModel & "&statusSwitchModel=" & statusSwitchModel & "&IsOnlyone=" & IsOnlyone)
             Console.WriteLine(jsonString)
@@ -454,13 +452,12 @@ ReConnect:
             Dim jsSerializer As New JavaScriptSerializer()
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             Dim rs As String = data("formattedDateTime").ToString
+            ' MsgBox("OEE_getDateTimeStartn formattedDateTime====>" & rs)
             Return rs
         Catch ex As Exception
             GoTo ReConnect
         End Try
     End Function
-
-
     Public Shared Function OEE_getDataGetWorkingTimeModel(st_shift As String, line_cd As String, item_cd As String)
         Try
 ReConnect:
@@ -490,7 +487,6 @@ ReConnect:
         Try
 ReConnect:
             Dim api = New api()
-
             Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
             ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
             Dim time As String = DateTime.Now.ToString("HH:mm:ss")
