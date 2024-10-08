@@ -978,8 +978,9 @@ Public Class Working_Pro
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnDefect.Click, btnDefect.Click
-        Dim dfHome As New defectHome()
-        dfHome.Show()
+        ' Dim dfHome As New defectHome()
+        'dfHome.Show()
+        defectHome.Show()
         Me.Enabled = False
         'Close_lot.Show()
         'Me.Close()
@@ -3638,9 +3639,6 @@ Public Class Working_Pro
         cts.Cancel()
         cts = New CancellationTokenSource() ' สร้าง CancellationTokenSource ใหม่
     End Sub
-
-
-
     Public Async Function cal_eff() As Task
         Try
             Console.WriteLine("READY LOAD OEE cal_eff ")
@@ -3650,12 +3648,11 @@ Public Class Working_Pro
             set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, gobal_stTimeModel)
             setlvA(MainFrm.Label4.Text, Label18.Text, Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), gobal_stTimeModel)
             setlvQ(MainFrm.Label4.Text, Label18.Text, Prd_detail.Label12.Text.Substring(3, 5), gobal_stTimeModel)
-             Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, MainFrm.Label4.Text, gobal_stTimeModel)
+            Dim P = setgetSpeedLoss(lbNG.Text, lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Label38.Text, MainFrm.Label4.Text, gobal_stTimeModel)
             Dim GoodByPartNo As Integer = CDbl(Val(actualP.Text)) - CDbl(Val(lbOverTimeQuality.Text))
             Dim Q = cal_progressbarQ(lbOverTimeQuality.Text, GoodByPartNo)
             Dim A = cal_progressbarA(MainFrm.Label4.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
             setNgByHour(MainFrm.Label4.Text, Label18.Text)
-
             'Dim rswebview = loadDataProgressBar(MainFrm.Label4.Text, Label14.Text)
             ' WebViewProgressbar.Reload()
             calProgressOEE(A, Q, P)
@@ -3663,7 +3660,6 @@ Public Class Working_Pro
             Console.WriteLine("err cal_eff ===>" & ex.Message)
         End Try
     End Function
-
     Public Function Cal_Use_Time_ins_qty_fn_manual(date_start_data As Date, date_end As Date)
         Dim total_ins_qty As Integer = DateDiff(DateInterval.Second, date_start_data, date_end)
         lb_use_time.Text = total_ins_qty
@@ -4637,7 +4633,7 @@ Public Class Working_Pro
         ' SerialPortLamp.DataBits = 6
         ' SerialPortLamp.Open()
         ' SerialPortLamp.WriteLine(11)
-        ' Console.ReadLine()
+         'Console.ReadLine()
     End Sub
     Public Sub Load_Working_OEE()
         Working_OEE.Show()

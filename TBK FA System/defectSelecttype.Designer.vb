@@ -93,7 +93,7 @@ Partial Class defectSelecttype
         Me.lvChildpart.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.lvChildpart.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ITEMNAME, Me.wis, Me.seq, Me.pwi_id, Me.mainChildPart})
         Me.lvChildpart.Cursor = System.Windows.Forms.Cursors.Default
-        Me.lvChildpart.Font = New System.Drawing.Font("Panton-Trial", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvChildpart.Font = New System.Drawing.Font("Panton-Trial", 16.0!, System.Drawing.FontStyle.Bold)
         Me.lvChildpart.ForeColor = System.Drawing.Color.Black
         Me.lvChildpart.FullRowSelect = True
         Me.lvChildpart.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
