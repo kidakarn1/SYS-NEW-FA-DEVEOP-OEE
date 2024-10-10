@@ -49,8 +49,8 @@ Public Class Working_Pro
     Dim value_next_process As String = ""
     Public check_format_tag As String = Backoffice_model.B_check_format_tag()
     Public Shared api = New api()
-    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
-    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
+    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
     Public Shared V_check_line_reprint As String = Backoffice_model.check_line_reprint()
     Public WithEvents serialPort As New SerialPort
     'Dim digitalReadTask_new_dio As New Task()
@@ -101,7 +101,7 @@ Public Class Working_Pro
     End Sub
     Public Function load_data_defeult_master_server(line_cd As String)
         Dim api = New api()
-        Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & line_cd)
+        Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & line_cd)
         If result_data <> "0" Then
             Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(result_data)
             For Each item As Object In dict2
@@ -139,14 +139,14 @@ Public Class Working_Pro
         Dim tclient As New WebClient
         Dim tImage As Bitmap = Nothing ' Initialize tImage to avoid potential null reference exceptions
         Try
-            Dim url As String = "http://192.168.161.207/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
+            Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
             Dim data As Byte() = tclient.DownloadData(url)
             Using stream As New MemoryStream(data)
                 tImage = New Bitmap(stream)
             End Using
         Catch ex As Exception
             ' If there's an error downloading or creating the image, load a default image
-            Dim defaultUrl As String = "http://192.168.161.102/fa_system/asset/img/no_user.jpg"
+            Dim defaultUrl As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg"
             Dim defaultData As Byte() = tclient.DownloadData(defaultUrl)
             Using defaultStream As New MemoryStream(defaultData)
                 tImage = New Bitmap(defaultStream)
@@ -159,14 +159,14 @@ Public Class Working_Pro
             tImage = Nothing
             emp_cd = List_Emp.ListView1.Items(1).Text
             Try
-                Dim url As String = "http://192.168.161.207/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
+                Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                 Dim data As Byte() = tclient.DownloadData(url)
                 Using stream As New MemoryStream(data)
                     tImage = New Bitmap(stream)
                 End Using
             Catch ex As Exception
                 ' If there's an error downloading or creating the image, load a default image
-                Dim defaultUrl As String = "http://192.168.161.102/fa_system/asset/img/no_user.jpg"
+                Dim defaultUrl As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg"
                 Dim defaultData As Byte() = tclient.DownloadData(defaultUrl)
                 Using defaultStream As New MemoryStream(defaultData)
                     tImage = New Bitmap(defaultStream)
@@ -316,20 +316,20 @@ Public Class Working_Pro
                 startDate = Convert.ToDateTime(stTimeModel).ToString("yyyy-MM-dd HH:mm:ss")
             End If
         End If
-        If MainFrm.chk_spec_line = 2 Then ' for M083
+        If MainFrm.chk_spec_line = "2" Then ' for M083
             startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
             startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
             If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
                 startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
             End If
         End If
-        If Backoffice_model.S_chk_spec_line = 0 Then 'normal
+        If Backoffice_model.S_chk_spec_line = "0" Then 'normal
         Else ' For K1M025
             startDate = DateTime.Parse(Backoffice_model.date_time_start_master_shift)
             startDate = Convert.ToDateTime(startDate).ToString("yyyy-MM-dd HH:mm:ss")
             'MsgBox("IF ")
             If DateTime.Now.ToString("HH:mm:ss") >= "00:00:00 AM" And DateTime.Now.ToString("HH:mm:ss") <= "08:00:00 AM" Then
-                If Backoffice_model.S_chk_spec_line = 0 Then ' Normal 
+                If Backoffice_model.S_chk_spec_line = "0" Then ' Normal 
                 Else 'for line M025
                     startDate = Backoffice_model.date_time_start_master_shift.AddDays(-1)
                 End If
@@ -606,8 +606,8 @@ Public Class Working_Pro
         seqNo = Label22.Text
         model = lb_model.Text
         lb_loss_status.Parent = Panel6
-        check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
-        load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
+        check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+        load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
         lbNextTime.Text = BreakTime
         HourOverAllShift.Text = OEE.OEE_GET_Hour(Label14.Text)
@@ -1593,8 +1593,8 @@ Public Class Working_Pro
             ' สร้าง instance ของ WebView2 control
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
             ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
-            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
-            Console.WriteLine("Navigating to: http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
         Catch ex As Exception
             ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
             Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")

@@ -88,7 +88,7 @@ Public Class tag_print_normal
         Dim product_type As String = "NO_DATA"
         Dim DLV_DATE As String = "NO_DATA"
         Dim line_cd As String = MainFrm.Label4.Text
-        Dim check_tag_type = Backoffice_model.B_check_format_tag() ' api.Load_data("http://192.168.161.207/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+        Dim check_tag_type = Backoffice_model.B_check_format_tag() ' api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
         If check_tag_type = "0" Then
             While next_process.read()
                 value_next_process = next_process("NEXT_PROCESS").ToString
@@ -377,7 +377,7 @@ Public Class tag_print_normal
                 Dim box_no_new As String = qr_detailss.Substring(100, 3)
                 e.Graphics.DrawString("PRO SEQ", lb_font5.Font, Brushes.Black, 585, 98)
                 e.Graphics.DrawString(plan_seq_new, lb_font4_B.Font, Brushes.Black, 610, 115)
-                Dim load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & wi)
+                Dim load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & wi)
                 Dim dict As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(load_data)
                 Dim plan_date As String = ""
                 For Each item As Object In dict
@@ -465,7 +465,7 @@ Public Class tag_print_normal
                     factory_cd = "Phase10"
                     plan_cd = "51"
                 End If
-                Dim id_tag = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_ID_PRINT_DETAIL_MAIN?qr_code=" & qr_detailss)
+                Dim id_tag = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_ID_PRINT_DETAIL_MAIN?qr_code=" & qr_detailss)
                 Dim qr_sub = Backoffice_model.get_qr_detail_sub(id_tag)
                 'For j = 1 To 5 Step 1
                 Dim j As Integer = 1
@@ -598,7 +598,7 @@ Public Class tag_print_normal
                 Dim box_no_new As String = qr_detailss.Substring(100, 3)
                 e.Graphics.DrawString("PRO SEQ", lb_font5.Font, Brushes.Black, 585, 98)
                 e.Graphics.DrawString(plan_seq_new, lb_font4_B.Font, Brushes.Black, 610, 115)
-                Dim load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & wi)
+                Dim load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & wi)
                 Dim dict As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(load_data)
                 Dim plan_date As String = ""
                 For Each item As Object In dict
@@ -749,7 +749,7 @@ Public Class tag_print_normal
         Dim product_type As String = "NO_DATA"
         Dim DLV_DATE As String = "NO_DATA"
         Dim line_cd As String = MainFrm.Label4.Text
-        Dim check_tag_type = Backoffice_model.B_check_format_tag() ' api.Load_data("http://192.168.161.207/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+        Dim check_tag_type = Backoffice_model.B_check_format_tag() ' api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
         While next_process.read()
             value_next_process = next_process("NEXT_PROCESS").ToString
         End While

@@ -107,7 +107,7 @@ Public Class List_Emp
                 'MsgBox("SOON")
                 Try
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                     Backoffice_model.img_user1 = tImage
                     MainFrm.PictureBox2.Image = tImage
@@ -138,7 +138,7 @@ Public Class List_Emp
                     Working_Pro.PictureBox7.Image = Nothing
                 Catch ex As Exception
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Backoffice_model.img_user1 = tImage
                     MainFrm.PictureBox2.Image = tImage
                     MainFrm.lb_emp1.Visible = True
@@ -170,7 +170,7 @@ Public Class List_Emp
             ElseIf i = 1 Then
                 Try
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                     Backoffice_model.img_user2 = tImage
                     MainFrm.PictureBox3.Image = tImage
@@ -187,7 +187,7 @@ Public Class List_Emp
 
                 Catch ex As Exception
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     MainFrm.PictureBox3.Image = tImage
                     MainFrm.lb_emp2.Visible = True
                     MainFrm.lb_emp2.Text = emp_cd
@@ -203,7 +203,7 @@ Public Class List_Emp
             ElseIf i = 2 Then
                 Try
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                     Backoffice_model.img_user3 = tImage
                     MainFrm.PictureBox4.Image = tImage
@@ -218,7 +218,7 @@ Public Class List_Emp
                     Working_Pro.PictureBox5.Image = Nothing
                 Catch ex As Exception
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     MainFrm.PictureBox4.Image = tImage
                     MainFrm.lb_emp3.Visible = True
                     MainFrm.lb_emp3.Text = emp_cd
@@ -234,7 +234,7 @@ Public Class List_Emp
             ElseIf i = 3 Then
                 Try
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                     Backoffice_model.img_user4 = tImage
                     MainFrm.PictureBox5.Image = tImage
@@ -250,7 +250,7 @@ Public Class List_Emp
 
                 Catch ex As Exception
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Backoffice_model.img_user4 = tImage
                     MainFrm.PictureBox5.Image = tImage
                     MainFrm.lb_emp4.Visible = True
@@ -267,7 +267,7 @@ Public Class List_Emp
             ElseIf i = 4 Then
                 Try
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                     MainFrm.PictureBox6.Image = tImage
                     MainFrm.lb_emp5.Visible = True
@@ -282,7 +282,7 @@ Public Class List_Emp
                     Working_Pro.PictureBox7.Image = Nothing
                 Catch ex As Exception
                     Dim emp_cd As String = ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     MainFrm.PictureBox6.Image = tImage
                     MainFrm.lb_emp5.Visible = True
                     MainFrm.lb_emp5.Text = emp_cd
@@ -301,7 +301,7 @@ Public Class List_Emp
                 If temp_co_emp <= 6 Then
                     Try
                         Dim emp_cd As String = ListView1.Items(i).Text
-                        Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                        Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                         Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                         MainFrm.PictureBox7.Image = tImage
                         MainFrm.lb_emp6.Visible = True
@@ -312,7 +312,7 @@ Public Class List_Emp
                         Working_Pro.lb_emp6.Text = emp_cd
                     Catch ex As Exception
                         Dim emp_cd As String = ListView1.Items(i).Text
-                        Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                        Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                         Backoffice_model.img_user6 = tImage
                         MainFrm.PictureBox7.Image = tImage
                         'MainFrm.lb_emp6.Visible = True
@@ -320,7 +320,7 @@ Public Class List_Emp
                     End Try
                 Else
                     Dim emp_cd As String = "OTHER" 'ListView1.Items(i).Text
-                    Dim url As String = "Http://192.168.161.102/fa_system/asset/img/detail.png"
+                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg"
                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                     MainFrm.PictureBox7.Image = tImage
                     MainFrm.lb_emp6.Visible = True

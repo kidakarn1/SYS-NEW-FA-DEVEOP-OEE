@@ -23,13 +23,14 @@ Public Class Confrime_work_production
                     Dim date_end As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                     If Prd_detail.check_network() = 1 Then
                         Backoffice_model.line_status_ins(line_id, date_st, date_end, "1", "0", "24", "0", Prd_detail.lb_wi.Text)
-re_load:
-                        If count_reload = 200 Then
-                            Dim a = Backoffice_model.Check_detail_actual_insert_act() 'กรณีเครื่องดับ'
-                        Else
-                            count_reload += 1
-                            GoTo re_load
-                        End If
+                        're_load:
+
+                        'If count_reload = 200 Then
+                        '  Dim a = Backoffice_model.Check_detail_actual_insert_act() 'กรณีเครื่องดับ'
+                        'Else
+                        ' count_reload += 1
+                        '  GoTo re_load
+                        'End If
                         Backoffice_model.NEXT_PROCESS = Backoffice_model.F_NEXT_PROCESS(Prd_detail.lb_item_cd.Text)
                         Insert_list.Label3.Text = MainFrm.Label4.Text
                         Insert_list.ListView1.View = View.Details
@@ -111,14 +112,16 @@ re_load:
                             If status_check_ping = 1 Then
                                 Try
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
+                                    Console.WriteLine(url)
                                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                                     Working_Pro.PictureBox2.Image = tImage
                                     'Working_Pro.lb_emp1.Visible = True
                                     Working_Pro.lb_emp1.Text = emp_cd
                                 Catch ex As Exception
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
+                                    Console.WriteLine("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")
                                     Working_Pro.PictureBox2.Image = tImage
                                     'Working_Pro.lb_emp1.Visible = True
                                     Working_Pro.lb_emp1.Text = emp_cd
@@ -133,14 +136,14 @@ re_load:
                             If status_check_ping = 1 Then
                                 Try
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                                     Working_Pro.PictureBox3.Image = tImage
                                     'Working_Pro.lb_emp2.Visible = True
                                     Working_Pro.lb_emp2.Text = emp_cd
                                 Catch ex As Exception
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                                     Working_Pro.PictureBox3.Image = tImage
                                     'Working_Pro.lb_emp2.Visible = True
                                     Working_Pro.lb_emp2.Text = emp_cd
@@ -155,14 +158,14 @@ re_load:
                             If status_check_ping = 1 Then
                                 Try
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                                     Working_Pro.PictureBox4.Image = tImage
                                     'Working_Pro.lb_emp3.Visible = True
                                     Working_Pro.lb_emp3.Text = emp_cd
                                 Catch ex As Exception
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                                     Working_Pro.PictureBox4.Image = tImage
                                     'Working_Pro.lb_emp3.Visible = True
                                     Working_Pro.lb_emp3.Text = emp_cd
@@ -177,14 +180,14 @@ re_load:
                             If status_check_ping = 1 Then
                                 Try
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                                     Working_Pro.PictureBox5.Image = tImage
                                     'Working_Pro.lb_emp4.Visible = True
                                     Working_Pro.lb_emp4.Text = emp_cd
                                 Catch ex As Exception
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                                     Working_Pro.PictureBox5.Image = tImage
                                     'Working_Pro.lb_emp4.Visible = True
                                     Working_Pro.lb_emp4.Text = emp_cd
@@ -199,14 +202,14 @@ re_load:
                             If status_check_ping = 1 Then
                                 Try
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                                     Working_Pro.PictureBox6.Image = tImage
                                     'Working_Pro.lb_emp5.Visible = True
                                     Working_Pro.lb_emp5.Text = emp_cd
                                 Catch ex As Exception
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                                     Working_Pro.PictureBox6.Image = tImage
                                     'Working_Pro.lb_emp5.Visible = True
                                     Working_Pro.lb_emp5.Text = emp_cd
@@ -221,14 +224,14 @@ re_load:
                             If status_check_ping = 1 Then
                                 Try
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim url As String = "http://192.168.161.207/tbkk_shopfloor/asset/img_emp/" & emp_cd & ".jpg"
+                                    Dim url As String = "http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/" & emp_cd & ".jpg"
                                     Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData(url)))
                                     Working_Pro.PictureBox7.Image = tImage
                                     'Working_Pro.lb_emp6.Visible = True
                                     Working_Pro.lb_emp6.Text = emp_cd
                                 Catch ex As Exception
                                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                                     Working_Pro.PictureBox7.Image = tImage
                                     'Working_Pro.lb_emp6.Visible = True
                                     Working_Pro.lb_emp6.Text = emp_cd

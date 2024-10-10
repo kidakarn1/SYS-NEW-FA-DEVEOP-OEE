@@ -43,6 +43,7 @@ Public Class Backoffice_model
     Public Shared IDLossCodeAuto As String = ""
     Public Shared CountDelay As String = ""
     Public Shared svApi As String = ""
+    Public Shared svOEE As String = ""
     Public Shared svDatabase As String = ""
     Public Shared user_pd As String = ""
     Public Shared gobal_Flg_autoTranferProductions As Integer = 0
@@ -66,7 +67,7 @@ Public Class Backoffice_model
         Try
             Dim api = New api()
             ' Fetch data from the API
-            Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GetTimeAutoBreakTime?lineCd=" & MainFrm.Label4.Text)
+            Dim GetData = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/GetTimeAutoBreakTime?lineCd=" & MainFrm.Label4.Text)
             If GetData <> "0" Then
                 ' Deserialize JSON response into a list of objects
                 Dim dcResultdata As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(GetData)
@@ -89,7 +90,7 @@ Public Class Backoffice_model
 
     Public Shared Function GET_START_END_PRODUCTION_DETAIL_SPECTAIL_TIME(pwi_id As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_START_END_PRODUCTION_DETAIL_SPECTAIL_TIME?pwi_id=" & pwi_id)
+        Dim rs = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_START_END_PRODUCTION_DETAIL_SPECTAIL_TIME?pwi_id=" & pwi_id)
         Return rs
     End Function
     Public Shared Sub GetLocalServerAPI()
@@ -108,23 +109,43 @@ Public Class Backoffice_model
             End While
             svApi = sva_ip_address
         Catch ex As Exception
-            MsgBox("SQLite Database connect failed. Please contact PC System [Function sqlite_conn_dbsv]")
+            MsgBox("SQLite Database connect failed. Please contact PC System [Function GetLocalServerAPI]")
+            sqliteConn.Close()
+        End Try
+    End Sub
+    Public Shared Sub GetLocalServerOEE()
+        Dim sqliteConn As New SQLiteConnection(sqliteConnect)
+        Check_connect_sqlite()
+        Clear_sqlite()
+        Try
+            sqliteConn.Open()
+            Dim svo_ip_address As String = ""
+            Dim cmd As New SQLiteCommand
+            cmd.Connection = sqliteConn
+            cmd.CommandText = "select * from  Server_OEE"
+            Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
+            While LoadSQL.Read()
+                svo_ip_address = LoadSQL("svo_ipaddress_and_port").ToString()
+            End While
+            svOEE = svo_ip_address
+        Catch ex As Exception
+            MsgBox("SQLite Database connect failed. Please contact PC System [Function GetLocalServerOEE]")
             sqliteConn.Close()
         End Try
     End Sub
     Public Shared Function checkTransection(pwi_id As String, number_qty As String, DateTime As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/CheckTrancetion?pwi_id=" & pwi_id & "&number_qty=" & number_qty & "&st_time=" & DateTime)
+        Dim rs = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/CheckTrancetion?pwi_id=" & pwi_id & "&number_qty=" & number_qty & "&st_time=" & DateTime)
         Return rs
     End Function
     Public Shared Function Get_PD_CONFIG(line As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_PD_CONFIG?line_cd=" & line)
+        Dim rs = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_PD_CONFIG?line_cd=" & line)
         Return rs
     End Function
     Public Shared Function ILogLossBreakTime(lineCd As String, wi As String, seq As String)
         Dim api = New api()
-        Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/InsertLogLoss?lineCd=" & MainFrm.Label4.Text & "&wi=" & wi & "&seq=" & seq)
+        Dim GetData = api.Load_data("http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/InsertLogLoss?lineCd=" & MainFrm.Label4.Text & "&wi=" & wi & "&seq=" & seq)
         Return GetData
     End Function
     Public Shared Function B_master_device()
@@ -151,14 +172,14 @@ Public Class Backoffice_model
     End Function
     Public Shared Function load_config_master_database()
         Dim api = New api()
-        Dim check_tag_type = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & MainFrm.Label4.Text)
+        Dim check_tag_type = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & MainFrm.Label4.Text)
         Return check_tag_type
     End Function
     Public Shared Function F_NEXT_PROCESS(ITEM_CD As String)
         Dim api = New api()
-        Dim check_tag_type = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+        Dim check_tag_type = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
         If check_tag_type = "1" Then
-            Dim result_update_count_pro1 = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_next_process?line_cd=" & GET_LINE_PRODUCTION() & "&item_cd=" & ITEM_CD)
+            Dim result_update_count_pro1 = api.Load_data("http://" & svApi & "/API_GEMBA/Api_next_process?line_cd=" & GET_LINE_PRODUCTION() & "&item_cd=" & ITEM_CD)
             Return result_update_count_pro1
         Else
             Return "ISUZU"
@@ -212,12 +233,12 @@ Public Class Backoffice_model
     End Sub
     Public Shared Function check_version_result(NAME_VERSION As String)
         Dim api = New api()
-        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/UPDATE_PATCH/F_UPDATE_PATCH?VERSION_NAME=" & NAME_VERSION)
+        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_GEMBA/UPDATE_PATCH/F_UPDATE_PATCH?VERSION_NAME=" & NAME_VERSION)
         Return result_update_count_pro
     End Function
     Public Shared Function CHECK_VERSION(NAME_VERSION As String)
         Dim api = New api()
-        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/UPDATE_PATCH/F_UPDATE_PATCH?VERSION_NAME=" & NAME_VERSION)
+        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_GEMBA/UPDATE_PATCH/F_UPDATE_PATCH?VERSION_NAME=" & NAME_VERSION)
         Return result_update_count_pro
     End Function
     Public Shared Function SET_LINE_PRODUCTION(line As String)
@@ -308,7 +329,11 @@ Public Class Backoffice_model
             Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
             While LoadSQL.Read()
                 'temp2Str = "test"
+                'temp_stre = "Server=" & LoadSQL("ipaddress").ToString() & ";Initial Catalog=" & LoadSQL("db_name").ToString() & ";User ID=" & LoadSQL("username").ToString() & ";Password=" & LoadSQL("passwd").ToString() & ";"
+                ' temp_stre = "Server=0.tcp.ap.ngrok.io,13414;Initial Catalog=gemba_db;User ID=sa;Password=Te@m1nw;"
+                'Console.WriteLine("Server=0.tcp.ap.ngrok.io,13414;Initial Catalog=gemba_db;User ID=sa;Password=Te@m1nw;")
                 temp_stre = "Server=" & LoadSQL("ipaddress").ToString() & ";Initial Catalog=" & LoadSQL("db_name").ToString() & ";User ID=" & LoadSQL("username").ToString() & ";Password=" & LoadSQL("passwd").ToString() & ";"
+                '   Console.WriteLine(temp_stre)
                 svDatabase = LoadSQL("ip_database").ToString()
             End While
             sqlConnect = temp_stre
@@ -657,7 +682,7 @@ re_insert_rework_act:
 
     Public Shared Function chk_spec_line()
         Dim api = New api()
-        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_check_data/chk_spec_line?line_cd=" & GET_LINE_PRODUCTION())
+        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_GEMBA/Api_check_data/chk_spec_line?line_cd=" & GET_LINE_PRODUCTION())
         Return result_update_count_pro
     End Function
     Public Shared Function INSERT_tmp_planseq(wi, line_cd, date_start, date_end, seq)
@@ -691,7 +716,7 @@ re_insert_rework_act:
     Public Shared Function GET_DATA_PRODUCTION_WORKING_INFO(ind_row, pwi_lot_no, pwi_seq_no)
         Try
             Dim api = New api()
-            Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/GET_DATA_PRODUCTION_WORKING_INFO?ind_row=" & ind_row & "&pwi_lot_no=" & pwi_lot_no & "&pwi_seq_no=" & pwi_seq_no)
+            Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/GET_DATA_PRODUCTION_WORKING_INFO?ind_row=" & ind_row & "&pwi_lot_no=" & pwi_lot_no & "&pwi_seq_no=" & pwi_seq_no)
             Return result_update_count_pro
         Catch ex As Exception
             MsgBox("MSSQL Database connect failed. Please contact PC System [Function GET_DATA_PRODUCTION_WORKING_INFO]" & ex.Message)
@@ -700,7 +725,7 @@ re_insert_rework_act:
     Public Shared Function INSERT_production_working_info(ind_row, pwi_lot_no, pwi_seq_no, pwi_shift)
         Try
             Dim api = New api()
-            Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/INSERT_production_working_info?ind_row=" & ind_row & "&pwi_lot_no=" & pwi_lot_no & "&pwi_seq_no=" & pwi_seq_no & "&pwi_shift=" & pwi_shift)
+            Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/INSERT_production_working_info?ind_row=" & ind_row & "&pwi_lot_no=" & pwi_lot_no & "&pwi_seq_no=" & pwi_seq_no & "&pwi_shift=" & pwi_shift)
             Return result_update_count_pro
         Catch ex As Exception
             MsgBox("MSSQL Database connect failed. Please contact PC System [Function INSERT_production_working_info]" & ex.Message)
@@ -798,6 +823,7 @@ re_insert_rework_act:
             reader.Close()
             'SQLCmd.CommandText = "update tmp_planseq set tmp_last_sequence = '" & Update_seq & "' , tmp_updated_date = '" & date_end & "' where tmp_line_cd = '" & line_cd & "' and tmp_created_date BETWEEN  '" & date_start & "' and '" & date_end & "'"
             SQLCmd.CommandText = "update tmp_planseq set tmp_last_sequence = '" & Update_seq & "' , tmp_updated_date = '" & date_end & "' where tmp_id = '" & tmp_id & "'"
+            Console.WriteLine(SQLCmd.CommandText)
             reader = SQLCmd.ExecuteReader()
             Return reader
         Catch ex As Exception
@@ -847,7 +873,8 @@ re_insert_rework_act:
     Public Shared Function Check_detail_actual_insert_act()
         updated_data_to_dbsvr()
         Dim api = New api()
-        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/TESTAPITRANFER/Get_detail_act?line_cd=" & MainFrm.Label4.Text)
+        Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_GEMBA/TESTAPITRANFER/Get_detail_act?line_cd=" & MainFrm.Label4.Text)
+        Console.WriteLine(result_update_count_pro)
         Return result_update_count_pro
     End Function
     Public Shared Sub Check_detail_actual_insert_act_no_api()
@@ -1027,7 +1054,7 @@ where
             End While
             reader.Close()
             Dim api = New api()
-            Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/UPDATE_DATA/UPDATE_PRINT_TEST_SYSTEM?ID=" & id & "&PRINT_COUNT=" & print_count)
+            Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_GEMBA/UPDATE_DATA/UPDATE_PRINT_TEST_SYSTEM?ID=" & id & "&PRINT_COUNT=" & print_count)
             Dim table_created As Integer = 2
             If flg_cat_layout_line = "1" Then
                 table_created = 2
@@ -1108,8 +1135,8 @@ where
         Try
             Dim api = New api()
             Dim result_api_checkper As String = ""
-            result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_Get_plan_production?line_cd=" & GET_LINE_PRODUCTION())
-            Console.WriteLine("http://" & svApi & "/API_NEW_FA/Api_Get_plan_production?line_cd=" & GET_LINE_PRODUCTION())
+            result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/Api_Get_plan_production?line_cd=" & GET_LINE_PRODUCTION())
+            Console.WriteLine("http://" & svApi & "/API_GEMBA/Api_Get_plan_production?line_cd=" & GET_LINE_PRODUCTION())
             Return result_api_checkper
         Catch ex As Exception
             'MsgBox("MSSQL Database connect failed. Please contact PC System [Function Get_prd_plan_new]")
@@ -1174,7 +1201,7 @@ recheck:
             ' SQLConn.ConnectionString = sqlConnect 'Set the Connection String
             'SQLConn.Open()
             Dim api = New api()
-            Dim reusult_data = api.Load_data("http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/work_complete_offline?wi=" & wi & "&currdated=" & currdated)
+            Dim reusult_data = api.Load_data("http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/work_complete_offline?wi=" & wi & "&currdated=" & currdated)
             'SQLCmd.Connection = SQLConn
             'SQLCmd.CommandText = "UPDATE sup_work_plan_supply_dev SET PRD_COMP_FLG = '0', PRD_COMP_DATE = '" & currdated & "' WHERE WI = '" & wi & "'"
             'reader = SQLCmd.ExecuteReader()
@@ -1191,7 +1218,7 @@ recheck:
     End Function
     Public Shared Sub UpdateWorking(wi)
         Dim api = New api()
-        Dim reusult_data = api.Load_data("http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/Update_supply_dev_Working?wi=" & wi)
+        Dim reusult_data = api.Load_data("http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/Update_supply_dev_Working?wi=" & wi)
     End Sub
     Public Shared Function Insert_prd_detail_defact(pd As String, line_cd As String, wi_plan As String, item_cd As String, item_name As String, staff_no As Integer, seq_no As Integer, qty As Integer, st_time As DateTime, end_time As DateTime, use_time As Double, number_qty As Integer, tr_status As String, flg_defact As String, defact_id As String)
         Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
@@ -1315,18 +1342,18 @@ recheck:
 
     Public Shared Function GetDefectMenu(line_cd As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GetDefectMenu?line_cd=" & line_cd)
+        Dim rs = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/GetDefectMenu?line_cd=" & line_cd)
         Return rs
     End Function
     Public Shared Function GetDefectMenuMaintenance(line_cd As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GetDefectMenuMaintenance?line_cd=" & line_cd)
+        Dim rs = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/GetDefectMenuMaintenance?line_cd=" & line_cd)
         Return rs
     End Function
 
     Public Shared Function GET_STATUS_DELAY_BY_LINE(line_cd As String)
         Dim api = New api()
-        Dim rs = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_STATUS_DELAY_BY_LINE?line_cd=" & line_cd)
+        Dim rs = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_STATUS_DELAY_BY_LINE?line_cd=" & line_cd)
         Return rs
     End Function
     Public Shared Function Get_Last_part(line_cd As String)
@@ -1423,7 +1450,7 @@ recheck:
         ' Dim SQLCmd As New SqlCommand()
         Try
             Dim api = New api()
-            Dim result_worker = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_permission_worker?emp_code=" & emp_cd & "&line_cd=" & line_cd)
+            Dim result_worker = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_permission_worker?emp_code=" & emp_cd & "&line_cd=" & line_cd)
             Return result_worker
             ' SQLConn.ConnectionString = sqlConnect 'Set the Connection String
             ' SQLConn.Open()
@@ -1486,8 +1513,8 @@ recheck:
             '  reader.Close()
             'Return reader
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
-            Console.WriteLine("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_gemba/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Console.WriteLine("http://" & svApi & "/apiShopfloor_gemba/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
         Catch ex As Exception
             '  SQLConn.Close()
@@ -1507,10 +1534,10 @@ recheck:
             '  reader.Close()
             'Return reader
             Dim mdDefect = New modelDefect
-            Console.WriteLine("http: //" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
+            Console.WriteLine("http: //" & svApi & "/apiShopfloor_gemba/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
             If mdDefect.mGetDataEnableFGPart(MainFrm.Label4.Text) = "1" Then
                 Dim api = New api()
-                Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
+                Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_gemba/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
                 Return result
             Else
                 Return 0
@@ -1531,7 +1558,7 @@ recheck:
             '  reader = SQLCmd.ExecuteReader()
             '  reader.Close()
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_sub?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_gemba/updateDatadefect/update_tagprint_sub?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
         Catch ex As Exception
             '    SQLConn.Close()
@@ -1550,7 +1577,7 @@ recheck:
             '   reader = SQLCmd.ExecuteReader()
             '   reader.Close()
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_test/updateDatadefect/update_tagprint_main?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor_gemba/updateDatadefect/update_tagprint_main?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
             'Return reader
         Catch ex As Exception
@@ -1577,11 +1604,11 @@ recheck:
 
     Public Shared Sub ins_log_print(created_by As String, table_created As String, log_ref_tag_id As String)
         Dim api = New api()
-        Dim result = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_insert_log_reprint/ins_los_reprint_test_system?created_by=" & created_by & "&table_created=" & table_created & "&log_ref_tag_id=" & log_ref_tag_id)
+        Dim result = api.Load_data("http://" & svApi & "/API_GEMBA/Api_insert_log_reprint/ins_los_reprint_test_system?created_by=" & created_by & "&table_created=" & table_created & "&log_ref_tag_id=" & log_ref_tag_id)
     End Sub
     Public Shared Function Get_tag_group_no()
         Dim api = New api()
-        Dim result = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_tag_group_no")
+        Dim result = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_tag_group_no")
         Return result
     End Function
     Public Shared Function Insert_tag_print_main(wi As String, qr_detail As String, batch_no As Integer, print_count As Integer, seq_no As String, shift As String, flg_control As Integer, item_cd As String, pwi_id As String, tag_group_no As String)
@@ -1606,12 +1633,12 @@ recheck:
     End Function
     Public Shared Function Get_ref_start_id(wi As String, seq_no As String, lot_no As String)
         Dim api = New api()
-        Dim result = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_ref_start_id?wi=" & wi & "&seq_no=" & seq_no & "&lot_no=" & lot_no)
+        Dim result = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_ref_start_id?wi=" & wi & "&seq_no=" & seq_no & "&lot_no=" & lot_no)
         Return result
     End Function
     Public Shared Function Get_ref_end_id(wi As String, seq_no As String, lot_no As String)
         Dim api = New api()
-        Dim result = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_ref_end_id?wi=" & wi & "&seq_no=" & seq_no & "&lot_no=" & lot_no)
+        Dim result = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_ref_end_id?wi=" & wi & "&seq_no=" & seq_no & "&lot_no=" & lot_no)
         Return result
     End Function
     Public Shared Function get_qr_detail_sub(ref_id)
@@ -1898,12 +1925,12 @@ recheck:
     End Function
     Public Shared Function check_line_reprint()
         Dim api = New api()
-        Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_check_data/check_line_reprint?line_cd=" & MainFrm.Label4.Text)
+        Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/Api_check_data/check_line_reprint?line_cd=" & MainFrm.Label4.Text)
         Return result_api_checkper
     End Function
     Public Shared Function B_check_format_tag()
         Dim api = New api()
-        Dim reusult_data = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_check_data/check_format_tag?line_cd=" & MainFrm.Label4.Text)
+        Dim reusult_data = api.Load_data("http://" & svApi & "/API_GEMBA/Api_check_data/check_format_tag?line_cd=" & MainFrm.Label4.Text)
         Return reusult_data
     End Function
 
@@ -2080,7 +2107,7 @@ recheck:
 
     Public Shared Function Get_data_picking(ref_id As String)
         Dim api = New api()
-        Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_data_picking?ref_id=" & ref_id)
+        Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_data_picking?ref_id=" & ref_id)
         Return result_api_checkper
     End Function
     Public Shared Function del_user(su_id As String, emp_cd As String)
@@ -3263,7 +3290,7 @@ recheck:
             ' reader = SQLCmd.ExecuteReader()
             'Return reader
             Dim api = New api()
-            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/getOpLineProduxtion?LineCd=" & lind_cd)
+            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/getOpLineProduxtion?LineCd=" & lind_cd)
             Return result_api_checkper
         Catch ex As Exception
             MsgBox("MSSQL Database connect failed. Please contact PC System [Function get_loss_op_mst]")
@@ -3288,7 +3315,7 @@ re_insert_rework_act:
             ' LoadSQL.Close()
             ' sqliteConn.Close()
             Dim api = New api()
-            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/getOpLineProduxtion?LineCd=" & lind_cd)
+            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/getOpLineProduxtion?LineCd=" & lind_cd)
             Return result_api_checkper
         Catch ex As Exception
             MsgBox("SQLite Database connect failed. Please contact PC System [Function get_loss_op_mst_sqlite]" & ex.Message)
@@ -3623,7 +3650,7 @@ re_insert_rework_act:
     Public Function Get_MaxManPower(line_cd As String)
         Try
             Dim api = New api()
-            Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_man_limit?line_cd=" & line_cd)
+            Dim GetData = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_man_limit?line_cd=" & line_cd)
             If GetData <> "0" Then
                 Return GetData
             Else
@@ -3638,8 +3665,8 @@ re_insert_rework_act:
     Public Function Get_Plan_All_By_Line(line_cd As String, shift As String, dateStart As String)
         Try
             Dim api = New api()
-            Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
-            Console.WriteLine("http://" & svApi & "/API_NEW_FA/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
+            Dim GetData = api.Load_data("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
+            Console.WriteLine("http://" & svApi & "/API_GEMBA/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
             Return GetData
         Catch ex As Exception
             MsgBox("Error Function Get_Plan_All_By_Line In Backoffice_model")
@@ -3649,7 +3676,7 @@ re_insert_rework_act:
     Public Shared Function AlertCheck_close_lot(line_cd As String, dep_cd As String)
         Try
             Dim api = New api()
-            Dim GetData = api.Load_data("http://192.168.161.77:5002/API_NEW_FA_PY2/notify/send?line_cd=" & line_cd & "&dep_cd=" & dep_cd)
+            Dim GetData = api.Load_data("http://192.168.161.77:5002/API_GEMBA_PY2/notify/send?line_cd=" & line_cd & "&dep_cd=" & dep_cd)
             Return GetData
         Catch ex As Exception
             MsgBox("Error Function AlertCheck_close_lot In Backoffice_model")
@@ -3659,7 +3686,7 @@ re_insert_rework_act:
     Public Shared Function Get_plan_production_critical()
         Try
             Dim api = New api()
-            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_Get_plan_production_critical?line_cd=" & GET_LINE_PRODUCTION())
+            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/Api_Get_plan_production_critical?line_cd=" & GET_LINE_PRODUCTION())
             Return result_api_checkper
         Catch ex As Exception
             MsgBox("Error Function Get_plan_production_critical In Backoffice_model")
@@ -3668,8 +3695,8 @@ re_insert_rework_act:
     Public Shared Function GetDataPlanCritical(wi As String)
         Try
             Dim api = New api()
-            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/Api_Get_plan_production_critical/GetDataPlanCritical?wi=" & wi & "&line_cd=" & GET_LINE_PRODUCTION())
-            Console.WriteLine("http://" & svApi & "/API_NEW_FA/Api_Get_plan_production_critical/GetDataPlanCritical?wi=" & wi & "&line_cd=" & GET_LINE_PRODUCTION())
+            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/Api_Get_plan_production_critical/GetDataPlanCritical?wi=" & wi & "&line_cd=" & GET_LINE_PRODUCTION())
+            Console.WriteLine("http://" & svApi & "/API_GEMBA/Api_Get_plan_production_critical/GetDataPlanCritical?wi=" & wi & "&line_cd=" & GET_LINE_PRODUCTION())
             Return result_api_checkper
         Catch ex As Exception
             MsgBox("Error Function GetDataPlanCritical In Backoffice_model")
@@ -3678,7 +3705,7 @@ re_insert_rework_act:
     Public Shared Sub UpdateFlgZero(line_cd As String)
         Try
             Dim api = New api()
-            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/UpdateFlgZero?line_cd=" & line_cd)
+            Dim result_api_checkper = api.Load_data("http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/UpdateFlgZero?line_cd=" & line_cd)
         Catch ex As Exception
             MsgBox("Error Function UpdateFlgZeroSpecial In Backoffice_model")
         End Try
@@ -3690,7 +3717,7 @@ re_insert_rework_act:
             Dim api = New api()
             Dim jArrayWI As New JArray(arrayWI)
             requestFunction("wi") = jArrayWI
-            Dim url As String = "http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/UpdateFlgZeroSpecial"
+            Dim url As String = "http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/UpdateFlgZeroSpecial"
             Dim result = api.Load_dataPOST(url, requestFunction)
         Catch ex As Exception
             MsgBox("Error Function UpdateFlgZeroSpecial In Backoffice_model")
@@ -3699,11 +3726,11 @@ re_insert_rework_act:
     Public Shared Sub UpdateWorkingSpecial(arrayWI As Array)
         Try
             Dim api = New api()
-            'Dim reusult_data = api.Load_data("http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/Update_supply_dev_WorkingSpecial?wi1=" & wi1 & "&wi2=" & wi2 & "&wi3=" & wi3 & "&wi4=" & wi4 & "&wi5=" & wi5)
+            'Dim reusult_data = api.Load_data("http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/Update_supply_dev_WorkingSpecial?wi1=" & wi1 & "&wi2=" & wi2 & "&wi3=" & wi3 & "&wi4=" & wi4 & "&wi5=" & wi5)
             Dim requestFunction As New JObject()
             Dim jArrayWI As New JArray(arrayWI)
             requestFunction("wi") = jArrayWI
-            Dim url As String = "http://" & svApi & "/API_NEW_FA/INSERT_DATA_NEW_FA/Update_supply_dev_WorkingSpecial"
+            Dim url As String = "http://" & svApi & "/API_GEMBA/INSERT_DATA_NEW_FA/Update_supply_dev_WorkingSpecial"
             Dim result = api.Load_dataPOST(url, requestFunction)
         Catch ex As Exception
             MsgBox("Error Function UpdateWorkingSpecial In Backoffice_model")
