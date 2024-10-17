@@ -356,7 +356,7 @@ Public Class numPadSetStartTime
 
     Private Sub btn_next_Click(sender As Object, e As EventArgs) Handles btn_next.Click
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Dim timeAdjust As String = tbAddjustH.Text & ":" & tbAddjustM.Text & ":" & "00"
                 Dim DateTimecompuerdown As String = SetStartTime.Down_time.Text
                 Dim dateTimeAdjust As DateTime = DateTime.Now.ToString("yyyy-MM-dd") & " " & timeAdjust

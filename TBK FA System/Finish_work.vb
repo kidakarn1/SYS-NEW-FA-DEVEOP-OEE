@@ -7,7 +7,7 @@ Public Class Finish_work
 		Dim line_id As String = MainFrm.line_id.Text
 		Backoffice_model.line_status_upd(line_id)
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception

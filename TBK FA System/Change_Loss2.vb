@@ -9,13 +9,13 @@ Public Class Change_Loss2
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 ins_time_loss.Label2.Text = Working_Pro.Label16.Text
                 Loss_reg_pass.Label2.Text = MainFrm.Label4.Text
                 Dim sel_cd As Integer = ListView2.SelectedIndices(0)
                 Dim line_id As String = MainFrm.line_id.Text
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         Backoffice_model.line_status_upd(line_id)
                         Backoffice_model.line_status_upd_sqlite(line_id)
                     Else
@@ -29,7 +29,7 @@ Public Class Change_Loss2
                 Dim date_end As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
                 Loss_reg_pass.date_start_data = date_st
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         If MainFrm.chk_spec_line = "2" Then
                             Dim j As Integer = 0
                             For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
@@ -69,7 +69,7 @@ Public Class Change_Loss2
                 Loss_reg_pass.loss_cd.Text = ListView2.Items(sel_cd).SubItems(0).Text
                 Loss_reg_pass.Label7.Text = ListView2.Items(sel_cd).SubItems(1).Text
                 Loss_reg_pass.TextBox1.Text = ListView2.Items(sel_cd).SubItems(2).Text
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Dim LoadSQL = Backoffice_model.get_loss_op_mst(MainFrm.Label4.Text)
                     If LoadSQL <> "0" Then
                         Dim numm As Integer = 0

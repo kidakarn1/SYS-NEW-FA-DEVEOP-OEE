@@ -114,4 +114,8 @@
     Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
         ResetRed()
     End Sub
+
+    Private Sub cbRun_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbRun.SelectedIndexChanged
+
+    End Sub
 End Class

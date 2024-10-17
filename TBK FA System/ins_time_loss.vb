@@ -398,7 +398,7 @@ Public Class ins_time_loss
 	End Sub
 	Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
 		Try
-			If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+			If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Try
 
                     Dim date_start_shift As Date = Backoffice_model.date_time_start_master_shift

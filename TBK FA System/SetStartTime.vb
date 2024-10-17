@@ -2,7 +2,7 @@
 Public Class SetStartTime
     Public Shared downTime
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+        If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
             Dim timeAdjust As String = tbHour.Text & ":" & tbMin.Text & ":" & DateTime.Now.ToString("ss") '"00"
             'MsgBox("timeAdjust====>" & timeAdjust)
             Dim DateTimecompuerdown As String = Down_time.Text
@@ -23,7 +23,7 @@ Public Class SetStartTime
             load_show.Show()
         End If
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Dim timeAdjust As String = tbHour.Text & ":" & tbMin.Text & ":" & "00"
                 Dim DateTimecompuerdown As String = Down_time.Text
                 Dim dateTimeAdjust As DateTime = DateTime.Now.ToString("yyyy-MM-dd") & " " & timeAdjust

@@ -20,7 +20,8 @@ Imports Microsoft.Web.WebView2.Core
 Imports Microsoft.Web.WebView2.WinForms
 Public Class Working_Pro
     Private WithEvents WebViewProgressbar As WebView2
-    Public Shared comportTowerLamp = "COM7"
+    ' Public Shared comportTowerLamp = "COM7"
+
     ' Public Shared ArrayDataSpecial As New List(Of DataPlan)
     Public check_cal_eff As Integer = 0
     Public Gdate_now_date As Date
@@ -49,8 +50,8 @@ Public Class Working_Pro
     Dim value_next_process As String = ""
     Public check_format_tag As String = Backoffice_model.B_check_format_tag()
     Public Shared api = New api()
-    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
-    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
+    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
     Public Shared V_check_line_reprint As String = Backoffice_model.check_line_reprint()
     Public WithEvents serialPort As New SerialPort
     'Dim digitalReadTask_new_dio As New Task()
@@ -70,6 +71,7 @@ Public Class Working_Pro
     Public Shared statusDefect As String = ""
     Public Shared tag_group_no As String = ""
     Public Shared mec_name As String = ""
+    Public Shared comportTowerLamp = ""
     Public Shared GoodQty As Double = 0.0
     Public Shared carvity As Integer = MainFrm.cavity.Text
     Public Shared ResultPrint As Integer = 0
@@ -101,12 +103,13 @@ Public Class Working_Pro
     End Sub
     Public Function load_data_defeult_master_server(line_cd As String)
         Dim api = New api()
-        Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & line_cd)
+        Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & line_cd)
         If result_data <> "0" Then
             Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(result_data)
             For Each item As Object In dict2
                 s_mecg_name = item("mecg_name").ToString()
                 mec_name = item("mec_name").ToString()
+                comportTowerLamp = item("met_comport").ToString()
                 If Backoffice_model.GET_STATUS_DELAY_BY_LINE(MainFrm.Label4.Text) = 0 Then
                     status_conter = 0
                     s_delay = item("me_sig_del").ToString()
@@ -606,8 +609,8 @@ Public Class Working_Pro
         seqNo = Label22.Text
         model = lb_model.Text
         lb_loss_status.Parent = Panel6
-        check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
-        load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
+        check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+        load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
         lbNextTime.Text = BreakTime
         HourOverAllShift.Text = OEE.OEE_GET_Hour(Label14.Text)
@@ -863,7 +866,7 @@ Public Class Working_Pro
     End Sub
     Private Sub btn_setup_Click(sender As Object, e As EventArgs) Handles btn_setup.Click, btnSetUp.Click
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Sel_prd_setup.Show()
                 Me.Enabled = False
             Else
@@ -925,7 +928,7 @@ Public Class Working_Pro
         'Label10.BringToFront()
         Dim line_id As String = MainFrm.line_id.Text
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.line_status_upd(line_id)
             Else
                 Backoffice_model.line_status_upd_sqlite(line_id)
@@ -938,7 +941,7 @@ Public Class Working_Pro
         Dim date_st As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
         Dim date_end As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.line_status_ins(line_id, date_st, date_end, "1", "0", 24, "0", Prd_detail.lb_wi.Text)
             Else
                 Backoffice_model.line_status_ins_sqlite(line_id, date_st, date_end, "1", "0", 24, "0", Prd_detail.lb_wi.Text)
@@ -955,7 +958,7 @@ Public Class Working_Pro
         btnSetUp.Visible = True
         btn_ins_act.Visible = True
         btn_desc_act.Visible = True
-        btnDefect.Visible = True
+        btnDefects.Visible = True
         btnInfo.Visible = True
         btnCloseLot.Visible = True
         PictureBox11.Visible = True
@@ -977,10 +980,10 @@ Public Class Working_Pro
         stop_working()
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles btnDefect.Click, btnDefect.Click
-        ' Dim dfHome As New defectHome()
-        'dfHome.Show()
-        defectHome.Show()
+    Private Sub Button3_Click(sender As Object, e As EventArgs)
+        Dim dfHome = New defectHome()
+        dfHome.Show()
+        'defectHome.Show()
         Me.Enabled = False
         'Close_lot.Show()
         'Me.Close()
@@ -1071,7 +1074,7 @@ Public Class Working_Pro
             Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     tr_status = "1"
                     Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
                     Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_time, number_qty, pwi_id, tr_status)
@@ -1090,7 +1093,7 @@ Public Class Working_Pro
             btnSetUp.Enabled = True
             btn_ins_act.Enabled = True
             btn_desc_act.Enabled = True
-            btnDefect.Enabled = True
+            btnDefects.Enabled = True
             PictureBox11.Enabled = True
             btnInfo.Enabled = True
             btnCloseLot.Enabled = True
@@ -1114,7 +1117,7 @@ Public Class Working_Pro
         btnSetUp.Visible = False
         btn_ins_act.Visible = False
         btn_desc_act.Visible = False
-        btnDefect.Visible = False
+        btnDefects.Visible = False
         PictureBox11.Visible = False
         btnInfo.Visible = False
         btnCloseLot.Visible = False
@@ -1134,7 +1137,7 @@ Public Class Working_Pro
             flg_control = "0"
         End If
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 transfer_flg = "1"
                 Backoffice_model.ins_loss_act(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
                 Backoffice_model.ins_loss_act_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
@@ -1150,7 +1153,7 @@ Public Class Working_Pro
     Public Async Function Start_Production() As Task '
         If check_network_frist = 0 Then
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Prd_detail.Timer3.Enabled = False
                 End If
             Catch ex As Exception
@@ -1244,7 +1247,7 @@ Public Class Working_Pro
         End If
         Main()
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Dim bf = New Backoffice_model
                 Dim RsCheckProduction_Plan = bf.Get_Plan_All_By_Line(Backoffice_model.GET_LINE_PRODUCTION(), Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
                 If RsCheckProduction_Plan <> "0" Then
@@ -1289,7 +1292,7 @@ Public Class Working_Pro
         End Try
         Dim line_id As String = MainFrm.line_id.Text
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.line_status_upd(line_id)
                 Backoffice_model.line_status_upd_sqlite(line_id)
             Else
@@ -1308,7 +1311,7 @@ Public Class Working_Pro
                 Iseq += 1
                 Dim wi As String = itemPlanData.wi
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         Backoffice_model.line_status_ins(line_id, date_st, date_end, "2", "0", 0, "0", wi)
                         Backoffice_model.line_status_ins_sqlite(line_id, date_st, date_end, "2", "0", 0, "0", wi)
                     Else
@@ -1320,7 +1323,7 @@ Public Class Working_Pro
             Next
         Else
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Backoffice_model.line_status_ins(line_id, date_st, date_end, "2", "0", 0, "0", Prd_detail.lb_wi.Text)
                     Backoffice_model.line_status_ins_sqlite(line_id, date_st, date_end, "2", "0", 0, "0", Prd_detail.lb_wi.Text)
                 Else
@@ -1380,7 +1383,7 @@ Public Class Working_Pro
             Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Try
                 'MsgBox("Backoffice_model.gobal_QTYComputerDown===>" & Backoffice_model.gobal_QTYComputerDown)
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -1456,7 +1459,7 @@ Public Class Working_Pro
             btnSetUp.Enabled = True
             btn_ins_act.Enabled = True
             btn_desc_act.Enabled = True
-            btnDefect.Enabled = True
+            btnDefects.Enabled = True
             PictureBox11.Enabled = True
             btnInfo.Enabled = True
             btnCloseLot.Enabled = True
@@ -1487,7 +1490,7 @@ Public Class Working_Pro
         btnSetUp.Visible = False
         btn_ins_act.Visible = False
         btn_desc_act.Visible = False
-        btnDefect.Visible = False
+        btnDefects.Visible = False
         PictureBox11.Visible = False
         btnInfo.Visible = False
         btnCloseLot.Visible = False
@@ -1728,7 +1731,7 @@ Public Class Working_Pro
 
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -1781,7 +1784,7 @@ Public Class Working_Pro
             Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     tr_status = "1"
                     Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_time, number_qty, Label18.Text, tr_status)
                     Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, number_qty, start_time2, end_time, use_timee, number_qty, tr_status, pwi_id)
@@ -1834,7 +1837,7 @@ Public Class Working_Pro
                 End Try
 
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         transfer_flg = "0"
 
                         Backoffice_model.Insert_prd_close_lot(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
@@ -1941,7 +1944,7 @@ Public Class Working_Pro
     Public count As String = 0
     Public Async Function counter_contect_DIO() As Task
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -2062,14 +2065,9 @@ Public Class Working_Pro
             ElseIf sum_prg < 0 Then
                 sum_prg = 0
             End If
-
             CircularProgressBar1.Text = sum_prg & "%"
             CircularProgressBar1.Value = sum_prg
-
-
             Dim use_time As Integer = Label34.Text
-
-
             Dim dt1 As DateTime = DateTime.Now
             Dim dt2 As DateTime = st_count_ct.Text
             Dim dtspan As TimeSpan = dt1 - dt2
@@ -2120,7 +2118,7 @@ Public Class Working_Pro
             End If
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -2169,7 +2167,7 @@ Public Class Working_Pro
             Dim number_qty As Integer = Label6.Text
             Dim result_use_time As Double = Cal_Use_Time_ins_qty_fn_manual(start_time2, end_time2)
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -2277,7 +2275,7 @@ Public Class Working_Pro
     Public Async Function counter_contect_DIO_RS232() As Task
         Console.WriteLine("READY NI MAX")
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -2441,7 +2439,7 @@ Public Class Working_Pro
             End If
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -2496,7 +2494,7 @@ Public Class Working_Pro
             'Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_timee, tr_status)
             Dim result_use_time As Double = Cal_Use_Time_ins_qty_fn_manual(start_time2, end_time2)
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -2787,9 +2785,9 @@ Public Class Working_Pro
     Public Sub CheckMenu()
         statusDefect = Backoffice_model.GetDefectMenu(MainFrm.Label4.Text)
         If statusDefect = "0" Then
-            btnDefect.Enabled = False
+            btnDefects.Enabled = False
         Else
-            btnDefect.Enabled = True
+            btnDefects.Enabled = True
         End If
     End Sub
 
@@ -2929,7 +2927,6 @@ Public Class Working_Pro
         Else
             plan_seq = Label22.Text
         End If
-
         Dim the_box_seq As String
         Dim num_box_seq As Integer
         num_box_seq = lb_box_count.Text.Length
@@ -2960,7 +2957,8 @@ Public Class Working_Pro
             plan_cd = "51"
         End If
         e.Graphics.DrawString("FACTORY", lb_font1.Font, Brushes.Black, 522, 178)
-        e.Graphics.DrawString(factory_cd, lb_font5.Font, Brushes.Black, 522, 196)
+        ' e.Graphics.DrawString(factory_cd, lb_font5.Font, Brushes.Black, 522, 196)
+        e.Graphics.DrawString("Fac1", lb_font5.Font, Brushes.Black, 522, 196)
         e.Graphics.DrawString("INFO.", lb_font1.Font, Brushes.Black, 612, 178)
         e.Graphics.DrawString("LINE", lb_font1.Font, Brushes.Black, 152, 238)
         e.Graphics.DrawString(Label24.Text, lb_font2.Font, Brushes.Black, 152, 250)
@@ -2975,10 +2973,10 @@ Public Class Working_Pro
         e.Graphics.DrawString(result_plan_date, lb_font6.Font, Brushes.Black, 334, 250)
         e.Graphics.DrawString("LOT NO.", lb_font1.Font, Brushes.Black, 522, 238)
         e.Graphics.DrawString(Label18.Text, lb_font2.Font, Brushes.Black, 522, 250)
-        e.Graphics.DrawString("TBKK", lb_font2.Font, Brushes.Black, 15, 13)
+        e.Graphics.DrawString("Company", lb_font2.Font, Brushes.Black, 15, 13)
         e.Graphics.DrawString("(Thailand) Co., Ltd.", lb_font1.Font, Brushes.Black, 15, 45)
         e.Graphics.DrawString("Shop floor system", lb_font3.Font, Brushes.Black, 15, 73)
-        e.Graphics.DrawString("(New FA system)", lb_font3.Font, Brushes.Black, 15, 85)
+        e.Graphics.DrawString("(Gemba5.0 System)", lb_font3.Font, Brushes.Black, 15, 85)
         e.Graphics.DrawString("WI : " & wi_no.Text, lb_font3.Font, Brushes.Black, 15, 123)
         Dim prdtype As String
         If lb_prd_type.Text = "10" Then
@@ -3190,7 +3188,7 @@ Public Class Working_Pro
         End If
         Dim qr_detailss As String = ""
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 If check_tag_type = "2" Then
                     Dim the_Label_bach As String
                     If Trim(Len(Label_bach.Text)) = 1 Then
@@ -3327,7 +3325,7 @@ Public Class Working_Pro
         e.Graphics.DrawString("SEQ:" & plan_seq, lb_font4.Font, Brushes.Black, 430, 252)
         e.Graphics.DrawString("Use @ TBKK(Thailand) Co., Ltd.", lb_font1.Font, Brushes.Black, 525, 282)
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.Insert_tag_print(wi_no.Text, qr_detailss, box_no, 1, plan_seq, Label14.Text, check_tagprint(), Label3.Text, pwi_id, Working_Pro.tag_group_no, GoodQty)
                 'MsgBox("Ping completed")
             Else
@@ -3458,7 +3456,7 @@ Public Class Working_Pro
             End If
             Label10.Text = driff
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -3526,7 +3524,7 @@ Public Class Working_Pro
             comp_flg = 1
             If comp_flg = 1 Then
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         tr_status = "1"
                         If MainFrm.chk_spec_line = "2" Then
                             Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -3686,7 +3684,7 @@ Public Class Working_Pro
         Dim minSt As Integer = st_time.Text.Substring(14, 2)
         Dim secSt As Integer = st_time.Text.Substring(17, 2)
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -3789,7 +3787,7 @@ Public Class Working_Pro
                 End If
                 Dim loss_sum As Integer
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                         While LoadSQL.Read()
                             loss_sum = LoadSQL("sum_loss")
@@ -3840,7 +3838,7 @@ Public Class Working_Pro
                     end_time2 = Backoffice_model.end_check_date_paralell_line
                 End If
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         tr_status = "1"
                         Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, number_qty, start_time2, end_time2, use_time, tr_status, pwi_id)
                         Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time2, end_time2, use_time, number_qty, pwi_id, tr_status)
@@ -3889,7 +3887,7 @@ Public Class Working_Pro
                     Dim close_lot_flg As String = "1"
                     Dim avarage_act_prd_time As Double = Average
                     Try
-                        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                        If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                             transfer_flg = "1"
                             Backoffice_model.Insert_prd_close_lot(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
                             Backoffice_model.Insert_prd_close_lot_sqlite(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
@@ -3939,7 +3937,7 @@ Public Class Working_Pro
         End If
         Desc_act.Label1.Text = CDbl(Val(LB_COUNTER_SEQ.Text)) 'result
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.updated_data_to_dbsvr()
                 Desc_act.Show()
                 Me.Enabled = False
@@ -3988,7 +3986,7 @@ Public Class Working_Pro
     Public Async Function counter_data_new_dio() As Task
         Console.WriteLine("READY NI MAX")
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
@@ -4143,7 +4141,7 @@ Public Class Working_Pro
             End If
             Dim loss_sum As Integer
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Dim LoadSQL = Backoffice_model.get_sum_loss(Trim(wi_no.Text))
                     While LoadSQL.Read()
                         loss_sum = LoadSQL("sum_loss")
@@ -4198,7 +4196,7 @@ Public Class Working_Pro
             'Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty, start_time, end_time, use_timee, tr_status)
             Dim result_use_time As Double = Cal_Use_Time_ins_qty_fn_manual(start_time2, end_time2)
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     tr_status = "1"
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -4596,44 +4594,57 @@ Public Class Working_Pro
         End If
     End Sub
     Public Sub TowerLamp(DataBits As Integer, WriteLine As Integer)
-        'If SerialPortLamp.IsOpen() Then
-        '    SerialPortLamp.Close()
-        'End If
-        'Try
-        '    SerialPortLamp.PortName = comportTowerLamp
-        '    SerialPortLamp.BaudRate = 9600
-        '    SerialPortLamp.Parity = IO.Ports.Parity.None
-        '    SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        '    SerialPortLamp.DataBits = DataBits
-        '    SerialPortLamp.Open()
-        '    SerialPortLamp.WriteLine(WriteLine)
-        'Catch ex As Exception
-        '    MsgBox(ex.Message)
-        '  End Try
+        Try
+            If comportTowerLamp <> "NO DEVICE" Then
+                If SerialPortLamp.IsOpen() Then
+                    SerialPortLamp.Close()
+                End If
+                Try
+                    SerialPortLamp.PortName = comportTowerLamp
+                    SerialPortLamp.BaudRate = 9600
+                    SerialPortLamp.Parity = IO.Ports.Parity.None
+                    SerialPortLamp.StopBits = IO.Ports.StopBits.One
+                    SerialPortLamp.DataBits = DataBits
+                    SerialPortLamp.Open()
+                    SerialPortLamp.WriteLine(WriteLine)
+                Catch ex As Exception
+                    MsgBox(ex.Message)
+                End Try
+            End If
+        Catch ex As Exception
+            MsgBox("Please Check Comport For Tower Lamp In Server ")
+        End Try
     End Sub
     Public Sub ResetRed()
-        ' If SerialPortLamp.IsOpen() Then
-        ' SerialPortLamp.Close()
-        ' End If
-        ' SerialPortLamp.PortName = comportTowerLamp
-        ' SerialPortLamp.BaudRate = 9600
-        ' SerialPortLamp.Parity = IO.Ports.Parity.None
-        ' SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        ' SerialPortLamp.DataBits = 5
-        ' SerialPortLamp.Open()
-        ' SerialPortLamp.WriteLine(9999)
-        ' Console.ReadLine()
-        ' If SerialPortLamp.IsOpen() Then
-        ' SerialPortLamp.Close()
-        ' End If
-        ' SerialPortLamp.PortName = comportTowerLamp
-        ' SerialPortLamp.BaudRate = 9600
-        ' SerialPortLamp.Parity = IO.Ports.Parity.None
-        ' SerialPortLamp.StopBits = IO.Ports.StopBits.One
-        ' SerialPortLamp.DataBits = 6
-        ' SerialPortLamp.Open()
-        ' SerialPortLamp.WriteLine(11)
-         'Console.ReadLine()
+        Try
+            If comportTowerLamp <> "NO DEVICE" Then
+                If SerialPortLamp.IsOpen() Then
+                    SerialPortLamp.Close()
+                End If
+                SerialPortLamp.PortName = comportTowerLamp
+                SerialPortLamp.BaudRate = 9600
+                SerialPortLamp.Parity = IO.Ports.Parity.None
+                SerialPortLamp.StopBits = IO.Ports.StopBits.One
+                SerialPortLamp.DataBits = 5
+                SerialPortLamp.Open()
+                SerialPortLamp.WriteLine(9999)
+                Console.ReadLine()
+                If SerialPortLamp.IsOpen() Then
+                    SerialPortLamp.Close()
+                End If
+                SerialPortLamp.PortName = comportTowerLamp
+                SerialPortLamp.BaudRate = 9600
+                SerialPortLamp.Parity = IO.Ports.Parity.None
+                SerialPortLamp.StopBits = IO.Ports.StopBits.One
+                SerialPortLamp.DataBits = 6
+                SerialPortLamp.Open()
+                SerialPortLamp.WriteLine(11)
+                Console.ReadLine()
+            End If
+        Catch ex As Exception
+            MsgBox("Please Check Comport For Tower Lamp In Server ")
+        End Try
+
     End Sub
     Public Sub Load_Working_OEE()
         Working_OEE.Show()
@@ -4649,5 +4660,14 @@ Public Class Working_Pro
     End Sub
     Private Sub Button4_Click_1(sender As Object, e As EventArgs)
         ' WebViewProgressbar.Reload()
+    End Sub
+
+    Private Sub btnDefects_Click(sender As Object, e As EventArgs) Handles btnDefects.Click
+        Dim dfHome = New defectHome()
+        dfHome.Show()
+        'defectHome.Show()
+        Me.Enabled = False
+        'Close_lot.Show()
+        'Me.Close()
     End Sub
 End Class

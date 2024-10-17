@@ -187,7 +187,6 @@ Partial Class Working_Pro
         Me.btn_desc_act = New System.Windows.Forms.PictureBox()
         Me.btn_ins_act = New System.Windows.Forms.PictureBox()
         Me.btnCloseLot = New System.Windows.Forms.PictureBox()
-        Me.btnDefect = New System.Windows.Forms.PictureBox()
         Me.btnInfo = New System.Windows.Forms.PictureBox()
         Me.btnSetUp = New System.Windows.Forms.PictureBox()
         Me.btnStart = New System.Windows.Forms.PictureBox()
@@ -201,6 +200,7 @@ Partial Class Working_Pro
         Me.Label49 = New System.Windows.Forms.Label()
         Me.newPartname = New System.Windows.Forms.Label()
         Me.PanelProgressbar = New System.Windows.Forms.Panel()
+        Me.btnDefects = New System.Windows.Forms.PictureBox()
         Me.Panel1.SuspendLayout()
         Me.Panel7.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -231,10 +231,10 @@ Partial Class Working_Pro
         CType(Me.btn_desc_act, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btn_ins_act, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnCloseLot, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btnDefect, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSetUp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnStart, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.btnDefects, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label4
@@ -2261,17 +2261,6 @@ Partial Class Working_Pro
         Me.btnCloseLot.TabStop = False
         Me.btnCloseLot.Visible = False
         '
-        'btnDefect
-        '
-        Me.btnDefect.BackColor = System.Drawing.Color.DarkGray
-        Me.btnDefect.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.btnDefectNew
-        Me.btnDefect.Location = New System.Drawing.Point(298, 514)
-        Me.btnDefect.Name = "btnDefect"
-        Me.btnDefect.Size = New System.Drawing.Size(163, 86)
-        Me.btnDefect.TabIndex = 4686
-        Me.btnDefect.TabStop = False
-        Me.btnDefect.Visible = False
-        '
         'btnInfo
         '
         Me.btnInfo.BackColor = System.Drawing.Color.WhiteSmoke
@@ -2413,6 +2402,17 @@ Partial Class Working_Pro
         Me.PanelProgressbar.TabIndex = 4698
         Me.PanelProgressbar.Visible = False
         '
+        'btnDefects
+        '
+        Me.btnDefects.BackColor = System.Drawing.Color.DarkGray
+        Me.btnDefects.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.btnDefectNew
+        Me.btnDefects.Location = New System.Drawing.Point(298, 514)
+        Me.btnDefects.Name = "btnDefects"
+        Me.btnDefects.Size = New System.Drawing.Size(162, 84)
+        Me.btnDefects.TabIndex = 4701
+        Me.btnDefects.TabStop = False
+        Me.btnDefects.Visible = False
+        '
         'Working_Pro
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2420,6 +2420,7 @@ Partial Class Working_Pro
         Me.BackColor = System.Drawing.Color.White
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(800, 600)
+        Me.Controls.Add(Me.btnDefects)
         Me.Controls.Add(Me.lbNextTime)
         Me.Controls.Add(Me.newPartname)
         Me.Controls.Add(Me.Label49)
@@ -2437,7 +2438,6 @@ Partial Class Working_Pro
         Me.Controls.Add(Me.btnInfo)
         Me.Controls.Add(Me.btnSetUp)
         Me.Controls.Add(Me.btnStart)
-        Me.Controls.Add(Me.btnDefect)
         Me.Controls.Add(Me.btn_ins_act)
         Me.Controls.Add(Me.btn_desc_act)
         Me.Controls.Add(Me.PictureBox11)
@@ -2612,10 +2612,10 @@ Partial Class Working_Pro
         CType(Me.btn_desc_act, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btn_ins_act, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnCloseLot, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btnDefect, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnInfo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnSetUp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnStart, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.btnDefects, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2783,7 +2783,6 @@ Partial Class Working_Pro
     Friend WithEvents btn_desc_act As PictureBox
     Friend WithEvents btn_ins_act As PictureBox
     Friend WithEvents btnCloseLot As PictureBox
-    Friend WithEvents btnDefect As PictureBox
     Friend WithEvents btnInfo As PictureBox
     Friend WithEvents btnSetUp As PictureBox
     Friend WithEvents btnStart As PictureBox
@@ -2797,4 +2796,5 @@ Partial Class Working_Pro
     Friend WithEvents Label49 As Label
     Friend WithEvents newPartname As Label
     Friend WithEvents PanelProgressbar As Panel
+    Friend WithEvents btnDefects As PictureBox
 End Class

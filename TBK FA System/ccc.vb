@@ -9,7 +9,7 @@ Public Class Sel_prd_setup
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Try
 
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Chang_Loss.ListView2.View = View.Details
                 'Chang_Loss.ListView2.Scrollable = Size()
                 'List_Emp.ListBox2.Items.Add(Trim(TextBox2.Text))
@@ -39,7 +39,7 @@ Public Class Sel_prd_setup
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try
 
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Change_Loss2.ListView2.View = View.Details
                 Dim checkRs As Integer = 0
                 Loss_reg_pass.Label2.Text = MainFrm.Label4.Text
@@ -78,7 +78,7 @@ Public Class Sel_prd_setup
     End Sub
     Public Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Dim check_format_tag As String = Backoffice_model.B_check_format_tag()
                 Dim LoadSQL
                 Dim num As Integer = 0

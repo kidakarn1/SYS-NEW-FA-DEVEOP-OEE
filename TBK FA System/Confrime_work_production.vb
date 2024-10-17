@@ -9,7 +9,7 @@ Public Class Confrime_work_production
         Dim count_reload As Integer = 0
         Backoffice_model.gobal_DateTimeComputerDown = "" ' ห้ามลบ ตัวเช็คคอมดับ
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Dim line_cd_na As String = Prd_detail.Label3.Text
                 Dim LoadSQL1 = Backoffice_model.Get_Last_part(line_cd_na)
                 While LoadSQL1.Read()

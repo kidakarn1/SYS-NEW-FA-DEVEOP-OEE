@@ -1486,7 +1486,7 @@
   <ItemGroup>
     <Content Include="fa_logo.ico" />
     <Content Include="ICO_NEW_FA.ico" />
-    <None Include="Resources\0s-200px-200px-unscreen1.gif" />
+    <None Include="Resources\configLineGemba.png" />
     <None Include="Resources\OEE WAIT DATA %281%291.png" />
     <None Include="Resources\0s-200px-200px-unscreen.gif" />
     <None Include="Resources\OEE WAIT DATA %281%29.png" />
@@ -1504,7 +1504,6 @@
     <None Include="Resources\giphy.gif" />
     <None Include="Resources\ErrorTime1.png" />
     <None Include="Resources\936b3a9a817fed848e7025c0430cbb-unscreen.gif" />
-    <None Include="Resources\936b3a9a817fed848e7025c0430cbb10.gif" />
     <None Include="Resources\ErrorTime.png" />
     <None Include="Resources\defectDetailadjustNew231.png" />
     <None Include="Resources\defectDetailadjustNew23.png" />

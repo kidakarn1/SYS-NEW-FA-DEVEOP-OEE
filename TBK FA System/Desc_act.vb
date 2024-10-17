@@ -78,7 +78,7 @@ Public Class Desc_act
         End If
         For number_seq As Integer = seq To 1 Step -1
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq)
                 Else
                     reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC_SQLITE(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq)
@@ -123,7 +123,7 @@ Public Class Desc_act
                             tmp_qty_update = 0
                         End If
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq, tmp_qty_update)
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq, tmp_qty_update, tr_status)
@@ -139,7 +139,7 @@ Public Class Desc_act
                     If qty_update <= 0 Then
                         ' MsgBox("If DOWN")
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq, Math.Abs(qty_update))
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq, Math.Abs(qty_update), tr_status)
@@ -168,7 +168,7 @@ Public Class Desc_act
                     App_qty_seq = 0
                 End If
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq - 1)
                     Else
                         reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC_SQLITE(Working_Pro.wi_no.Text, Working_Pro.Label14.Text, number_seq - 1)
@@ -195,7 +195,7 @@ Public Class Desc_act
                             tmp_qty_update = 0
                         End If
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq - 1, tmp_qty_update)
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq - 1, tmp_qty_update, tr_status)
@@ -209,7 +209,7 @@ Public Class Desc_act
                     If qty_update <= 0 Then
                         ' MsgBox("If DOWN3 ")
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(Working_Pro.wi_no.Text, number_seq - 1, Math.Abs(qty_update))
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(Working_Pro.wi_no.Text, number_seq - 1, Math.Abs(qty_update), tr_status)
@@ -246,7 +246,7 @@ break_loop:
             Dim special_item_cd As String = itemPlanData.item_cd
             Dim special_item_name As String = itemPlanData.item_name
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC(special_wi, Working_Pro.Label14.Text, Iseq)
                 Else
                     reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC_SQLITE(special_wi, Working_Pro.Label14.Text, Iseq)
@@ -282,7 +282,7 @@ break_loop:
                             tmp_qty_update = 0
                         End If
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(special_wi, Iseq, tmp_qty_update)
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(special_wi, Iseq, tmp_qty_update, tr_status)
@@ -297,7 +297,7 @@ break_loop:
                     End If
                     If qty_update <= 0 Then
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(special_wi, Iseq, Math.Abs(qty_update))
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(special_wi, Iseq, Math.Abs(qty_update), tr_status)
@@ -324,7 +324,7 @@ break_loop:
                     App_qty_seq = 0
                 End If
                 Try
-                    If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                    If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC(special_wi, Working_Pro.Label14.Text, Iseq)
                     Else
                         reader = Backoffice_model.GET_QTY_SEQ_ACTUAL_DESC_SQLITE(special_wi, Working_Pro.Label14.Text, Iseq)
@@ -345,7 +345,7 @@ break_loop:
                             tmp_qty_update = 0
                         End If
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(special_wi, Iseq, tmp_qty_update)
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(special_wi, Iseq, tmp_qty_update, tr_status)
@@ -358,7 +358,7 @@ break_loop:
                     End If
                     If qty_update <= 0 Then
                         Try
-                            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                                 tr_status = "1"
                                 Dim update_qty_seq = Backoffice_model.update_qty_seq(special_wi, Iseq, Math.Abs(qty_update))
                                 update_qty_seq = Backoffice_model.update_qty_seq_sqlite(special_wi, Iseq, Math.Abs(qty_update), tr_status)
@@ -500,7 +500,7 @@ break_loop:
                         If Working_Pro.LB_COUNTER_SEQ.Text.Substring(0, 1) = "-" Then
                             Working_Pro.LB_COUNTER_SEQ.Text = 0
                         End If
-                        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                        If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                             tr_status = "1"
                             If MainFrm.chk_spec_line = "2" Then
                                 Dim GenSEQ As Integer = CInt(Working_Pro.Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
@@ -593,7 +593,7 @@ break_loop:
 	End Function
 	Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
         'Try
-        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+        If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
             'Backoffice_model.updated_data_to_dbsvr()
             set_data_del()
         Else
@@ -666,7 +666,7 @@ break_loop:
 		'Dim start_time2 As String = start_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
 		'Dim end_time2 As String = end_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
 		'Try
-		'If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+		'If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
 		' tr_status = "1"
 		'  Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status)
 		'   Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, start_time, end_time, use_timee, number_qty)

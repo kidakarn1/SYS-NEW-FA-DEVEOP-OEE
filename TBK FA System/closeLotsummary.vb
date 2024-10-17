@@ -31,7 +31,7 @@ Public Class closeLotsummary
         Try
             setVariable()
             Finish_work.Close()
-            'If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            'If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
             If MainFrm.chk_spec_line = "2" Then
                 lbLine.BackColor = Color.FromArgb(44, 88, 130)
                 lbLine.Location = New Point(166, 113)
@@ -87,7 +87,7 @@ Public Class closeLotsummary
     End Sub
     Public Function getDefectdetailnc(wi As String, seq As String, lot As String)
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 aDefectcode.Clear()
                 aDefectQty.Clear()
                 Dim md As New modelDefect()
@@ -216,7 +216,7 @@ Public Class closeLotsummary
     End Function
     Public Sub Manage_closelot()
         'Try
-        If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+        If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
             If Loss_reg.Visible = True Then
                 Loss_reg.Submit_loss()
             End If
@@ -358,7 +358,7 @@ Public Class closeLotsummary
     End Sub
     Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 If StopMenu.Visible Then
                     StopMenu.SatrtWork()
                 End If
@@ -559,7 +559,7 @@ Public Class closeLotsummary
     End Sub
     Public Sub insertProductionactual(wi_plan As String, line_cd As String, item_cd As String, plan_qty As String, act_qty As String, seq_no As String, shift_prd As String, staff_no As String, prd_st_datetime As String, prd_end_datetime As String, lot_no As String, comp_flg2 As String, transfer_flg As String, del_flg As String, prd_flg As String, close_lot_flg As String, avarage_eff As String, avarage_act_prd_time As String)
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 transfer_flg = "1"
                 If MainFrm.chk_spec_line = "2" Then
                     Dim GenSEQ As Integer = seq_no - MainFrm.ArrayDataPlan.ToArray.Length

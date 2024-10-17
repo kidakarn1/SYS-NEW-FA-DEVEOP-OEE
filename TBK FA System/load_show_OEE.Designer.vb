@@ -43,7 +43,7 @@ Partial Class load_show_OEE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.OEE_WAIT_DATA__1_1
+        Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.LOADOEE4
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(800, 600)
         Me.Controls.Add(Me.PictureBox2)

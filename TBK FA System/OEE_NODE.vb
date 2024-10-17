@@ -23,7 +23,7 @@ Public Class OEE_NODE
         Catch ex As Exception
             MsgBox("Please Check Master OEE In Table line_mst")
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -58,8 +58,8 @@ Public Class OEE_NODE
             date_st = date_st
 
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
-            ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
-            '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             Console.WriteLine("http://" & Backoffice_model.svOEE & "/api/dataGettarget?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct & "&date_start=" & convertDateStart & "&date_end=" & date_end)
             Dim jsonString = api.Load_data("http://" & Backoffice_model.svOEE & "/api/dataGettarget?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct & "&date_start=" & convertDateStart & "&date_end=" & date_end)
             Dim jsSerializer As New JavaScriptSerializer()
@@ -67,12 +67,12 @@ Public Class OEE_NODE
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim TarGet As Integer = data("Target").ToString
-            'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             load_show_OEE.Close()
             Return TarGet
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -86,22 +86,21 @@ Public Class OEE_NODE
     Public Shared Function OEE_GET_Hour(shift As String)
         Try
             Dim api = New api()
-            ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
-            '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            ' Dim TarGet = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            '   Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             Dim jsonString = api.Load_data("http://" & Backoffice_model.svOEE & "/api/dataGetHour?shift=" & shift)
-
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim TarGet As Double = data("WorkHour").ToString
             Console.WriteLine("http://" & Backoffice_model.svOEE & "/api/dataGetHour?shift=" & shift)
-            'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
+            'Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/NEW_GET_TARGET?st_shift=" & st_shift & "&end_shift=" & end_shift & "&std_ct=" & std_ct)
             load_show_OEE.Close()
             Return TarGet
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -135,7 +134,6 @@ Public Class OEE_NODE
             Dim convertnewDateMinutes = Convert.ToDateTime(newDateMinutes).ToString("yyyy-MM-dd HH:mm:ss")
             ' MsgBox("convertDateStart======>" & convertDateStart)
             '  MsgBox("convertnewDateMinutes======>" & convertnewDateMinutes)
-
             Console.WriteLine("http://" & Backoffice_model.svOEE & "/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
             Dim jsonString = api.Load_data("http://" & Backoffice_model.svOEE & "/api/dataDetailByHouse?line_cd=" & line_cd & "&date_crr=" & convertDateCrr & "&time_crr=" & time & "&convertnewDateMinutes=" & convertnewDateMinutes)
             Dim jsSerializer As New JavaScriptSerializer()
@@ -147,7 +145,7 @@ Public Class OEE_NODE
             Return rs
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -199,7 +197,7 @@ Public Class OEE_NODE
             Return rs
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -239,7 +237,7 @@ Public Class OEE_NODE
             Return rs
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -284,7 +282,7 @@ Public Class OEE_NODE
             Return rs
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -320,7 +318,7 @@ Public Class OEE_NODE
             Return jsonString
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -359,7 +357,7 @@ Public Class OEE_NODE
         Catch ex As Exception
             'MsgBox("ERROR OEE FUNCTION OEE_GET_Data_AccTarget Please Check API")
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -374,18 +372,18 @@ Public Class OEE_NODE
         Try
             Dim api = New api()
 
-            Dim jsonString = api.Load_data("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/getSpeedLoss?NG=" & NG & "&Good=" & Good & "&Timeshift=" & Timeshift & "&std_cd=" & std_cd)
+            Dim jsonString = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getSpeedLoss?NG=" & NG & "&Good=" & Good & "&Timeshift=" & Timeshift & "&std_cd=" & std_cd)
             Dim jsSerializer As New JavaScriptSerializer()
             ' Deserialize the JSON string to a Dictionary
             Dim data As Dictionary(Of String, Object) = jsSerializer.Deserialize(Of Dictionary(Of String, Object))(jsonString)
             ' Access the value
             Dim rs As Integer = data("ActualTarget")
-            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_GEMBA/GET_OEE/getSpeedLoss?NG=" & NG & "&Good=" & Good & "&Timeshift=" & Timeshift & "&std_cd=" & std_cd)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_OEE/getSpeedLoss?NG=" & NG & "&Good=" & Good & "&Timeshift=" & Timeshift & "&std_cd=" & std_cd)
             load_show_OEE.Close()
             Return rs
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -421,7 +419,7 @@ Public Class OEE_NODE
             Return rs
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()
@@ -513,7 +511,7 @@ ReConnect:
             Return endDate
         Catch ex As Exception
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     load_show_OEE.Show()
                 Else
                     load_show.Show()

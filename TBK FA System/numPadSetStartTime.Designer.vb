@@ -220,7 +220,7 @@ Partial Class numPadSetStartTime
         'PictureBox2
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.Transparent
-        Me.PictureBox2.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources._936b3a9a817fed848e7025c0430cbb_unscreen
+        Me.PictureBox2.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.point2
         Me.PictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.PictureBox2.Image = Global.TBK_FA_System.My.Resources.Resources.giphy
         Me.PictureBox2.Location = New System.Drawing.Point(9, 3)

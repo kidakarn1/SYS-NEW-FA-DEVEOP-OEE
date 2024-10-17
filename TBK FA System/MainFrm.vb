@@ -75,6 +75,7 @@ Public Class MainFrm
         check_process()
         If CheckIfRunning() = 0 Then
             dbClass.GetLocalServerAPI()
+            dbClass.GetLocalServerping()
             dbClass.GetLocalServerOEE()
             dbClass.sqlite_conn_dbsv()
             dbClass.updated_data_to_dbsvr()
@@ -124,7 +125,7 @@ Public Class MainFrm
     End Sub
     Public Sub check_lot()
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Working_Pro.Label24.Text = Label4.Text
                 Dim i = List_Emp.ListView1.Items.Count
                 If i > 0 Then
@@ -311,7 +312,7 @@ Public Class MainFrm
         'MsgBox(line_id.Text)
         Try
             ArrayDataPlan = New List(Of DataPlan)
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Backoffice_model.updated_data_to_dbsvr()
                 Dim LoadSQL_prd_plan As String = ""
                 If rsCheckCriticalFlg = "0" Then
@@ -461,7 +462,7 @@ Public Class MainFrm
     End Sub
     Private Sub Timer2_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles Timer2.Elapsed
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 dbClass.updated_data_to_dbsvr()
                 'MsgBox("Synchronous completed")
             Else

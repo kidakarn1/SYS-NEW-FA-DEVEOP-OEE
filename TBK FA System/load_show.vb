@@ -4,7 +4,7 @@
 recheck:
         If check_net = 15 Then
             Try
-                If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+                If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                     Timer1.Enabled = False
                     Me.Close()
                 End If
@@ -19,4 +19,5 @@ recheck:
     Private Sub load_show_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Start()
     End Sub
+
 End Class

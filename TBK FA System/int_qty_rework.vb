@@ -247,7 +247,7 @@ Public Class int_qty_rework
 	Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
 		Dim date_now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
 		Try
-			If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+			If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
 				Dim tr_status = "1"
 				Backoffice_model.INSERT_REWORK_ACTUAL(Working_Pro.Label3.Text, INP_QTY_REWORK.Text, Working_Pro.Label14.Text, date_now, Prd_detail.lb_wi.Text, Working_Pro.Label12.Text, Working_Pro.lb_model.Text)
 				Backoffice_model.INSERT_REWORK_ACTUAL_SQLITE(Working_Pro.Label3.Text, INP_QTY_REWORK.Text, Working_Pro.Label14.Text, date_now, Prd_detail.lb_wi.Text, Working_Pro.Label12.Text, Working_Pro.lb_model.Text, tr_status)

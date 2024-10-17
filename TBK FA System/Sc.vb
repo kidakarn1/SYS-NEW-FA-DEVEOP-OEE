@@ -104,7 +104,7 @@ Public Class Sc
     Public Sub checkEmp()
 recheck:
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
 
                 Dim total = List_Emp.ListView1.Items.Count
                 If total < List_Emp.MaxManPower Then
@@ -288,7 +288,7 @@ recheck:
     End Sub
     Private Sub TextBox2_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles TextBox2.KeyDown
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svDatabase) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 If e.KeyCode = Keys.Enter Then
                     Dim back = New Backoffice_model
                     List_Emp.MaxManPower = back.Get_MaxManPower(MainFrm.Label4.Text)
@@ -313,7 +313,6 @@ recheck:
     Private Function Ck_dup(ByVal Lis As ListBox, ByVal Str As String)
         'Dim Lit = ListBox1.Items.Count - 1
         For i = 0 To Lis.Items.Count - 1
-
             If Lis.Items(i).ToString = Str Then
                 Return True
             End If
@@ -322,7 +321,6 @@ recheck:
             'MsgBox("Code is : " & ListBox1.Items(0).ToString, 0, "Show")
             'ListBox1.Items.RemoveAt(0)
         Next
-
         Return False
     End Function
 
@@ -330,7 +328,6 @@ recheck:
         Me.Enabled = False
         Keyboards.Show()
     End Sub
-
     Private Sub PictureBox5_Click(sender As Object, e As EventArgs) Handles PictureBox5.Click
         PictureBox4.Hide()
         PictureBox5.Hide()
@@ -340,18 +337,13 @@ recheck:
         PictureBox3.Enabled = True
         PictureBox1.Enabled = True
     End Sub
-
     Private Sub PictureBox4_Click(sender As Object, e As EventArgs) Handles PictureBox4.Click
 
     End Sub
-
     Private Sub Label1_Click_1(sender As Object, e As EventArgs) Handles Label1.Click
 
     End Sub
-
     Private Sub PictureBox6_Click(sender As Object, e As EventArgs) Handles PictureBox6.Click
 
     End Sub
-
-
 End Class
