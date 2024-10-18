@@ -622,7 +622,7 @@ Partial Class MainFrm
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "MainFrm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Form1"
+        Me.Text = "eeeeeeeee"
         Me.TransparencyKey = System.Drawing.Color.Red
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()

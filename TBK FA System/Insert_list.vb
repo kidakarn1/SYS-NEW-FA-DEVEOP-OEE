@@ -40,7 +40,7 @@ Public Class Insert_list
                     Working_Pro.lb_emp1.Text = emp_cd
                 Catch ex As Exception
                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tClient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Working_Pro.PictureBox2.Image = tImage
                     Working_Pro.lb_emp1.Visible = True
                     Working_Pro.lb_emp1.Text = emp_cd
@@ -55,7 +55,7 @@ Public Class Insert_list
                     Working_Pro.lb_emp2.Text = emp_cd
                 Catch ex As Exception
                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tClient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tClient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Working_Pro.PictureBox3.Image = tImage
                     Working_Pro.lb_emp2.Visible = True
                     Working_Pro.lb_emp2.Text = emp_cd
@@ -70,7 +70,7 @@ Public Class Insert_list
                     Working_Pro.lb_emp3.Text = emp_cd
                 Catch ex As Exception
                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tClient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Working_Pro.PictureBox4.Image = tImage
                     Working_Pro.lb_emp3.Visible = True
                     Working_Pro.lb_emp3.Text = emp_cd
@@ -85,7 +85,7 @@ Public Class Insert_list
                     Working_Pro.lb_emp4.Text = emp_cd
                 Catch ex As Exception
                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tClient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Working_Pro.PictureBox5.Image = tImage
                     Working_Pro.lb_emp4.Visible = True
                     Working_Pro.lb_emp4.Text = emp_cd
@@ -100,7 +100,7 @@ Public Class Insert_list
                     Working_Pro.lb_emp5.Text = emp_cd
                 Catch ex As Exception
                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tClient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Working_Pro.PictureBox6.Image = tImage
                     Working_Pro.lb_emp5.Visible = True
                     Working_Pro.lb_emp5.Text = emp_cd
@@ -115,7 +115,7 @@ Public Class Insert_list
                     Working_Pro.lb_emp6.Text = emp_cd
                 Catch ex As Exception
                     Dim emp_cd As String = List_Emp.ListView1.Items(i).Text
-                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tClient.DownloadData("Http://192.168.161.102/fa_system/asset/img/no_user.jpg")))
+                    Dim tImage As Bitmap = Bitmap.FromStream(New MemoryStream(tclient.DownloadData("http://" & Backoffice_model.svApi & "/tbkk_shopfloor_sys/asset/img_emp/no_user.jpg")))
                     Working_Pro.PictureBox7.Image = tImage
                     Working_Pro.lb_emp6.Visible = True
                     Working_Pro.lb_emp6.Text = emp_cd

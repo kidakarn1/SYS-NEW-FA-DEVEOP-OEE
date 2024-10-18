@@ -52,14 +52,13 @@ Public Class sc_wi_plan
 							'line_id.Text = LoadSQL("line_id").ToString()
 						End While
 						If line_cd = line_cd_chk Then
-							'Try
-							'Dim webClient As New System.Net.WebClient
-							'Dim result As String = webClient.DownloadString("Http://192.168.161.102/tbkk_shopfloor/Api_confrm_plan/Update_from_scan_incomplete_tag/" & wi_cd)
-							'MsgBox("succ")
-							'Catch ex As Exception
-							'MsgBox("fail")
-							'End Try
-							If check_comp_flg = "9" Then
+                            'Try
+                            'Dim webClient As New System.Net.WebClient
+                            'MsgBox("succ")
+                            'Catch ex As Exception
+                            'MsgBox("fail")
+                            'End Try
+                            If check_comp_flg = "9" Then
 								MsgBox("WI COMPLETED")
 								TextBox1.Text = ""
 							Else
@@ -169,14 +168,13 @@ Public Class sc_wi_plan
 					End While
 					If line_cd = line_cd_chk Then
 						If check_flg_wi = "0" Then
-							'Try
-							'Dim webclient As New System.Net.WebClient
-							'Dim result As String = webclient.DownloadString("http://192.168.161.102/tbkk_shopfloor/api_confrm_plan/update_from_scan_incomplete_tag/" & wi_cd)
-							'msgbox("succ")
-							'Catch ex As Exception
-							'msgbox("fail")
-							'End Try
-							MainFrm.Hide()
+                            'Try
+                            'Dim webclient As New System.Net.WebClient
+                            'msgbox("succ")
+                            'Catch ex As Exception
+                            'msgbox("fail")
+                            'End Try
+                            MainFrm.Hide()
 							Prd_detail.Show()
 							TextBox1.Clear()
 							Working_Pro.count = temp_qty.Substring(0, (temp_qty.Length - 1))

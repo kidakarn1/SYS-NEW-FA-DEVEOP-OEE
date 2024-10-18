@@ -187,9 +187,12 @@
   <data name="936b3a9a817fed848e7025c0430cbb-unscreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\936b3a9a817fed848e7025c0430cbb-unscreen.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+=======
   <data name="0s-200px-200px-unscreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\0s-200px-200px-unscreen.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+>>>>>>> parent of 7c4c968 (....)
   <data name="btnstartbreaktime1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnstartbreaktime1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -201,9 +204,6 @@
   </data>
   <data name="defectHome6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectHome6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="btnCloselot" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btnCloselot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="tabStartProd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tabStartProd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -274,8 +274,16 @@
   <data name="productionStarting1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\productionStarting1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+  <data name="startingProd" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\startingProd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="manageEmp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\manageEmp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
   <data name="ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ok.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> parent of 7c4c968 (....)
   </data>
   <data name="sweetAlertSuccess" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sweetAlertSuccess.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -295,7 +303,7 @@
   <data name="stopProd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\stopProd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Untitled-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="IconBreakTime" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Untitled-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btnDefect1" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -382,12 +390,15 @@
   <data name="defectAdmindetailNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectAdmindetailNG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+=======
   <data name="manualLossBefor1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\manualLossBefor1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btnDefect" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnDefect.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+>>>>>>> parent of 7c4c968 (....)
   <data name="closeLotsummary1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\closeLotsummary1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -402,9 +413,6 @@
   </data>
   <data name="selectLoss1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\selectLoss1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="btnInc" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btnInc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="exitProgram" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\exitProgram.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -463,11 +471,16 @@
   <data name="addActualNumpadspa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\addActualNumpadspa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+  <data name="ErrorTime2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ErrorTime2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
   <data name="OEE WAIT DATA (1)1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OEE WAIT DATA (1)1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btnSetting" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnSetting.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> parent of 7c4c968 (....)
   </data>
   <data name="defectHome3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectHome3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -523,17 +536,19 @@
   <data name="btnStartnew" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnStartnew.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="breaktime" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\breaktime.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="manualLossBefore" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\manualLossBefore.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="breaktime2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\breaktime2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+  <data name="LOADOEE4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OEE WAIT DATA (1)1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
   <data name="defectAdminselectcodeNG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectAdminselectcodeNG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> parent of 7c4c968 (....)
   </data>
   <data name="MainMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MainMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -565,8 +580,13 @@
   <data name="defectDetailnc1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectDetailnc1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+  <data name="insertQTY" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cf250687395151.5db728c7879d3.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
   <data name="scanAdminAccount" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\scanAdminAccount.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> parent of 7c4c968 (....)
   </data>
   <data name="NumSettingTime3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NumSettingTime3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -622,11 +642,16 @@
   <data name="defectHome2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectHome2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+  <data name="NumSettingTime1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NumSettingTime1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
   <data name="breaktime1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\breaktime1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="btnSetUpNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\btnSetUpNew.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> parent of 7c4c968 (....)
   </data>
   <data name="productionStarttarget" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\productionStarttarget.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -703,8 +728,13 @@
   <data name="defectAlertsure" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\defectAlertsure.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+  <data name="LOADOEE3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OEE WAIT DATA (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
   <data name="startingProd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\startingProd.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> parent of 7c4c968 (....)
   </data>
   <data name="dwdd1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dwdd1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -760,7 +790,15 @@
   <data name="MainMenu2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MainMenu2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+<<<<<<< HEAD
+  <data name="configLineGemba" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\configLineGemba.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LoadinfOEE2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\0s-200px-200px-unscreen.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+=======
   <data name="0s-200px-200px-unscreen1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\0s-200px-200px-unscreen1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+>>>>>>> parent of 7c4c968 (....)
   </data>
 </root>

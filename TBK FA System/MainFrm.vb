@@ -75,6 +75,7 @@ Public Class MainFrm
         check_process()
         If CheckIfRunning() = 0 Then
             dbClass.GetLocalServerAPI()
+            dbClass.GetLocalServerOEE()
             dbClass.sqlite_conn_dbsv()
             dbClass.updated_data_to_dbsvr()
             Timer1.Start()
