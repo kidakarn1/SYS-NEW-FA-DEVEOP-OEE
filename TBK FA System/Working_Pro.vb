@@ -1596,8 +1596,8 @@ Public Class Working_Pro
             ' สร้าง instance ของ WebView2 control
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
             ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
-            WebViewProgressbar.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
-            Console.WriteLine("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
         Catch ex As Exception
             ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
             Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
