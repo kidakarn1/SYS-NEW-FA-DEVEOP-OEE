@@ -370,6 +370,7 @@ Public Class closeLotsummary
                 load_show.Show()
             End If
         Catch ex As Exception
+
             Working_Pro.Close()
             Prd_detail.Close()
             MainFrm.Enabled = True

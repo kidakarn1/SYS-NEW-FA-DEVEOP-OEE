@@ -44,8 +44,8 @@ Public Class Working_OEE
     Dim value_next_process As String = ""
     Public check_format_tag As String = Backoffice_model.B_check_format_tag()
     Public Shared api = New api()
-    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
-    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
+    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
     Public Shared V_check_line_reprint As String = Backoffice_model.check_line_reprint()
     Public WithEvents serialPort As New SerialPort
     'Dim digitalReadTask_new_dio As New Task()

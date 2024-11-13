@@ -70,7 +70,6 @@ Public Class MainFrm
         ' Close the connection
         Console.WriteLine("close Connection main")
     End Function
-
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         check_process()
         If CheckIfRunning() = 0 Then
@@ -104,6 +103,7 @@ Public Class MainFrm
 
         'Me.WebView21.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=K1A003&shift=P")
     End Sub
+
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         check_close_fa()
@@ -306,7 +306,6 @@ Public Class MainFrm
         End If
     End Sub
     Public Sub load_page()
-
         Working_Pro.lb_nc_qty.Text = "0"
         Working_Pro.lb_ng_qty.Text = "0"
         'MsgBox(line_id.Text)
@@ -436,21 +435,16 @@ Public Class MainFrm
         'Application.Exit()
         Confrm_end.Show()
     End Sub
-
     Private Sub menu3_Click_1(sender As Object, e As EventArgs)
 
     End Sub
-
     Private Sub Label5_Click(sender As Object, e As EventArgs)
 
     End Sub
-
     Private Sub Label1_Click(sender As Object, e As EventArgs)
 
     End Sub
-
     Private Sub Panel2_Paint(sender As Object, e As PaintEventArgs)
-
     End Sub
     Private Sub menu2_Click(sender As Object, e As EventArgs) Handles menu2.Click
         Conf_login.TextBox1.Select()
@@ -458,7 +452,6 @@ Public Class MainFrm
         'List_Emp.Enabled = True
         'Line_conf.Show()
         Me.Enabled = False
-
     End Sub
     Private Sub Timer2_Elapsed(sender As Object, e As Timers.ElapsedEventArgs) Handles Timer2.Elapsed
         Try
@@ -502,7 +495,6 @@ Public Class MainFrm
         Sc.TextBox2.Select()
         Sc.Show()
     End Sub
-
     Private Sub PictureBox7_Click(sender As Object, e As EventArgs) Handles PictureBox7.Click
         load_worker()
     End Sub
@@ -513,7 +505,6 @@ Public Class MainFrm
         t.show()
         'End If
     End Sub
-
     Private Sub Test_Click(sender As Object, e As EventArgs)
         load_worker()
     End Sub
@@ -521,15 +512,12 @@ Public Class MainFrm
     Private Sub PictureBox8_Click(sender As Object, e As EventArgs) Handles PictureBox8.Click
         load_worker()
     End Sub
-
     Private Sub Label2_Click_1(sender As Object, e As EventArgs) Handles Label2.Click
 
     End Sub
-
     Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
 
     End Sub
-
     Private Sub PictureBox11_Click(sender As Object, e As EventArgs) Handles PictureBox11.Click
         PictureBox9.Hide()
         PictureBox11.Hide()
@@ -541,14 +529,12 @@ Public Class MainFrm
         PictureBox8.Enabled = True
         PictureBox1.Enabled = True
     End Sub
-
     Private Sub Button1_Click(sender As Object, e As EventArgs)
 
     End Sub
     Private Sub Button1_Click_2(sender As Object, e As EventArgs)
         TEST_PRINTLABEL.Show()
     End Sub
-
     Private Sub PictureBox12_Click(sender As Object, e As EventArgs) Handles PictureBox12.Click
 
     End Sub

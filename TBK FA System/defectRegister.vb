@@ -107,7 +107,8 @@ Public Class defectRegister
         End If
     End Sub
     Public Sub CalFG()
-        mainCP = "1"
+        mainCP = modelDefect.mGetCalPartOEE(MainFrm.Label4.Text, dtItemcd, dtItemcd, defectSelecttype.type, MainFrm.chk_spec_line, MainFrm.Label6.Text)
+        'mainCP = "1"
         If tbQtydefectnc.Text < 0 Then
             tbQtydefectnc.Text = 0
         End If
@@ -150,7 +151,7 @@ Public Class defectRegister
             Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) - CDbl(Val(tbQtydefectnc.Text))
             Working_Pro.Enabled = True
             Working_Pro.ResetRed()
-            Dim rslvQ = SQLite.mSqliteGetDataQuality(dtLineno, dtLotno, Working_Pro.DateTimeStartofShift.Text)
+            Dim rslvQ = SQLite.mSqliteGetDataQualityOverAllNG(dtLineno, dtLotno, Working_Pro.DateTimeStartofShift.Text)
             If rslvQ <> "0" Then
                 Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvQ)
                 Try
@@ -191,7 +192,7 @@ Public Class defectRegister
             Working_Pro.cal_eff()
             Working_Pro.ResetRed()
             Dim SQLite = New ModelSqliteDefect
-            Dim rslvQ = SQLite.mSqliteGetDataQuality(dtLineno, dtLotno, Working_Pro.DateTimeStartofShift.Text)
+            Dim rslvQ = SQLite.mSqliteGetDataQualityOverAllNG(dtLineno, dtLotno, Working_Pro.DateTimeStartofShift.Text)
             If rslvQ <> "0" Then
                 Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rslvQ)
                 Try

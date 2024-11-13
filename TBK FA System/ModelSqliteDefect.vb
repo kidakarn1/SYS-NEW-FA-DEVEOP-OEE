@@ -34,6 +34,27 @@ Public Class ModelSqliteDefect
             MsgBox("Error Files ModelSqliteDefect In Function mSqliteGetDataQuality")
         End Try
     End Function
+    Public Shared Function mSqliteGetDataQualityOverAllNG(line_cd As String, lot_no As String, startTimeFrith As String)
+        Dim api As New api
+        startTimeFrith = Convert.ToDateTime(startTimeFrith).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+        Console.WriteLine("startTimeFrith ===>" & startTimeFrith)
+        Try
+            Dim Sql = "Select dt_code , sum(dt_qty) AS TotalQ,
+                        (SELECT SUM(dt_qty)
+                             FROM defect_transactions
+                             I where 
+		                        dt_line_cd ='" & line_cd & "' and dt_lot_no ='" & lot_no & "'  and dt_type ='1' and dt_status_flg = '1' and dt_created_date >= '" & startTimeFrith & "'  
+	                         ) AS AllDefect
+                         from defect_transactions where dt_line_cd ='" & line_cd & "' and dt_lot_no ='" & lot_no & "' and  dt_type ='1' and dt_status_flg = '1' and dt_created_date >= '" & startTimeFrith & "'  
+                        GROUP by dt_code order by sum(dt_qty) Desc LIMIT 3;"
+            Console.WriteLine(Sql)
+            Dim jsonData As String = api.Load_dataSQLite(Sql)
+            Return jsonData
+        Catch ex As Exception
+            MsgBox("Error Files ModelSqliteDefect In Function mSqliteGetDataQuality")
+        End Try
+    End Function
+
     Public Shared Function mSqlieGetDataNGbyWILot(line_cd As String, lot_no As String, startFrist As String, wi As String)
         Dim api As New api
         Dim dt As DateTime = DateTime.Now
@@ -462,7 +483,7 @@ Public Class ModelSqliteDefect
     End Function
     Public Shared Function mUpdateaddjust(dtWino As String, dtLotNo As String, dtSeqno As String, dtType As String, dtCode As String, ItemType As String, PartNo As String, supplier_cd As String)
         'Dim api = New api()
-        ' Dim rsData As Boolean = api.Load_data("http://" & Backoffice_model.svApi & "/apiShopfloor_test_test/updateDatadefect/updateDatadefectregister?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & CDbl(Val(dtSeqno)) & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & ItemType & "&PartNo=" & PartNo)
+        ' Dim rsData As Boolean = api.Load_data("http://" & Backoffice_model.svApi & "/"/apiShopfloorTest/index.php/_test/updateDatadefect/updateDatadefectregister?dtWino=" & dtWino & "&dtLotNo=" & dtLotNo & "&dtSeqno=" & CDbl(Val(dtSeqno)) & "&dtType=" & dtType & "&dtCode=" & dtCode & "&dtItemType=" & ItemType & "&PartNo=" & PartNo)
         Dim sqliteConn As New SQLiteConnection(Backoffice_model.sqliteConnect)
         Backoffice_model.Check_connect_sqlite()
         Backoffice_model.Clear_sqlite()

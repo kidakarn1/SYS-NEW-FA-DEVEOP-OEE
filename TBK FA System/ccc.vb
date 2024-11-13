@@ -6,9 +6,8 @@ Public Class Sel_prd_setup
         Working_Pro.Enabled = True
         Me.Hide()
     End Sub
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Public Sub loadDataLossCrr()
         Try
-
             If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Chang_Loss.ListView2.View = View.Details
                 'Chang_Loss.ListView2.Scrollable = Size()
@@ -35,6 +34,9 @@ Public Class Sel_prd_setup
         Catch ex As Exception
             load_show.Show()
         End Try
+    End Sub
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        loadDataLossCrr()
     End Sub
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         Try

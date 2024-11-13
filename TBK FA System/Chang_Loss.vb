@@ -12,8 +12,7 @@ Public Class Chang_Loss
         Working_Pro.Enabled = True
         Me.Close()
     End Sub
-
-    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+    Public Sub btnNextLossCrr()
         Dim sel_cd As Integer = ListView2.SelectedIndices(0)
         Dim line_id As String = MainFrm.line_id.Text
         Dim status_loss As Integer = 0
@@ -181,6 +180,9 @@ Public Class Chang_Loss
         Catch ex As Exception
             load_show.Show()
         End Try
+    End Sub
+    Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        btnNextLossCrr()
     End Sub
     Private Sub ListView2_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView2.SelectedIndexChanged
 

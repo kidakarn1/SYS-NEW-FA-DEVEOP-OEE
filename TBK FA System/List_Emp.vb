@@ -383,6 +383,7 @@ Public Class List_Emp
         Dim lotthirdDigit = DateTime.Now.ToString("dd")
         Dim d As Date = DateTime.Now.ToString("dd-MM-yyyy")
         Dim timeShift As String = DateTime.Now.ToString("HH")
+        'MsgBox("List EMP timeShift===>" & timeShift)
         Dim time_now As String = DateTime.Now.ToString("HH:mm:ss tt")
         Dim date_st As Integer = lotthirdDigit
         If time_now >= "00:00:00 AM" And time_now <= "08:00:00 AM" Then
@@ -403,18 +404,16 @@ Public Class List_Emp
             'lotthirdDigit -= 1
         End If
         Dim defaultShift As String = ""
-        If timeShift = "05" Or timeShift = "06" Or timeShift = "07" Then
-            'defaultShift = "N (05:00 - 08:00)"
-            defaultShift = "Q (20:00 - 08:00)"
-        ElseIf timeShift = "08" Or timeShift = "09" Or timeShift = "10" Or timeShift = "11" Or timeShift = "12" Or timeShift = "13" Or timeShift = "14" Or timeShift = "15" Or timeShift = "16" Or timeShift = "17" Then
-            defaultShift = "P (08:00 - 20:00)"
-        ElseIf timeShift = "17" Or timeShift = "18" Or timeShift = "19" Then
-            ' defaultShift = "M (17:00 - 20:00)"
-            defaultShift = "P (08:00 - 20:00)"
-        ElseIf timeShift = "20" Or timeShift = "21" Or timeShift = "22" Or timeShift = "23" Or timeShift = "24" Or timeShift = "00" Or timeShift = "01" Or timeShift = "02" Or timeShift = "03" Or timeShift = "04" Or timeShift = "05" Then
-            defaultShift = "Q (20:00 - 08:00)"
-        End If
-        Prd_detail.Label12.Text = defaultShift
+        'If timeShift = "05" Or timeShift = "06" Or timeShift = "07" Then
+        'defaultShift = "Q (20:00 - 08:00)"
+        'ElseIf timeShift = "08" Or timeShift = "09" Or timeShift = "10" Or timeShift = "11" Or timeShift = "12" Or timeShift = "13" Or timeShift = "14" Or timeShift = "15" Or timeShift = "16" Or timeShift = "17" Then
+        'defaultShift = "P (08:00 - 20:00)"
+        'ElseIf timeShift = "17" Or timeShift = "18" Or timeShift = "19" Then
+        'defaultShift = "P (08:00 - 20:00)"
+        'ElseIf timeShift = "20" Or timeShift = "21" Or timeShift = "22" Or timeShift = "23" Or timeShift = "24" Or timeShift = "00" Or timeShift = "01" Or timeShift = "02" Or timeShift = "03" Or timeShift = "04" Or timeShift = "05" Then
+        'defaultShift = "Q (20:00 - 08:00)"
+        'End If
+        ' Prd_detail.Label12.Text = defaultShift
         If Len(date_st) <= 9 Then
             lotthirdDigit = "0" & date_st
             Dim date_digit = "0" & date_st

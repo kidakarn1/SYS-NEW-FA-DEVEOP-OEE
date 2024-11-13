@@ -16,7 +16,6 @@
         dtType = "NG"
         Dim dfSelecttype1 = New defectSelecttype()
         dfSelecttype1.show()
-
         Me.Close()
     End Sub
     Private Sub btnAdjustnc_Click(sender As Object, e As EventArgs)

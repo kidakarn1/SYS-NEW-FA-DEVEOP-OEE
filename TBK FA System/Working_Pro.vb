@@ -18,10 +18,11 @@ Imports System.Net
 Imports System.Web.Script.Serialization
 Imports Microsoft.Web.WebView2.Core
 Imports Microsoft.Web.WebView2.WinForms
+Imports QRCoder
 Public Class Working_Pro
     Private WithEvents WebViewProgressbar As WebView2
+    Private WithEvents WebViewEmergency As WebView2
     ' Public Shared comportTowerLamp = "COM7"
-
     ' Public Shared ArrayDataSpecial As New List(Of DataPlan)
     Public check_cal_eff As Integer = 0
     Public Gdate_now_date As Date
@@ -50,8 +51,8 @@ Public Class Working_Pro
     Dim value_next_process As String = ""
     Public check_format_tag As String = Backoffice_model.B_check_format_tag()
     Public Shared api = New api()
-    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
-    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
+    Public Shared check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+    Public Shared load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
     Public Shared V_check_line_reprint As String = Backoffice_model.check_line_reprint()
     Public WithEvents serialPort As New SerialPort
     'Dim digitalReadTask_new_dio As New Task()
@@ -72,6 +73,7 @@ Public Class Working_Pro
     Public Shared tag_group_no As String = ""
     Public Shared mec_name As String = ""
     Public Shared comportTowerLamp = ""
+    Public Shared status_emergency As String = ""
     Public Shared GoodQty As Double = 0.0
     Public Shared carvity As Integer = MainFrm.cavity.Text
     Public Shared ResultPrint As Integer = 0
@@ -101,15 +103,50 @@ Public Class Working_Pro
             lb_loss_status.Left -= 10
         End If
     End Sub
+    Public Function checkStatusEmergency(line_cd As String)
+        Try
+            Dim api = New api()
+            Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/checkStatusEmergency?line_cd=" & line_cd)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/checkStatusEmergency?line_cd=" & line_cd)
+            If result_data <> "0" Then
+                Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(result_data)
+                For Each item As Object In dict2
+                    status_emergency = item("me_status_emergency").ToString()
+                Next
+            End If
+        Catch ex As Exception
+            status_emergency = "0"
+        End Try
+        Return status_emergency
+    End Function
+    Public Sub RunCmd(line_cd As String)
+        Try
+            Dim api = New api()
+            Dim Command As String = ""
+            Dim parameters As String = ""
+            Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/RunCmd?line_cd=" & line_cd)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/RunCmd?line_cd=" & line_cd)
+            If result_data <> "0" Then
+                Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(result_data)
+                For Each item As Object In dict2
+                    Command = item("command").ToString()
+                    parameters = item("parameters").ToString()
+                    System.Diagnostics.Process.Start(Command, parameters)
+                Next
+            End If
+        Catch ex As Exception
+            status_emergency = "0"
+        End Try
+    End Sub
     Public Function load_data_defeult_master_server(line_cd As String)
         Dim api = New api()
-        Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & line_cd)
+        Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & line_cd)
         If result_data <> "0" Then
             Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(result_data)
             For Each item As Object In dict2
                 s_mecg_name = item("mecg_name").ToString()
                 mec_name = item("mec_name").ToString()
-                comportTowerLamp = item("met_comport").ToString()
+                comportTowerLamp = item("metl_comport").ToString()
                 If Backoffice_model.GET_STATUS_DELAY_BY_LINE(MainFrm.Label4.Text) = 0 Then
                     status_conter = 0
                     s_delay = item("me_sig_del").ToString()
@@ -180,8 +217,6 @@ Public Class Working_Pro
         End If
     End Sub
     Public Function cal_progressbarQ(NGAll As String, Good As String)
-        '  MsgBox("NGAll===>" & NGAll)
-        '  MsgBox("Good===>" & Good)
         Dim rs = CInt(NGAll) + CInt(Good)
         Dim totalProgressbar = (Good / rs) * 100
         If Good = "0" And rs = "0" Then
@@ -434,7 +469,6 @@ Public Class Working_Pro
         Dim OEE = New OEE_NODE
         lbAccTarget.Text = OEE.OEE_GET_Data_AccTarget(TimestartShift, std_ct)
     End Function
-
     Public Async Function setlvQ(line_cd As String, lot_no As String, TimeShift As String, stTimeModel As String) As Task
         lvQ.Items.Clear()
         lbOverTimeQuality.Text = "0"
@@ -458,7 +492,7 @@ Public Class Working_Pro
             End If
         End If
         Dim rslvQ = sqlite.mSqliteGetDataQuality(line_cd, lot_no, startDate)
-        Dim rsOverAllNG = sqlite.mSqliteGetDataQuality(line_cd, lot_no, DateTimeStartofShift.Text)
+        Dim rsOverAllNG = sqlite.mSqliteGetDataQualityOverAllNG(line_cd, lot_no, DateTimeStartofShift.Text)
         ' MsgBox("DateTimeStartofShift ===>" & DateTimeStartofShift.Text)
         If rsOverAllNG <> "0" Then
             Dim dictOverall As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rsOverAllNG)
@@ -476,7 +510,6 @@ Public Class Working_Pro
                     lvQ.Items.Add(datlvDefectsumary)
                 Next
             Catch ex As Exception
-
             End Try
         End If
     End Function
@@ -493,6 +526,8 @@ Public Class Working_Pro
         Await Task.Delay(5000) ' รอ 3 วินาที
     End Function
     Private Async Sub Working_Pro_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        loadWebviewEmergency()
+        'GenQrScanChecklist(MainFrm.Label4.Text)
         Me.Enabled = False
         statusPrint = "Normal"
         PanelProgressbar.BringToFront()
@@ -609,8 +644,8 @@ Public Class Working_Pro
         seqNo = Label22.Text
         model = lb_model.Text
         lb_loss_status.Parent = Panel6
-        check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
-        load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
+        check_tag_type = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/GET_LINE_TYPE?line_cd=" & MainFrm.Label4.Text)
+        load_data = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/GET_DATA_WORKING?WI=" & Prd_detail.lb_wi.Text)
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
         lbNextTime.Text = BreakTime
         HourOverAllShift.Text = OEE.OEE_GET_Hour(Label14.Text)
@@ -662,6 +697,8 @@ Public Class Working_Pro
         Else
             If MainFrm.chk_spec_line = "2" Then
                 LB_COUNTER_SHIP.Text = CDbl(Val(LB_COUNTER_SHIP.Text)) / Confrime_work_production.ArrayDataPlan.Count
+                Label44.Text = "set"
+                Label42.Text = "set"
             End If
         End If
         Dim reader_seq = Backoffice_model.GET_QTY_SEQ(wi_no.Text, CDbl(Val(Label22.Text))) '
@@ -1157,7 +1194,6 @@ Public Class Working_Pro
                     Prd_detail.Timer3.Enabled = False
                 End If
             Catch ex As Exception
-
             End Try
         End If
         If check_in_up_seq = 0 Then
@@ -1344,7 +1380,9 @@ Public Class Working_Pro
         Dim st_counter As String = Label32.Text
         If st_counter = "0" Then
             If Backoffice_model.gobal_DateTimeComputerDown = "" Then
+
                 Label16.Text = TimeOfDay.ToString("H:mm:ss")
+
             Else
                 Dim dateTimeconvert As DateTime = Backoffice_model.gobal_DateTimeComputerDown.ToString
                 Label16.Text = dateTimeconvert.ToString("H:mm:ss", CultureInfo.InvariantCulture) ' มาจาก คอมดับ 
@@ -1558,6 +1596,7 @@ Public Class Working_Pro
         connect_counter_qty()
         ' MsgBox("ready load2")
         'MsgBox("CDbl(Val(check_in_up_seq)) - 1)====>" & CDbl(Val(check_in_up_seq)) - 1)
+        CheckMN()
         If (CDbl(Val(check_in_up_seq)) - 1) = 0 Then
             Dim OEE = New OEE_NODE
             DateTimeStartofShift.Text = OEE.OEE_getDateTimeStart(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text)
@@ -1565,6 +1604,18 @@ Public Class Working_Pro
             ' Await the completion of LOAD_OEE
             ' MsgBox("frith start ===>")
             Await LOAD_OEE()
+        End If
+    End Function
+    Public Async Function CheckMN() As Task
+        Dim modelmn = New modelMaintenance
+        If modelmn.getDataMN(MainFrm.Label4.Text) <> "0" Then
+            Me.Enabled = False
+            Sel_prd_setup.loadDataLossCrr()
+            Chang_Loss.btnNextLossCrr()
+            Loss_reg.Button4.Visible = True
+            Loss_reg.GetDefectMenuMaintenance()
+            Await Loss_reg.LoadMN()
+            'Chang_Loss.Show()
         End If
     End Function
     Public Sub insComputerDown(tb As String)
@@ -1581,14 +1632,14 @@ Public Class Working_Pro
         ins_qty_fn_manual()
     End Sub
     Public Async Function loadDataProgressBar(line_cd As String, shift As String) As Task
-        ' ตรวจสอบว่ามี WebView2 instance ที่ใช้งานอยู่หรือไม่ ถ้ามีให้ Dispose ก่อน
+        ' ตรวจสอบและ Dispose instance ของ WebViewProgressbar หากมีการสร้างไว้ก่อนแล้ว
         ' If WebViewProgressbar IsNot Nothing Then
         ' WebViewProgressbar.Dispose()
         ' End If
         ' Create a new instance of WebView2 control
         WebViewProgressbar = New WebView2() With {
-        .Dock = DockStyle.Fill
-    }
+            .Dock = DockStyle.Fill
+        }
         PanelProgressbar.Controls.Add(WebViewProgressbar)
         Try
             ' กำหนดไดเรกทอรีสำหรับ environment
@@ -1596,14 +1647,42 @@ Public Class Working_Pro
             ' สร้าง instance ของ WebView2 control
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
             ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
-            WebViewProgressbar.CoreWebView2.Navigate("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
-            Console.WriteLine("http://192.168.161.219/productionHrprogressTest/?line_cd=" & line_cd & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/productionHrprogressDev/?line_cd=" & line_cd & "&shift=" & shift)
+            'WebViewProgressbar.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/productionHrprogressDev/?line_cd=" & line_cd & "&shift=" & shift)
         Catch ex As Exception
             ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
             Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
         End Try
     End Function
-
+    Public Async Function loadWebviewEmergency() As Task
+        ' ตรวจสอบว่ามี WebView2 instance ที่ใช้งานอยู่หรือไม่ ถ้ามีให้ Dispose ก่อน
+        ' If WebViewProgressbar IsNot Nothing Then
+        ' WebViewProgressbar.Dispose()
+        ' End If
+        ' Create a new instance of WebView2 control
+        WebViewEmergency = New WebView2() With {
+        .Dock = DockStyle.Fill
+    }
+        ' ตั้งค่าตำแหน่งของ PanelWebviewEmergency
+        PanelWebviewEmergency.Location = New Point(0, 99)
+        ' ตั้งค่าขนาดของ PanelWebviewEmergency
+        PanelWebviewEmergency.Size = New Size(800, 501)
+        PanelWebviewEmergency.Controls.Add(WebViewEmergency)
+        Try
+            ' กำหนดไดเรกทอรีสำหรับ environment
+            Dim webViewEnvironment = Await CoreWebView2Environment.CreateAsync(Nothing, "C:\Temp")
+            ' สร้าง instance ของ WebView2 control
+            Await WebViewEmergency.EnsureCoreWebView2Async(webViewEnvironment)
+            ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
+            PanelWebviewEmergency.BringToFront()
+            WebViewEmergency.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/API_NEW_FA/SpecialCode/EMERGENCY")
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/SpecialCode/EMERGENCY")
+        Catch ex As Exception
+            ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
+            Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
+        End Try
+    End Function
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
         lbNextTime.Text = BreakTime
@@ -3639,6 +3718,22 @@ Public Class Working_Pro
     End Sub
     Public Async Function cal_eff() As Task
         Try
+            Try
+                If checkStatusEmergency(MainFrm.Label4.Text) = "0" Then
+                    PanelWebviewEmergency.Enabled = False
+                    PanelWebviewEmergency.Visible = False
+                    WebViewEmergency.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/API_NEW_FA/SpecialCode/Defaultpage")
+                Else
+                    If PanelWebviewEmergency.Visible Then
+                    Else
+                        WebViewEmergency.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/API_NEW_FA/SpecialCode/EMERGENCY")
+                        PanelWebviewEmergency.Enabled = True
+                        PanelWebviewEmergency.Visible = True
+                    End If
+                End If
+            Catch ex As Exception
+            End Try
+            RunCmd(MainFrm.Label4.Text)
             Console.WriteLine("READY LOAD OEE cal_eff ")
             ' Inside the continuation, invoke on the UI thread
             Console.WriteLine("CAL OEE cal_eff")
@@ -3688,7 +3783,6 @@ Public Class Working_Pro
                 Backoffice_model.updated_data_to_dbsvr()
             End If
         Catch ex As Exception
-
         End Try
         'MsgBox(yearSt & minthSt & daySt & hourSt & minSt & secSt)
         Dim firstDate As New System.DateTime(yearSt, monthSt, daySt, hourSt, minSt, secSt)
@@ -3733,7 +3827,6 @@ Public Class Working_Pro
                 Dim sum_act_total As Integer = Label6.Text + cnt_btn
                 Label6.Text = sum_act_total
                 If result_mod = 0 And textp_result <> 0 Then
-
                     If V_check_line_reprint = "0" Then
                         lb_box_count.Text = lb_box_count.Text + 1
                         Label_bach.Text = Label_bach.Text + 1
@@ -4157,10 +4250,8 @@ Public Class Working_Pro
             'Dim sum_prg2 As Integer = (((CycleTime.Text * _Edit_Up_0.Text) / temppola) * 100)
             'MsgBox("((" & CycleTime.Text & "*" & _Edit_Up_0.Text & ") /" & temppola & ") * 100")
             'MsgBox(sum_prg2 / cnt_btn)
-
             sum_prg2 = sum_prg2 / cnt_btn
             'MsgBox(sum_prg2)
-
             If sum_prg2 > 100 Then
                 sum_prg2 = 100
             ElseIf sum_prg2 < 0 Then
@@ -4415,7 +4506,6 @@ Public Class Working_Pro
                                                                        End Try
                                                                    End Sub, TaskScheduler.FromCurrentSynchronizationContext())
                     Catch ex As Exception
-
                     End Try
                     Console.WriteLine("C2")
                     ' Create a delayed task using Task.Delay
@@ -4456,7 +4546,6 @@ Public Class Working_Pro
                 End If
             End If
         Catch ex As Exception
-
         End Try
     End Sub
     Public Function calTimeBreakTime(pdStart As Date, timeNextBreak As String)
@@ -4546,7 +4635,6 @@ Public Class Working_Pro
         btn_back.Enabled = True
     End Sub
     Private Sub TIME_CAL_EFF_Tick(sender As Object, e As EventArgs) Handles TIME_CAL_EFF.Tick
-
         'If check_cal_eff = 1000 Then
         'cal_eff()
         'check_cal_eff = 1
@@ -4644,7 +4732,6 @@ Public Class Working_Pro
         Catch ex As Exception
             MsgBox("Please Check Comport For Tower Lamp In Server ")
         End Try
-
     End Sub
     Public Sub Load_Working_OEE()
         Working_OEE.Show()
@@ -4658,10 +4745,29 @@ Public Class Working_Pro
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
         Start_Production()
     End Sub
+    Public Sub GenQrScanChecklist(line_cd As String)
+        ' สร้าง QR Code generator
+        Dim qrGenerator As New QRCodeGenerator()
+        ' สร้าง QR Code จาก URL หรือข้อความที่ต้องการ
+        Dim url As String = "http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/CheckList/form_Checklist?line_cd=" & line_cd
+        Console.WriteLine(url)
+        Dim qrCodeData As QRCodeData = qrGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q)
+        ' สร้าง QR Code
+        Dim qrCode As New QRCode(qrCodeData)
+        ' ปรับขนาด QR Code ที่สร้างขึ้น
+        Dim qrCodeImage As Bitmap = qrCode.GetGraphic(6) 'ปรับค่าที่นี่เพื่อทำให้ QR Code ใหญ่ขึ้น
+        ' แสดง QR Code ใน PictureBox
+        qrScanChecklist.Image = qrCodeImage
+        ' ปรับขนาด Panel เพื่อให้พอดีกับ QR Code
+        qrScanChecklist.Location = New Point(15, 9) ' กำหนดตำแหน่ง
+        qrScanChecklist.Size = New Size(330, 330)   ' ปรับขนาด Panel ให้ใหญ่ขึ้นตาม QR Code
+        PanelQrScanChecklist.Visible = True
+        PanelQrScanChecklist.Location = New Point(183, 101)
+        PanelQrScanChecklist.Size = New Size(353, 349)
+    End Sub
     Private Sub Button4_Click_1(sender As Object, e As EventArgs)
         ' WebViewProgressbar.Reload()
     End Sub
-
     Private Sub btnDefects_Click(sender As Object, e As EventArgs) Handles btnDefects.Click
         Dim dfHome = New defectHome()
         dfHome.Show()
@@ -4669,5 +4775,7 @@ Public Class Working_Pro
         Me.Enabled = False
         'Close_lot.Show()
         'Me.Close()
+    End Sub
+    Private Sub PanelQrScanChecklist_Paint(sender As Object, e As PaintEventArgs) Handles PanelQrScanChecklist.Paint
     End Sub
 End Class

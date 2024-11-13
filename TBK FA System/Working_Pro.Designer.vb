@@ -201,6 +201,9 @@ Partial Class Working_Pro
         Me.newPartname = New System.Windows.Forms.Label()
         Me.PanelProgressbar = New System.Windows.Forms.Panel()
         Me.btnDefects = New System.Windows.Forms.PictureBox()
+        Me.PanelWebviewEmergency = New Microsoft.Web.WebView2.WinForms.WebView2()
+        Me.PanelQrScanChecklist = New System.Windows.Forms.Panel()
+        Me.qrScanChecklist = New System.Windows.Forms.PictureBox()
         Me.Panel1.SuspendLayout()
         Me.Panel7.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -235,6 +238,9 @@ Partial Class Working_Pro
         CType(Me.btnSetUp, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnStart, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnDefects, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PanelWebviewEmergency, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PanelQrScanChecklist.SuspendLayout()
+        CType(Me.qrScanChecklist, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label4
@@ -2413,6 +2419,35 @@ Partial Class Working_Pro
         Me.btnDefects.TabStop = False
         Me.btnDefects.Visible = False
         '
+        'PanelWebviewEmergency
+        '
+        Me.PanelWebviewEmergency.AllowExternalDrop = True
+        Me.PanelWebviewEmergency.CreationProperties = Nothing
+        Me.PanelWebviewEmergency.DefaultBackgroundColor = System.Drawing.Color.White
+        Me.PanelWebviewEmergency.Location = New System.Drawing.Point(12, 72)
+        Me.PanelWebviewEmergency.Name = "PanelWebviewEmergency"
+        Me.PanelWebviewEmergency.Size = New System.Drawing.Size(109, 30)
+        Me.PanelWebviewEmergency.TabIndex = 4703
+        Me.PanelWebviewEmergency.Visible = False
+        Me.PanelWebviewEmergency.ZoomFactor = 1.0R
+        '
+        'PanelQrScanChecklist
+        '
+        Me.PanelQrScanChecklist.Controls.Add(Me.qrScanChecklist)
+        Me.PanelQrScanChecklist.Location = New System.Drawing.Point(58, 23)
+        Me.PanelQrScanChecklist.Name = "PanelQrScanChecklist"
+        Me.PanelQrScanChecklist.Size = New System.Drawing.Size(35, 28)
+        Me.PanelQrScanChecklist.TabIndex = 4704
+        Me.PanelQrScanChecklist.Visible = False
+        '
+        'qrScanChecklist
+        '
+        Me.qrScanChecklist.Location = New System.Drawing.Point(196, 104)
+        Me.qrScanChecklist.Name = "qrScanChecklist"
+        Me.qrScanChecklist.Size = New System.Drawing.Size(100, 50)
+        Me.qrScanChecklist.TabIndex = 0
+        Me.qrScanChecklist.TabStop = False
+        '
         'Working_Pro
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2420,6 +2455,8 @@ Partial Class Working_Pro
         Me.BackColor = System.Drawing.Color.White
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(800, 600)
+        Me.Controls.Add(Me.PanelQrScanChecklist)
+        Me.Controls.Add(Me.PanelWebviewEmergency)
         Me.Controls.Add(Me.btnDefects)
         Me.Controls.Add(Me.lbNextTime)
         Me.Controls.Add(Me.newPartname)
@@ -2616,6 +2653,9 @@ Partial Class Working_Pro
         CType(Me.btnSetUp, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnStart, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnDefects, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PanelWebviewEmergency, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PanelQrScanChecklist.ResumeLayout(False)
+        CType(Me.qrScanChecklist, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2797,4 +2837,7 @@ Partial Class Working_Pro
     Friend WithEvents newPartname As Label
     Friend WithEvents PanelProgressbar As Panel
     Friend WithEvents btnDefects As PictureBox
+    Friend WithEvents PanelWebviewEmergency As Microsoft.Web.WebView2.WinForms.WebView2
+    Friend WithEvents PanelQrScanChecklist As Panel
+    Friend WithEvents qrScanChecklist As PictureBox
 End Class

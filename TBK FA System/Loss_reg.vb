@@ -284,7 +284,6 @@ Public Class Loss_reg
         Label9.Text = TimeOfDay.ToString("H:mm:ss")
         'Label1.Text = DateTime.Now.ToString("yyyy/MM/dd")
     End Sub
-
     Private Sub Loss_reg_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Start()
         GetDefectMenuMaintenance()
@@ -301,27 +300,24 @@ Public Class Loss_reg
             Button4.Enabled = True
         End If
     End Sub
-
     Private Sub Label6_Click(sender As Object, e As EventArgs)
 
     End Sub
-
     Private Sub Label5_Click(sender As Object, e As EventArgs)
-
     End Sub
-
     Private Sub Label8_Click(sender As Object, e As EventArgs) Handles Label8.Click
 
     End Sub
-
     Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
 
     End Sub
-
     Private Sub Label1_Click(sender As Object, e As EventArgs)
 
     End Sub
     Private Async Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        LoadMN()
+    End Sub
+    Public Async Function LoadMN() As Task
         If MainFrm.chk_spec_line = "2" Then
             Dim j As Integer = 0
             For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
@@ -340,7 +336,7 @@ Public Class Loss_reg
         Catch ex As Exception
             '  MsgBox("Maintenance System Open.")
         End Try
-    End Sub
+    End Function
     Public Sub Wait_DATA()
         Console.WriteLine("OK Connect MS SYS")
     End Sub

@@ -62,7 +62,6 @@ Friend Class defectSelecttype
             For Each itemPlanData As DataPlan In MainFrm.ArrayDataPlan
                 arrayWI.Add(itemPlanData.wi)
             Next
-
             rsData = md.mGetchildpartSpc(arrayWI.ToArray)
         Else
             rsData = md.mGetchildpart(wi)
@@ -94,7 +93,6 @@ Friend Class defectSelecttype
                     'MsgBox("index ===>" & index)
                     'End If
                     datlvChildpart.SubItems.Add(Working_Pro.Spwi_id(index - 1))
-
                 Else
                     datlvChildpart.SubItems.Add(Working_Pro.seqNo)
                     datlvChildpart.SubItems.Add(Working_Pro.pwi_id)
@@ -166,7 +164,7 @@ Friend Class defectSelecttype
             SelectSpcSeq = lvChildpart.Items(lvItem.Index).SubItems(4).Text
             SelectSpcPWI_ID = lvChildpart.Items(lvItem.Index).SubItems(5).Text
             wi = lvChildpart.Items(lvItem.Index).SubItems(3).Text
-            maincp = lvChildpart.Items(lvItem.Index).SubItems(6).Text
+            'maincp = lvChildpart.Items(lvItem.Index).SubItems(6).Text
         Next
         dt_menu = "1"
         If type = "NG" Then
@@ -252,6 +250,7 @@ Friend Class defectSelecttype
             sDefectcode.sSeqSpc = SelectSpcSeq
             sDefectcode.sPwiSpc = SelectSpcPWI_ID
             sDefectcode.swi = wi
+            maincp = modelDefect.mGetCalPartOEE(MainFrm.Label4.Text, btnPartfg.Text, Me.sPart, type, MainFrm.chk_spec_line, MainFrm.Label6.Text)
             sDefectcode.mainCp = maincp
             sDefectcode.Show()
             Me.Hide()
