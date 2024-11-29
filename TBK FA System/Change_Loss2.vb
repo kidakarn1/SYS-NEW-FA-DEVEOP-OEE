@@ -1,3 +1,4 @@
+Imports System.Globalization
 Imports System.Web.Script.Serialization
 
 Public Class Change_Loss2
@@ -6,11 +7,16 @@ Public Class Change_Loss2
         Working_Pro.Enabled = True
         Me.Close()
     End Sub
-
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
             If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
-                ins_time_loss.Label2.Text = Working_Pro.Label16.Text
+                If Backoffice_model.S_chk_spec_line = 0 Then
+                    ins_time_loss.Label2.Text = Working_Pro.Label16.Text
+                Else ' for K1M025
+                    ' ins_time_loss.Label2.Text = Backoffice_model.date_time_start_master_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
+                    Dim dateTimeValue As DateTime = DateTime.Parse(Working_Pro.DateTimeStartofShift.Text)
+                    ins_time_loss.Label2.Text = dateTimeValue.ToString("HH:mm:ss")
+                End If
                 Loss_reg_pass.Label2.Text = MainFrm.Label4.Text
                 Dim sel_cd As Integer = ListView2.SelectedIndices(0)
                 Dim line_id As String = MainFrm.line_id.Text

@@ -13,7 +13,7 @@ Imports System.Drawing.Printing
 Imports System.Configuration
 Imports GenCode128
 Imports BarcodeLib.Barcode
-'Imports NationalInstruments.DAQmx 
+'Imports NationalInstruments.DAQmx
 Imports System.Net
 Imports System.Web.Script.Serialization
 Imports Microsoft.Web.WebView2.Core
@@ -40,7 +40,8 @@ Public Class Working_Pro
     Dim szText As New String("", 100)
     Public Spwi_id As New List(Of String)
     Dim UpCount(2) As Short                     'zr Up Counter
-    Dim DownCount(2) As Short                   ' Down Counter
+    Dim DownCount(2) As Short                   'Down Counter
+    Public Shared checkManualQtySpec As Integer = 0
     Dim Check(7) As CheckBox
     Dim Edit_Up(1) As TextBox
     Dim Edit_Down(7) As TextBox
@@ -291,8 +292,10 @@ Public Class Working_Pro
     End Sub
     Public Function cal_progressbarA(line_cd As String, st_shift As String, end_shift As String)
         Dim OEE = New OEE_NODE
+        Dim OEE_LOCAL = New OEE_SQLITE
         'stTimeModel = OEE.OEE_getDataGetWorkingTimeModel(Prd_detail.Label12.Text.Substring(3, 5), line_cd, Label3.Text)
-        Dim totalProgressbar = OEE.GetDataProgressbarA(st_shift, end_shift, line_cd, gobal_stTimeModel, statusSwitchModel, IsOnlyone)
+        'Dim totalProgressbar = OEE.GetDataProgressbarA(st_shift, end_shift, line_cd, gobal_stTimeModel, statusSwitchModel, IsOnlyone)
+        Dim totalProgressbar = OEE_LOCAL.GetDataProgressbarA(st_shift, end_shift, line_cd, gobal_stTimeModel, statusSwitchModel, IsOnlyone, MainFrm.chk_spec_line)
         If totalProgressbar > 100 Then
             progressbarA.Text = Int(100) & "%"
             progressbarA.Value = Int(100)
@@ -378,7 +381,7 @@ Public Class Working_Pro
         ' MsgBox("secSwitchmodel====>" & secSwitchmodel)
         Dim MinSwitchmodel As Integer = secSwitchmodel / 60
         ' MsgBox("MinSwitchmodel ====>" & MinSwitchmodel)
-        Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd, MinSwitchmodel, startDate)
+        Dim OEE_actual_detailByHour = OEE.OEE_getProduction_actual_detailByHour(line_cd, MinSwitchmodel, startDate, Label3.Text)
         ' MsgBox("OEE_actual_detailByHour=====>" & OEE_actual_detailByHour)
         actualP.Text = OEE_actual_detailByHour
         ' Try
@@ -796,7 +799,7 @@ Public Class Working_Pro
                 PictureBox16.Visible = False
                 Call DioGetErrorString(Ret, szError)
             Catch ex As Exception
-                Button1.Enabled = False
+                'Button1.Enabled = False
                 btnStart.Enabled = False
                 btn_back.Enabled = False
                 panelpcWorker1.Enabled = False
@@ -832,7 +835,7 @@ Public Class Working_Pro
                 Panel2.Visible = False
                 PictureBox16.Visible = False
             Catch ex As Exception
-                Button1.Enabled = False
+                'Button1.Enabled = False
                 btnStart.Enabled = False
                 btn_back.Enabled = False
                 panelpcWorker1.Enabled = False
@@ -858,7 +861,7 @@ Public Class Working_Pro
             If CheckOs() Then
                 Dim rs = counterNewDIO.count_NIMAX()
                 If rs <> "OK" Then
-                    Button1.Enabled = False
+                    'Button1.Enabled = False
                     btnStart.Enabled = False
                     btn_back.Enabled = False
                     panelpcWorker1.Enabled = False
@@ -881,7 +884,7 @@ Public Class Working_Pro
                 End If
             Else
                 'MsgBox("")
-                Button1.Enabled = False
+                'Button1.Enabled = False
                 btnStart.Enabled = False
                 btn_back.Enabled = False
                 panelpcWorker1.Enabled = False
@@ -988,7 +991,7 @@ Public Class Working_Pro
         End Try
         start_flg = 0
         'Chang_Loss.Show()
-        Button1.Visible = False
+        'Button1.Visible = False
         Panel1.BackColor = Color.Red
         Label30.Text = "STOPPED"
         'btn_back.Visible = True
@@ -1171,7 +1174,7 @@ Public Class Working_Pro
             flg_control = "1"
             op_id = "0"
         Else
-            flg_control = "0"
+            flg_control = "1"
         End If
         Try
             If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
@@ -1185,6 +1188,54 @@ Public Class Working_Pro
         Catch ex As Exception
             transfer_flg = "0"
             Backoffice_model.ins_loss_act_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, flg_control, pwi_id)
+        End Try
+    End Sub
+    Public Sub insLossClickStart(dateNow As String, timeNow As String)
+        Try
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
+                Dim bf = New Backoffice_model
+                ' Dim RsCheckProduction_Plan = bf.Get_Plan_All_By_Line(Backoffice_model.GET_LINE_PRODUCTION(), Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
+                Dim RsCheckProduction_Plan = bf.Get_Plan_All_By_Line(Backoffice_model.GET_LINE_PRODUCTION(), Label14.Text, dateNow, timeNow, Backoffice_model.S_chk_spec_line, Label3.Text)
+                Console.WriteLine(RsCheckProduction_Plan)
+                If RsCheckProduction_Plan <> "0" Then
+                    Dim loss_type As String = "0"
+                    Dim op_id As String = "0"
+                    Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(RsCheckProduction_Plan)
+                    Dim start_loss As String = ""
+                    Dim end_loss_codex As String = ""
+                    Dim start_loss_codex As String = ""
+                    Dim Loss_Time_codex As String = ""
+                    Dim Loss_Code As String = ""
+                    Try
+                        For Each item As Object In dict3
+                            start_loss_codex = item("Start_Loss").ToString()
+                            end_loss_codex = item("End_Loss").ToString()
+                            Loss_Time_codex = item("Loss_Time").ToString()
+                            Loss_Code = item("Loss_Code").ToString()
+                            If CDbl(Val(Loss_Time_codex)) > 0 Then
+                                If MainFrm.chk_spec_line = "2" Then
+                                    Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
+                                    Dim Iseq = GenSEQ
+                                    Dim j As Integer = 0
+                                    For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
+                                        Iseq += 1
+                                        Dim indRow As String = itemPlanData.IND_ROW
+                                        Dim wi As String = itemPlanData.wi
+                                        Dim item_cd As String = itemPlanData.item_cd
+                                        ins_loss_code(MainFrm.Label6.Text, MainFrm.Label4.Text, wi, item_cd, Iseq, Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", Spwi_id(j))
+                                        j = j + 1
+                                    Next
+                                Else
+                                    ins_loss_code(MainFrm.Label6.Text, MainFrm.Label4.Text, wi_no.Text, Label3.Text, CDbl(Val(Label22.Text)), Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", pwi_id)
+                                End If
+                            End If
+                        Next
+                    Catch ex As Exception
+                        MsgBox(ex.Message)
+                    End Try
+                End If
+            End If
+        Catch ex As Exception
         End Try
     End Sub
     Public Async Function Start_Production() As Task '
@@ -1282,50 +1333,7 @@ Public Class Working_Pro
             ' Await the completion of setting DateTimeStartofShift.Text
         End If
         Main()
-        Try
-            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
-                Dim bf = New Backoffice_model
-                Dim RsCheckProduction_Plan = bf.Get_Plan_All_By_Line(Backoffice_model.GET_LINE_PRODUCTION(), Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"))
-                If RsCheckProduction_Plan <> "0" Then
-                    Dim loss_type As String = "0"
-                    Dim op_id As String = "0"
-                    Dim dict3 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(RsCheckProduction_Plan)
-                    Dim start_loss As String = ""
-                    Dim end_loss_codex As String = ""
-                    Dim start_loss_codex As String = ""
-                    Dim Loss_Time_codex As String = ""
-                    Dim Loss_Code As String = ""
-                    Try
-                        For Each item As Object In dict3
-                            start_loss_codex = item("Start_Loss").ToString()
-                            end_loss_codex = item("End_Loss").ToString()
-                            Loss_Time_codex = item("Loss_Time").ToString()
-                            Loss_Code = item("Loss_Code").ToString()
-                            If CDbl(Val(Loss_Time_codex)) > 0 Then
-                                If MainFrm.chk_spec_line = "2" Then
-                                    Dim GenSEQ As Integer = CInt(Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
-                                    Dim Iseq = GenSEQ
-                                    Dim j As Integer = 0
-                                    For Each itemPlanData As DataPlan In Confrime_work_production.ArrayDataPlan
-                                        Iseq += 1
-                                        Dim indRow As String = itemPlanData.IND_ROW
-                                        Dim wi As String = itemPlanData.wi
-                                        Dim item_cd As String = itemPlanData.item_cd
-                                        ins_loss_code(MainFrm.Label6.Text, MainFrm.Label4.Text, wi, item_cd, Iseq, Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", Spwi_id(j))
-                                        j = j + 1
-                                    Next
-                                Else
-                                    ins_loss_code(MainFrm.Label6.Text, MainFrm.Label4.Text, wi_no.Text, Label3.Text, CDbl(Val(Label22.Text)), Label14.Text, start_loss_codex, end_loss_codex, Loss_Time_codex, loss_type, Loss_Code, "0", pwi_id)
-                                End If
-                            End If
-                        Next
-                    Catch ex As Exception
-                        MsgBox(ex.Message)
-                    End Try
-                End If
-            End If
-        Catch ex As Exception
-        End Try
+        insLossClickStart(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("HH:mm:ss", CultureInfo.InvariantCulture))
         Dim line_id As String = MainFrm.line_id.Text
         Try
             If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
@@ -1370,19 +1378,17 @@ Public Class Working_Pro
             End Try
         End If
         Dim c_type As String = MainFrm.count_type.Text
-        If c_type = "TOUCH" Then
-            Button1.Visible = True
-        Else
-            Button1.Visible = False
-        End If
+        ' If c_type = "TOUCH" Then
+        'Button1.Visible = True
+        ' Else
+        '  Button1.Visible = False
+        ' End If
         start_flg = 1
         'Button1.Visible = True
         Dim st_counter As String = Label32.Text
         If st_counter = "0" Then
             If Backoffice_model.gobal_DateTimeComputerDown = "" Then
-
                 Label16.Text = TimeOfDay.ToString("H:mm:ss")
-
             Else
                 Dim dateTimeconvert As DateTime = Backoffice_model.gobal_DateTimeComputerDown.ToString
                 Label16.Text = dateTimeconvert.ToString("H:mm:ss", CultureInfo.InvariantCulture) ' มาจาก คอมดับ 
@@ -1647,9 +1653,9 @@ Public Class Working_Pro
             ' สร้าง instance ของ WebView2 control
             Await WebViewProgressbar.EnsureCoreWebView2Async(webViewEnvironment)
             ' เรียกใช้ URL โดยแสดงค่า line_cd และ shift
-            WebViewProgressbar.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/productionHrprogressDev/?line_cd=" & line_cd & "&shift=" & shift)
+            WebViewProgressbar.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
             'WebViewProgressbar.CoreWebView2.Navigate("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
-            Console.WriteLine("http://" & Backoffice_model.svApi & "/productionHrprogressDev/?line_cd=" & line_cd & "&shift=" & shift)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/productionHrprogress/?line_cd=" & line_cd & "&shift=" & shift)
         Catch ex As Exception
             ' แสดงข้อผิดพลาดในกรณีที่การเริ่มต้นใช้งาน WebView2 ล้มเหลว
             Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
@@ -1683,7 +1689,7 @@ Public Class Working_Pro
             Console.WriteLine($"Failed to initialize WebView2: {ex.Message}")
         End Try
     End Function
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
         BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text)
         lbNextTime.Text = BreakTime
         Dim yearNow As Integer = DateTime.Now.ToString("yyyy")
@@ -1914,7 +1920,6 @@ Public Class Working_Pro
                 Catch ex As Exception
                     act_qty = 0
                 End Try
-
                 Try
                     If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                         transfer_flg = "0"
@@ -3036,8 +3041,8 @@ Public Class Working_Pro
             plan_cd = "51"
         End If
         e.Graphics.DrawString("FACTORY", lb_font1.Font, Brushes.Black, 522, 178)
-        ' e.Graphics.DrawString(factory_cd, lb_font5.Font, Brushes.Black, 522, 196)
-        e.Graphics.DrawString("Fac1", lb_font5.Font, Brushes.Black, 522, 196)
+        e.Graphics.DrawString(factory_cd, lb_font5.Font, Brushes.Black, 522, 196)
+        'e.Graphics.DrawString("Fac1", lb_font5.Font, Brushes.Black, 522, 196)
         e.Graphics.DrawString("INFO.", lb_font1.Font, Brushes.Black, 612, 178)
         e.Graphics.DrawString("LINE", lb_font1.Font, Brushes.Black, 152, 238)
         e.Graphics.DrawString(Label24.Text, lb_font2.Font, Brushes.Black, 152, 250)
@@ -3052,10 +3057,10 @@ Public Class Working_Pro
         e.Graphics.DrawString(result_plan_date, lb_font6.Font, Brushes.Black, 334, 250)
         e.Graphics.DrawString("LOT NO.", lb_font1.Font, Brushes.Black, 522, 238)
         e.Graphics.DrawString(Label18.Text, lb_font2.Font, Brushes.Black, 522, 250)
-        e.Graphics.DrawString("Company", lb_font2.Font, Brushes.Black, 15, 13)
+        e.Graphics.DrawString("TBKK", lb_font2.Font, Brushes.Black, 15, 13)
         e.Graphics.DrawString("(Thailand) Co., Ltd.", lb_font1.Font, Brushes.Black, 15, 45)
         e.Graphics.DrawString("Shop floor system", lb_font3.Font, Brushes.Black, 15, 73)
-        e.Graphics.DrawString("(Gemba5.0 System)", lb_font3.Font, Brushes.Black, 15, 85)
+        e.Graphics.DrawString("(New FA system)", lb_font3.Font, Brushes.Black, 15, 85)
         e.Graphics.DrawString("WI : " & wi_no.Text, lb_font3.Font, Brushes.Black, 15, 123)
         Dim prdtype As String
         If lb_prd_type.Text = "10" Then
@@ -4415,7 +4420,7 @@ Public Class Working_Pro
                     End If
                 End If
             Catch ex As Exception
-                Button1.Enabled = False
+                'Button1.Enabled = False
                 btnStart.Enabled = False
                 btn_back.Enabled = False
                 Dim listdetail = "Please Check DIO"
@@ -4630,7 +4635,7 @@ Public Class Working_Pro
         Panel2.Hide()
         panelpcWorker1.Enabled = True
         btnInfo.Enabled = True
-        Button1.Enabled = True
+        'Button1.Enabled = True
         btnStart.Enabled = True
         btn_back.Enabled = True
     End Sub

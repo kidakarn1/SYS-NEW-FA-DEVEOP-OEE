@@ -2,10 +2,11 @@
     Dim contDelay As Integer = 0
     Dim flg_check As Integer = 0
     Public date_start_data = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
-    Public Function SatrtWork() As Task
+    Public Async Function SatrtWork() As Task
         If PanelShowLoss.Visible Then
             UpdateAutoLoss()
             Dim BreakTime = Backoffice_model.GetTimeAutoBreakTime(MainFrm.Label4.Text) ' for set data 
+            ' MsgBox("Next BreakTime ===>" & BreakTime)
             If MainFrm.chk_spec_line = "2" Then
                 Dim GenSEQ As Integer = CInt(Working_Pro.Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
                 Dim Iseq = GenSEQ
@@ -51,7 +52,7 @@
     Private Sub btnContinue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click
         SatrtWork()
     End Sub
-    Public Sub UpdateAutoLoss()
+    Public Async Function UpdateAutoLoss() As Task
         Dim pd As String = MainFrm.Label6.Text
         Dim sel_combo As String = 0 'ComboBox1.SelectedIndex
         Dim wi_plan As String = Working_Pro.wi_no.Text
@@ -63,12 +64,16 @@
         Dim end_loss As Date = Date.Parse(TimeOfDay.ToString("H:mm:ss"))
         Dim date1 As Date = Date.Parse(TimeOfDay.ToString("H:mm:ss"))
         Dim date2 As Date = Date.Parse(TimeOfDay.ToString("H:mm:ss"))
+        ' MsgBox("SAAAA")
         Dim total_loss As Integer = DateDiff(DateInterval.Minute, date1, date2)
+        'MsgBox("SFFFFF")
         Dim loss_type As String = "0"  '0:Normally,1:Manual
         Dim op_id As String = "0"
+        'MsgBox("SCCCC")
         Dim loss_cd_id As String = "35"
+        'MsgBox("Ready load UpdateAutoLoss 2.")
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svApi) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 transfer_flg = "1"
                 If closeLotsummary.Visible Then
                     loss_cd_id = "36"
@@ -76,6 +81,7 @@
                     loss_cd_id = "35"
                 End If
                 If MainFrm.chk_spec_line = "2" Then
+                    Console.WriteLine(MainFrm.ArrayDataPlan.ToArray().Length)
                     Dim GenSEQ As Integer = CInt(Working_Pro.Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length
                     Dim Iseq = GenSEQ
                     Dim j As Integer = 0
@@ -127,7 +133,8 @@
                 Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, date_start_data, end_loss, test_time_loss_time.Text, loss_type, loss_cd_id, op_id, transfer_flg, "1")            'Backoffice_model.Insert_prd_close_lot_sqlite(wi_plan, line_cd, item_cd, plan_qty, act_qty, seq_no, shift_prd, staff_no, prd_st_datetime, prd_end_datetime, lot_no, comp_flg2, transfer_flg, del_flg, prd_flg, close_lot_flg, avarage_eff, avarage_act_prd_time)
             End If
         End Try
-    End Sub
+        Await Task.Delay(100) ' Mock delay for async operation
+    End Function
     Private Sub btnBreakTime_Click(sender As Object, e As EventArgs) Handles btnBreakTime.Click
         If Backoffice_model.CountDelay <> "" Then
             Console.WriteLine(contDelay)
@@ -214,7 +221,7 @@
         Dim loss_type As String = "0"  '0:Normally,1:Manual
         Dim op_id As String = "0"
         Try
-            If My.Computer.Network.Ping(Backoffice_model.svApi) Then
+            If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 transfer_flg = "1"
                 If MainFrm.chk_spec_line = "2" Then
                     Dim GenSEQ As Integer = CInt(Working_Pro.Label22.Text) - MainFrm.ArrayDataPlan.ToArray().Length

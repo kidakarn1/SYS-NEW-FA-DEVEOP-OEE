@@ -1,5 +1,6 @@
 Imports System.IO
 Imports System.IO.Pipes
+Imports System.Threading
 Imports System.Web.Script.Serialization
 Public Class MainFrm
     Public Sub ClickButton()
@@ -96,17 +97,18 @@ Public Class MainFrm
             End If
             Insert_list.Label3.Text = Label4.Text
             Prd_detail.Label3.Text = Label4.Text
+            checkcmd()
             ' RobotApppSuport.loadMain()
         Else
             Application.Exit()
         End If
 
-        'Me.WebView21.Source = New Uri("http://192.168.161.219/productionHrProgress/?line_cd=K1A003&shift=P")
     End Sub
 
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         check_close_fa()
+
         Label2.Text = TimeOfDay.ToString("H:mm:ss")
         Label3.Text = DateTime.Now.ToString("D")
         Label1.Text = DateTime.Now.ToString("yyyy/MM/dd")
@@ -123,6 +125,33 @@ Public Class MainFrm
     Private Sub TextBox1_TextChanged_1(sender As Object, e As EventArgs)
 
     End Sub
+    Public Async Function checkcmd() As Task
+        Dim cts As New CancellationTokenSource()
+        Await Task.Delay(300000, cts.Token).ContinueWith(Sub(task)
+                                                             ' ตรวจสอบว่าถ้า Task ไม่ถูกยกเลิก
+                                                             If Not task.IsCanceled Then
+                                                                 ' ตรวจสอบว่า Handle ของฟอร์มยังถูกสร้างอยู่และไม่ถูก Dispose
+                                                                 If Me.IsHandleCreated AndAlso Not Me.IsDisposed Then
+                                                                     Try
+                                                                         Dim api = New api()
+                                                                         Dim Command As String = ""
+                                                                         Dim parameters As String = ""
+                                                                         Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/RunCmd?line_cd=" & Label4.Text)
+                                                                         If result_data <> "0" Then
+                                                                             Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(result_data)
+                                                                             For Each item As Object In dict2
+                                                                                 Command = item("command").ToString()
+                                                                                 parameters = item("parameters").ToString()
+                                                                                 System.Diagnostics.Process.Start(Command, parameters)
+                                                                             Next
+                                                                         End If
+                                                                     Catch ex As Exception
+                                                                         status_emergency = "0"
+                                                                     End Try
+                                                                 End If
+                                                             End If
+                                                         End Sub, TaskScheduler.FromCurrentSynchronizationContext())
+    End Function
     Public Sub check_lot()
         Try
             If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
@@ -545,4 +574,23 @@ Public Class MainFrm
         ' Call the Main() method asynchronously
         Await Main()
     End Function
+    Public Sub RunCmd(line_cd As String)
+        Try
+            Dim api = New api()
+            Dim Command As String = ""
+            Dim parameters As String = ""
+            Dim result_data As String = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/RunCmd?line_cd=" & line_cd)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/GET_DATA_NEW_FA/RunCmd?line_cd=" & line_cd)
+            If result_data <> "0" Then
+                Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(result_data)
+                For Each item As Object In dict2
+                    Command = item("command").ToString()
+                    parameters = item("parameters").ToString()
+                    System.Diagnostics.Process.Start(Command, parameters)
+                Next
+            End If
+        Catch ex As Exception
+            status_emergency = "0"
+        End Try
+    End Sub
 End Class
