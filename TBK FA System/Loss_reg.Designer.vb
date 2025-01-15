@@ -38,6 +38,8 @@ Partial Class Loss_reg
         Me.test_time_loss_time = New System.Windows.Forms.Label()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtareamold = New System.Windows.Forms.TextBox()
+        Me.btnTestshort = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'Label2
@@ -81,11 +83,11 @@ Partial Class Loss_reg
         '
         'TextBox1
         '
-        Me.TextBox1.Font = New System.Drawing.Font("Catamaran", 19.0!, System.Drawing.FontStyle.Bold)
-        Me.TextBox1.Location = New System.Drawing.Point(379, 122)
+        Me.TextBox1.Font = New System.Drawing.Font("Catamaran", 15.0!, System.Drawing.FontStyle.Bold)
+        Me.TextBox1.Location = New System.Drawing.Point(369, 109)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(389, 150)
+        Me.TextBox1.Size = New System.Drawing.Size(405, 53)
         Me.TextBox1.TabIndex = 36
         Me.TextBox1.Text = "เครื่องจักรเสีย / ปัญหา  Robot - Spray / ปัญหา Robot - talk out"
         '
@@ -117,6 +119,7 @@ Partial Class Loss_reg
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(199, 79)
         Me.Button1.TabIndex = 35
+        Me.Button1.Text = "  "
         Me.Button1.UseVisualStyleBackColor = False
         '
         'ComboBox1
@@ -200,6 +203,26 @@ Partial Class Loss_reg
         Me.Label9.TabIndex = 38
         Me.Label9.Text = "12:35:14"
         '
+        'txtareamold
+        '
+        Me.txtareamold.Font = New System.Drawing.Font("Catamaran", 15.0!, System.Drawing.FontStyle.Bold)
+        Me.txtareamold.Location = New System.Drawing.Point(255, 211)
+        Me.txtareamold.Multiline = True
+        Me.txtareamold.Name = "txtareamold"
+        Me.txtareamold.Size = New System.Drawing.Size(245, 63)
+        Me.txtareamold.TabIndex = 56
+        Me.txtareamold.Text = "เครื่องจักรเสีย / ปัญหา  Robot - Spray / ปัญหา Robot - talk out"
+        '
+        'btnTestshort
+        '
+        Me.btnTestshort.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(222, Byte))
+        Me.btnTestshort.Location = New System.Drawing.Point(520, 211)
+        Me.btnTestshort.Name = "btnTestshort"
+        Me.btnTestshort.Size = New System.Drawing.Size(254, 60)
+        Me.btnTestshort.TabIndex = 57
+        Me.btnTestshort.Text = "TEST SHORT"
+        Me.btnTestshort.UseVisualStyleBackColor = True
+        '
         'Loss_reg
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -207,6 +230,8 @@ Partial Class Loss_reg
         Me.BackColor = System.Drawing.Color.Firebrick
         Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(800, 600)
+        Me.Controls.Add(Me.btnTestshort)
+        Me.Controls.Add(Me.txtareamold)
         Me.Controls.Add(Me.Button4)
         Me.Controls.Add(Me.test_time_loss_time)
         Me.Controls.Add(Me.date_time_commit_data)
@@ -242,4 +267,6 @@ Partial Class Loss_reg
     Friend WithEvents test_time_loss_time As Label
     Friend WithEvents Button4 As Button
     Friend WithEvents Label9 As Label
+    Friend WithEvents txtareamold As TextBox
+    Friend WithEvents btnTestshort As Button
 End Class

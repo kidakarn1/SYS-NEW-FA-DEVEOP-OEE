@@ -18,7 +18,7 @@ Public Class Sel_prd_setup
                 Dim checkRs As Integer = 0
                 While LoadSQL.Read()
                     Chang_Loss.ListView2.ForeColor = Color.Blue
-                    Chang_Loss.ListView2.Items.Add(LoadSQL("id_mst").ToString()).SubItems.AddRange(New String() {LoadSQL("loss_cd").ToString(), LoadSQL("description_th").ToString()})
+                    Chang_Loss.ListView2.Items.Add(LoadSQL("id_mst").ToString()).SubItems.AddRange(New String() {LoadSQL("loss_cd").ToString(), LoadSQL("description_th").ToString(), LoadSQL("loss_mold_flg").ToString()})
                     Chang_Loss.ListBox1.Items.Add(LoadSQL("loss_type").ToString())
                     i += 1
                     checkRs = 1

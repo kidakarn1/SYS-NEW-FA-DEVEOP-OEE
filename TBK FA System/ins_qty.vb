@@ -40,7 +40,6 @@ Public Class ins_qty
         Dim text_now As String = TextBox1.Text
         Dim sum_str As Integer = text_now & "2"
         Dim rem_qty As Integer = Working_Pro.Label10.Text.Substring(1)
-
         If sum_str > rem_qty Then
             Button10.Enabled = False
             Button11.Enabled = False
@@ -367,7 +366,6 @@ Public Class ins_qty
                     If Backoffice_model.S_chk_spec_line = 1 Then 'for M25
                         If Working_Pro.checkManualQtySpec = 0 Then ' ใช้แค่ ตอนกด Start ครั้งแรกเท่านั้น
                             Working_Pro.checkManualQtySpec += 1
-                            MsgBox("LOAD INSLOSS")
                             Working_Pro.insLossClickStart(DateTime.Now.ToString("yyyy-MM-dd"), Start_input_data_spc.Text)
                         End If
                     End If
@@ -394,9 +392,10 @@ Public Class ins_qty
             End If
         'MsgBox("TEST 6 ")
         Working_Pro.LB_COUNTER_SHIP.Text = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) + CDbl(Val(tb))
-            Working_Pro.LB_COUNTER_SEQ.Text = CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) + CDbl(Val(tb))
-            Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) + CDbl(Val(tb))
-            Dim max_val_int As Integer = Convert.ToInt32(max_val)
+        Working_Pro.LB_COUNTER_SEQ.Text = CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) + CDbl(Val(tb))
+        Working_Pro.QtyMold = Working_Pro.QtyMold + CDbl(Val(tb))
+        Working_Pro.lb_good.Text = CDbl(Val(Working_Pro.lb_good.Text)) + CDbl(Val(tb))
+        Dim max_val_int As Integer = Convert.ToInt32(max_val)
             Backoffice_model.qty_int = ins_qtyy
             If ins_qtyy > 0 And ins_qtyy <= max_val_int Then
                 Working_Pro.lb_ins_qty.Text = tb

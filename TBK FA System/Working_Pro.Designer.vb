@@ -183,7 +183,6 @@ Partial Class Working_Pro
         Me.pcWorker1 = New System.Windows.Forms.PictureBox()
         Me.pcWorker2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox11 = New System.Windows.Forms.PictureBox()
-        Me.btn_desc_act = New System.Windows.Forms.PictureBox()
         Me.btn_ins_act = New System.Windows.Forms.PictureBox()
         Me.btnCloseLot = New System.Windows.Forms.PictureBox()
         Me.btnInfo = New System.Windows.Forms.PictureBox()
@@ -203,6 +202,7 @@ Partial Class Working_Pro
         Me.PanelWebviewEmergency = New Microsoft.Web.WebView2.WinForms.WebView2()
         Me.PanelQrScanChecklist = New System.Windows.Forms.Panel()
         Me.qrScanChecklist = New System.Windows.Forms.PictureBox()
+        Me.btn_desc_act = New System.Windows.Forms.PictureBox()
         Me.Panel1.SuspendLayout()
         Me.Panel7.SuspendLayout()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -230,7 +230,6 @@ Partial Class Working_Pro
         CType(Me.pcWorker1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pcWorker2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btn_desc_act, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btn_ins_act, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnCloseLot, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -240,6 +239,7 @@ Partial Class Working_Pro
         CType(Me.PanelWebviewEmergency, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelQrScanChecklist.SuspendLayout()
         CType(Me.qrScanChecklist, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.btn_desc_act, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label4
@@ -2214,17 +2214,6 @@ Partial Class Working_Pro
         Me.PictureBox11.TabStop = False
         Me.PictureBox11.Visible = False
         '
-        'btn_desc_act
-        '
-        Me.btn_desc_act.BackColor = System.Drawing.Color.DimGray
-        Me.btn_desc_act.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.btnDescNew
-        Me.btn_desc_act.Location = New System.Drawing.Point(1, 514)
-        Me.btn_desc_act.Name = "btn_desc_act"
-        Me.btn_desc_act.Size = New System.Drawing.Size(150, 86)
-        Me.btn_desc_act.TabIndex = 4683
-        Me.btn_desc_act.TabStop = False
-        Me.btn_desc_act.Visible = False
-        '
         'btn_ins_act
         '
         Me.btn_ins_act.BackColor = System.Drawing.Color.Gray
@@ -2428,6 +2417,17 @@ Partial Class Working_Pro
         Me.qrScanChecklist.TabIndex = 0
         Me.qrScanChecklist.TabStop = False
         '
+        'btn_desc_act
+        '
+        Me.btn_desc_act.BackColor = System.Drawing.Color.DimGray
+        Me.btn_desc_act.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.btnDescNew
+        Me.btn_desc_act.Location = New System.Drawing.Point(1, 514)
+        Me.btn_desc_act.Name = "btn_desc_act"
+        Me.btn_desc_act.Size = New System.Drawing.Size(150, 86)
+        Me.btn_desc_act.TabIndex = 4683
+        Me.btn_desc_act.TabStop = False
+        Me.btn_desc_act.Visible = False
+        '
         'Working_Pro
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2625,7 +2625,6 @@ Partial Class Working_Pro
         CType(Me.pcWorker1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pcWorker2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btn_desc_act, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btn_ins_act, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnCloseLot, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnInfo, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2635,6 +2634,7 @@ Partial Class Working_Pro
         CType(Me.PanelWebviewEmergency, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelQrScanChecklist.ResumeLayout(False)
         CType(Me.qrScanChecklist, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.btn_desc_act, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2798,7 +2798,6 @@ Partial Class Working_Pro
     Friend WithEvents pcWorker2 As PictureBox
     Friend WithEvents ACODE As ColumnHeader
     Friend WithEvents PictureBox11 As PictureBox
-    Friend WithEvents btn_desc_act As PictureBox
     Friend WithEvents btn_ins_act As PictureBox
     Friend WithEvents btnCloseLot As PictureBox
     Friend WithEvents btnInfo As PictureBox
@@ -2818,4 +2817,5 @@ Partial Class Working_Pro
     Friend WithEvents PanelWebviewEmergency As Microsoft.Web.WebView2.WinForms.WebView2
     Friend WithEvents PanelQrScanChecklist As Panel
     Friend WithEvents qrScanChecklist As PictureBox
+    Friend WithEvents btn_desc_act As PictureBox
 End Class

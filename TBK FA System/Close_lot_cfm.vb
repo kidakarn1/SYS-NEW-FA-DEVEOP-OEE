@@ -133,6 +133,7 @@ Public Class Close_lot_cfm
                 End If
                 Working_Pro.LB_COUNTER_SHIP.Text = 0
                 Working_Pro.LB_COUNTER_SEQ.Text = 0
+                Working_Pro.QtyMold = 0
                 Working_Pro.Label6.Text = ""
                 Prd_detail.Enabled = True
                 Working_Pro.Enabled = True
@@ -242,6 +243,7 @@ Public Class Close_lot_cfm
                 End If
                 Working_Pro.LB_COUNTER_SHIP.Text = 0
                 Working_Pro.LB_COUNTER_SEQ.Text = 0
+                Working_Pro.QtyMold = 0
                 Working_Pro.Label6.Text = ""
                 MainFrm.Enabled = True
                 Prd_detail.Enabled = True

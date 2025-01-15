@@ -95,6 +95,8 @@ Public Class ManagePlan
                 Else
                     seqPlan = item("order_flg").ToString
                 End If
+                Prd_detail.mold.Text = " - "
+                Prd_detail.Test_short.Enabled = False
                 Mseq = seqPlan
                 Mline = item("LINE_CD").ToString
                 MkeyInfo = seqPlan

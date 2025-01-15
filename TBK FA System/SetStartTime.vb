@@ -35,7 +35,6 @@ Public Class SetStartTime
                     End If
                 End If
                 dateStartAdjust = dateStartAdjust.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                'MsgBox("dateStartAdjust===>" & dateStartAdjust)
                 If dateStartAdjust <= DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") Then
                     If dateStartAdjust >= DateTimecompuerdown Then  'check condition about time 
                         'Try
@@ -67,9 +66,11 @@ Public Class SetStartTime
     End Sub
     Private Sub SetStartTime_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim OEE = New OEE_NODE
+        Dim OEE_LOCAL = New OEE_SQLITE
         tbHour.Text = TimeOfDay.ToString("HH")
         tbMin.Text = TimeOfDay.ToString("mm")
         downTime = OEE.OEE_getDataProductionActual(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text, Working_Pro.Label3.Text)
+        ' downTime = OEE_LOCAL.mas_OEE_getDataProductionActual(Prd_detail.Label12.Text.Substring(3, 5), MainFrm.Label4.Text, Working_Pro.Label3.Text)
         Down_time.Text = downTime
     End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs)
@@ -78,8 +79,5 @@ Public Class SetStartTime
     Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
         numPadSetStartTime.Down_time.Text = downTime.substring(10)
         numPadSetStartTime.Show()
-    End Sub
-    Private Sub btnNumpadQTY_Click(sender As Object, e As EventArgs)
-        numPadSetQTY.Show()
     End Sub
 End Class

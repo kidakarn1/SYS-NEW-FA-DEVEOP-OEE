@@ -289,11 +289,9 @@ Public Class List_Emp
                     Backoffice_model.img_user5 = tImage
                     MainFrm.lb_emp6.Text = ""
                     MainFrm.PictureBox7.Image = Nothing
-
                     Working_Pro.PictureBox6.Image = tImage
                     ' Working_Pro.lb_emp5.Visible = True
                     Working_Pro.lb_emp5.Text = emp_cd
-
                     Working_Pro.lb_emp6.Text = ""
                     Working_Pro.PictureBox7.Image = Nothing
                 End Try
@@ -451,7 +449,7 @@ Public Class List_Emp
                         Dim update_data = Backoffice_model.Update_seqplan(Prd_detail.lb_wi.Text, Backoffice_model.GET_LINE_PRODUCTION(), date_starts, date_starts, CDbl(Val(seq_no)))
                     End If
                 Catch ex As Exception
-                    Dim insert_data = Backoffice_model.INSERT_tmp_planseq(Prd_detail.lb_wi.Text, Backoffice_model.GET_LINE_PRODUCTION(), date_starts, date_starts, seq_no)
+                    Dim insert_data = Backoffice_model.INSERT_tmp_planseq(Prd_detail.lb_wi.Text, Backoffice_model.GET_LINE_PRODUCTION(), date_starts, date_starts, seq_no, "1")
                     If MainFrm.chk_spec_line = "2" Then
                         seq_no = 5
                     Else
@@ -460,6 +458,7 @@ Public Class List_Emp
                 End Try
                 GET_SEQ.close()
                 Dim rsInsertData
+                Dim rsInsertDataSqlite
                 If MainFrm.chk_spec_line = "2" Then
                     Dim GenSEQ As Integer = seq_no - 5
                     Dim Iseq = GenSEQ
@@ -471,6 +470,7 @@ Public Class List_Emp
                         Dim pwi_shift As String = itemPlanData.IND_ROW
                         rsInsertData = Backoffice_model.INSERT_production_working_info(indRow, Working_Pro.Label18.Text, Iseq, Working_Pro.Label14.Text)
                         Working_Pro.pwi_id = Backoffice_model.GET_DATA_PRODUCTION_WORKING_INFO(indRow, Working_Pro.Label18.Text, Iseq)
+                        rsInsertDataSqlite = model_api_sqlite.mas_INSERT_production_working_info(indRow, Working_Pro.Label18.Text, Iseq, Working_Pro.Label14.Text, Working_Pro.pwi_id)
                         Dim temp_co_emp_realtime As Integer = ListView1.Items.Count
                         Dim emp_cd_realtime As String
                         Dim wi As String = itemPlanData.wi
@@ -484,6 +484,7 @@ Public Class List_Emp
                 Else
                     rsInsertData = Backoffice_model.INSERT_production_working_info(Working_Pro.LB_IND_ROW.Text, Working_Pro.Label18.Text, seq_no, Working_Pro.Label14.Text)
                     Working_Pro.pwi_id = Backoffice_model.GET_DATA_PRODUCTION_WORKING_INFO(Working_Pro.LB_IND_ROW.Text, Working_Pro.Label18.Text, seq_no)
+                    rsInsertDataSqlite = model_api_sqlite.mas_INSERT_production_working_info(Working_Pro.LB_IND_ROW.Text, Working_Pro.Label18.Text, seq_no, Working_Pro.Label14.Text, Working_Pro.pwi_id)
                     Dim temp_co_emp_realtime As Integer = ListView1.Items.Count
                     Dim emp_cd_realtime As String
                     For i = 0 To temp_co_emp_realtime - 1
@@ -587,6 +588,7 @@ Public Class List_Emp
         End If
         If i > 0 Then
             Working_Pro.LB_COUNTER_SEQ.Text = 0
+            Working_Pro.QtyMold = 0
         End If
         'Prd_detail.Show()
     End Sub

@@ -50,6 +50,7 @@ Public Class Backoffice_model
     Public Shared gobal_Flg_autoTranferProductions As Integer = 0
     Public Shared gobal_DateTimeComputerDown As String = ""
     Public Shared gobal_QTYComputerDown As String = ""
+    Public Shared gobal_seq_mold_no As Integer = 0
     Public Shared WithEvents serialPort As New SerialPort
     Public Shared Function sqlite_conn_dbsv()
         Dim sqliteConn As New SQLiteConnection(sqliteConnect)
@@ -69,7 +70,7 @@ Public Class Backoffice_model
                 'Console.WriteLine("Server=0.tcp.ap.ngrok.io,13414;Initial Catalog=gemba_db;User ID=sa;Password=Te@m1nw;")
                 temp_stre = "Server=" & LoadSQL("ipaddress").ToString() & ";Initial Catalog=" & LoadSQL("db_name").ToString() & ";User ID=" & LoadSQL("username").ToString() & ";Password=" & LoadSQL("passwd").ToString() & ";"
                 '   Console.WriteLine(temp_stre)
-                svDatabase = LoadSQL("ip_database").ToString()
+                svDatmeae = LoadSQL("ip_database").ToString()
             End While
             sqlConnect = temp_stre
             Return temp2Str
@@ -236,6 +237,7 @@ Public Class Backoffice_model
     End Function
     Public Shared Sub Clear_sqlite()
         Dim currdated As String = DateTime.Now.ToString("yyyy-MM-dd")
+
         Dim today As Date = Date.Today
         Dim date_start As DateTime = today.AddDays(-200)
         Dim format_tommorow = "yyyy-MM-dd"
@@ -248,13 +250,18 @@ Public Class Backoffice_model
         Dim currdatedDefect As DateTime = DateTime.Today.AddMonths(-2)
         Dim date_startDefect As DateTime = DateTime.Today.AddMonths(-6)
         Dim convert_date_startDefect = date_startDefect.ToString("yyyy-MM-dd") & " 00:00:00"
-        Dim ConvertcurrdatedDefect = currdatedDefect.ToString("yyyy-MM-dd")
+        Dim twoDaysAgo As DateTime = DateTime.Today.AddDays(-1)
+        Dim twoDaysAgo2 As DateTime = DateTime.Today.AddDays(-3)
+        ' แปลง twoDaysAgo เป็น String ในรูปแบบ yyyy-MM-dd HH:mm:ss
+        Dim ConvertcurrdatedDefect As String = twoDaysAgo.ToString("yyyy-MM-dd HH:mm:ss")
+        Dim Convertcurrdated3day As String = twoDaysAgo2.ToString("yyyy-MM-dd HH:mm:ss")
         Dim command_data() As String = {
-                "DELETE FROM act_ins where st_time BETWEEN '" & convert_date_start & "'           AND '" & currdated & "' and tr_status = '1' ",
-                "DELETE FROM close_lot_act where prd_st_date BETWEEN '" & convert_date_start & "' AND '" & currdated & "' and transfer_flg = '1'",
-                "DELETE FROM loss_actual where start_loss BETWEEN '" & convert_date_start1 & "' AND '" & currdated1 & "' and transfer_flg = '1'",
-                "DELETE FROM maintenance where mn_create_date BETWEEN '" & convert_date_start1 & "' AND '" & currdated1 & "' and mn_status = '2'",
-                "DELETE FROM defect_transactions where dt_created_date BETWEEN '" & convert_date_startDefect & "' and '" & ConvertcurrdatedDefect & " 23:59:59" & "' and dt_status_close_lot = '1'"
+                "DELETE FROM act_ins where st_time BETWEEN '" & convert_date_start & "'AND '" & Convertcurrdated3day & "' and tr_status = '1' ",
+                "DELETE FROM close_lot_act where prd_st_date BETWEEN '" & convert_date_start & "' AND '" & Convertcurrdated3day & "' and transfer_flg = '1'",
+                "DELETE FROM loss_actual where start_loss BETWEEN '" & convert_date_start1 & "' AND '" & Convertcurrdated3day & "' and transfer_flg = '1'",
+                "DELETE FROM maintenance where mn_create_date BETWEEN '" & convert_date_start1 & "' AND '" & Convertcurrdated3day & "' and mn_status = '2'",
+                "DELETE FROM defect_transactions where dt_created_date BETWEEN '" & convert_date_startDefect & "' and '" & ConvertcurrdatedDefect & " 23:59:59" & "' and dt_status_close_lot = '1'",
+                "DELETE FROM production_working_info where pwi_created_date BETWEEN '" & convert_date_startDefect & "' and '" & ConvertcurrdatedDefect & " 23:59:59" & "'"
             }
         Console.WriteLine(command_data(4))
         For i = 0 To command_data.Length - 1
@@ -708,7 +715,23 @@ re_insert_rework_act:
         Dim result_update_count_pro = api.Load_data("http://" & svApi & "/API_NEW_FA/index.php/Api_check_data/chk_spec_line?line_cd=" & GET_LINE_PRODUCTION())
         Return result_update_count_pro
     End Function
-    Public Shared Function INSERT_tmp_planseq(wi, line_cd, date_start, date_end, seq)
+    Public Shared Function Gettmp_plan_seq(tmp_id As String)
+        Try
+            Dim api = New api()
+            Dim rsData = api.Load_data("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/ApiMoldCavity/checkSeqMold?tmp_id=" & tmp_id)
+            Console.WriteLine("http://" & Backoffice_model.svApi & "/API_NEW_FA/index.php/ApiMoldCavity/checkSeqMold?tmp_id=" & tmp_id)
+            Dim dict2 As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rsData)
+            Dim tmp_seq_mold As String = "0"
+            For Each item As Object In dict2
+                tmp_seq_mold = item("tmp_seq_mold").ToString()
+            Next
+            Return tmp_seq_mold
+        Catch ex As Exception
+            MsgBox("connect Api Faill Please check Backoffice_modle in Function Gettmp_plan_seq = " & ex.Message)
+            Return 0
+        End Try
+    End Function
+    Public Shared Function INSERT_tmp_planseq(wi As String, line_cd As String, date_start As String, date_end As String, seq As String, mold_seq As String)
         Dim reader As SqlDataReader
         Dim SQLConn As New SqlConnection() 'The SQL Connection
         Dim SQLCmd As New SqlCommand()
@@ -717,7 +740,7 @@ re_insert_rework_act:
             SQLConn.Open()
             SQLCmd.Connection = SQLConn
             'SQLCmd.CommandText = "SELECT max(seq_no) as seq_no from production_actual where wi = '" & wi & "'"
-            SQLCmd.CommandText = "insert into tmp_planseq (tmp_line_cd , tmp_production_date , tmp_last_sequence , tmp_created_date , tmp_created_by , tmp_updated_date , tmp_updated_by) 
+            SQLCmd.CommandText = "insert into tmp_planseq (tmp_line_cd , tmp_production_date , tmp_last_sequence , tmp_created_date , tmp_created_by , tmp_updated_date , tmp_updated_by , tmp_seq_mold) 
 			values(
 					'" & line_cd & "',
 					'" & date_start & "',
@@ -725,7 +748,8 @@ re_insert_rework_act:
 					'" & date_start & "',
 					'SYSTEM',
 					'" & date_start & "',
-					'SYSTEM'
+					'SYSTEM',
+                    '" & mold_seq & "'
 			)"
             reader = SQLCmd.ExecuteReader()
             Return reader
@@ -797,8 +821,7 @@ re_insert_rework_act:
             'Application.Exit()
         End Try
     End Function
-
-    Public Shared Function Update_seqplan(wi, line_cd, date_start, date_end, Update_seq)
+    Public Shared Function Gettmp_id(wi As String, line_cd As String, date_start As String, date_end As String, Update_seq As String)
         Dim reader As SqlDataReader
         Dim SQLConn As New SqlConnection() 'The SQL Connection
         Dim SQLCmd As New SqlCommand()
@@ -844,8 +867,62 @@ re_insert_rework_act:
                 tmp_id = reader("tmp_id").ToString()
             End While
             reader.Close()
+            SQLConn.Close()
+            Return tmp_id
+        Catch
+        End Try
+    End Function
+    Public Shared Function Update_seqplan(wi, line_cd, date_start, date_end, Update_seq)
+        Dim reader As SqlDataReader
+        Dim SQLConn As New SqlConnection() 'The SQL Connection
+        Dim SQLCmd As New SqlCommand()
+        Dim tmp_id As String = ""
+        '		If time >= "08:00:00" And time >= "08:00:00" Then
+        '		date_start = currdated & " 08:00:00"
+        '		Else
+        '		date_start = currdated & " 20:00:00"
+        '		End If
+        Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd")
+        Dim today As Date = Date.Today
+        Dim time_tomorrow As DateTime = today.AddDays(1)
+        Dim format_tommorow = "yyyy/MM/dd"
+        Dim date_tommorow = time_tomorrow.ToString(format_tommorow)
+        date_end_covert = date_tommorow & " 07:59:59"
+        Try
+            Dim time_now As DateTime
+            time_now = DateTime.Now.ToString("hh:mm:ss tt")
+            If time_now >= "08:00:00 AM" And time_now <= "07:59:59 PM" Then
+                date_start = currdated & " 08:00:00"
+                ' date_start = date_start & " 08:00:00"
+            Else
+                date_start = currdated & " 08:00:00"
+            End If
+            If time_now >= "12:00:00 AM" And time_now <= "08:00:00 AM" Then
+                Dim format_tommorow_re = "yyyy/MM/dd"
+                Dim del_date1 As DateTime = today.AddDays(-1)
+                date_start = del_date1.ToString(format_tommorow_re)
+                Dim sub_date_end1 = Trim(date_end.ToString.Substring(0, 10))
+                date_start = date_start & " 08:00:00"
+                date_end_covert = sub_date_end1 & " 07:59:59"
+            End If
+        Catch ex As Exception
+
+        End Try
+        Try
+            tmp_id = Gettmp_id(wi, line_cd, date_start, date_end, Update_seq)
+            SQLConn.ConnectionString = sqlConnect 'Set the Connection String  
+            SQLConn.Open()
+            SQLCmd.Connection = SQLConn
+            Dim seq_mold
+            If modelMoldCavity.imc_id <> "0" Then
+                seq_mold = Gettmp_plan_seq(tmp_id)
+            Else
+                seq_mold = "0"
+            End If
+            seq_mold = seq_mold + 1
+            gobal_seq_mold_no = seq_mold
             'SQLCmd.CommandText = "update tmp_planseq set tmp_last_sequence = '" & Update_seq & "' , tmp_updated_date = '" & date_end & "' where tmp_line_cd = '" & line_cd & "' and tmp_created_date BETWEEN  '" & date_start & "' and '" & date_end & "'"
-            SQLCmd.CommandText = "update tmp_planseq set tmp_last_sequence = '" & Update_seq & "' , tmp_updated_date = '" & date_end & "' where tmp_id = '" & tmp_id & "'"
+            SQLCmd.CommandText = "update tmp_planseq set tmp_last_sequence = '" & Update_seq & "' , tmp_updated_date = '" & date_end & "'  , tmp_seq_mold = '" & seq_mold & "'where tmp_id = '" & tmp_id & "'"
             Console.WriteLine(SQLCmd.CommandText)
             reader = SQLCmd.ExecuteReader()
             Return reader
@@ -1167,7 +1244,6 @@ where
             'Application.Exit()
         End Try
     End Function
-
     Public Shared Function Tag_seq_rec_sqlite(wi_plan As String, seq_no As Integer, qty As Integer, ref_key As String)
         Check_connect_sqlite()
         Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
@@ -1191,7 +1267,6 @@ where
         End Try
 
     End Function
-
     Public Shared Function Insert_prd_detail(pd As String, line_cd As String, wi_plan As String, item_cd As String, item_name As String, staff_no As Integer, seq_no As Integer, qty As Integer, st_time As String, end_time As String, use_time As Double, number_qty As Integer, pwi_id As String, status_sqlite As String)
         Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
         Dim reader As SqlDataReader
@@ -1279,6 +1354,8 @@ recheck:
         Dim SQLCmd As New SqlCommand()
         Dim st_time2 As String = st_time.ToString("yyyy/MM/dd H:m:s")
         Dim end_time2 As String = end_time.ToString("yyyy/MM/dd H:m:s")
+
+
         'MsgBox("INSERT INTO production_actual_detail(pd,line_cd,wi_plan,item_cd,item_name,staff_no,seq_no,qty,st_time,end_time,use_time,updated_date) VALUES ('" & pd & "','" & line_cd & "','" & wi_plan & "','" & item_cd & "','" & item_name & "','" & staff_no & "','" & seq_no & "','" & qty & "','" & st_time & "','" & end_time & "','" & use_time & "','" & currdated & "')")
         Try
             SQLConn.ConnectionString = sqlConnect 'Set the Connection String
@@ -1472,7 +1549,7 @@ recheck:
         Try
             Dim api = New api()
             Dim result_worker = api.Load_data("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/Get_permission_worker?emp_code=" & emp_cd & "&line_cd=" & line_cd)
-            Console.WriteLine(result_worker)
+            Console.WriteLine("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/Get_permission_worker?emp_code=" & emp_cd & "&line_cd=" & line_cd)
             Return result_worker
             ' SQLConn.ConnectionString = sqlConnect 'Set the Connection String
             ' SQLConn.Open()
@@ -2437,8 +2514,6 @@ recheck:
             'Application.Exit()
         End Try
     End Function
-
-
     Public Shared Function get_loss_mst()
         Dim reader As SqlDataReader
         Dim reader2 As SqlDataReader
@@ -2619,9 +2694,12 @@ recheck:
             sqliteConn.Close()
         End Try
     End Function
-    Public Shared Function insPrdDetail_sqlite(pd As String, line_cd As String, wi_plan As String, item_cd As String, item_name As String, staff_no As Integer, seq_no As Integer, qty As Integer, number_qty As Integer, st_time As String, end_time As String, use_time As Double, tr_status As String, pwi_id As String)
+    Public Shared Function insPrdDetail_sqlite(pd As String, line_cd As String, wi_plan As String, item_cd As String, item_name As String, staff_no As Integer, seq_no As Integer, qty As Integer, number_qty As Integer, st_time As String, end_time As String, use_time As Double, tr_status As String, pwi_id As String, imc_id As String, mm_id As String, seq_mold_no As String)
 re_insert_data:
-        Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd")
+        Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
+        ' Parsing the currdated string which has format "yyyy/MM/dd"
+        currdated = DateTime.ParseExact(currdated, "yyyy/MM/dd H:m:s", Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss")
+        ' MsgBox("insPrdDetail_sqlite currdated===>" & currdated)
         'st_time = Date.st_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
         Dim sqliteConn As New SQLiteConnection(sqliteConnect)
         'MsgBox(st_time)
@@ -2637,7 +2715,8 @@ re_insert_data:
             cmd1.Connection = sqliteConn
             'cmd.CommandText = "UPDATE line_detail SET pd = '" & pd & "', line_cd = '" & line_cd & "', updated_date = '" & currdated & "' WHERE id = 1 "
             'cmd.CommandText = "INSERT INTO act_ins (pd,line_cd,wi_plan,item_cd,item_name,tr_status) VALUES ('pd123','line123','wi123','item123','nm123','1');"
-            cmd1.CommandText = "INSERT INTO act_ins(pd,line_cd,wi_plan,item_cd,item_name,staff_no,seq_no,qty,number_qty,st_time,end_time,use_time,tr_status,updated_date,pwi_id) VALUES ('" & pd & "','" & line_cd & "','" & wi_plan & "','" & item_cd & "','" & item_name & "','" & staff_no & "','" & seq_no & "','" & qty & "','" & number_qty & "','" & st_time & "','" & end_time & "','" & use_time & "','" & tr_status & "','" & currdated & "' , '" & pwi_id & "')"
+            cmd1.CommandText = "INSERT INTO act_ins(pd,line_cd,wi_plan,item_cd,item_name,staff_no,seq_no,qty,number_qty,st_time,end_time,use_time,tr_status,updated_date,pwi_id , imc_id , mm_id , seq_mold_no) VALUES ('" & pd & "','" & line_cd & "','" & wi_plan & "','" & item_cd & "','" & item_name & "','" & staff_no & "','" & seq_no & "','" & qty & "','" & number_qty & "','" & st_time & "','" & end_time & "','" & use_time & "','" & tr_status & "','" & currdated & "' , '" & pwi_id & "' , '" & imc_id & "' , '" & mm_id & "' ,'" & seq_mold_no & "')"
+            Console.WriteLine(cmd1.CommandText)
             'cmd1.CommandText = "select * from act_ins"
             Dim LoadSQL As SQLiteDataReader = cmd1.ExecuteReader()
             'MsgBox(LoadSQL)
@@ -2652,7 +2731,6 @@ re_insert_data:
         End Try
         Return 0
     End Function
-
     Public Shared Function insPrdDetail_sqlite_defact(pd As String, line_cd As String, wi_plan As String, item_cd As String, item_name As String, staff_no As Integer, seq_no As Integer, qty As Integer, number_qty As Integer, st_time As String, end_time As String, use_time As Double, tr_status As String, flg_defact As String, NC As String)
 re_insert_data:
         Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd")
@@ -3238,9 +3316,6 @@ recheck:
             GoTo recheck
         End Try
     End Function
-
-
-
     Public Shared Function Insert_prd_close_lot_sqlite(wi_plan As String, line_cd As String, item_cd As String, plan_qty As Integer, act_qty As Integer, seq_no As Integer, shift_prd As String, manpower_no As Integer, st_time As DateTime, end_time As DateTime, lot_no As String, comp_flg As String, transfer_flg As String, del_flg As String, prd_flg As String, close_lot_flg As String, avarage_eff As Double, avarage_act_prd_time As Double)
         Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd")
         Dim sqliteConn As New SQLiteConnection(sqliteConnect)
@@ -3398,7 +3473,6 @@ re_insert_rework_act:
             'SQLConn.Dispose()
             SQLConn.Close()
         Catch
-
         End Try
     End Function
     Public Shared Function ins_loss_act_sqlite(pd As String, line_cd As String, wi_plan As String, item_cd As String, seq_no As String, shift_prd As String, st_time As DateTime, end_time As DateTime, loss_time As Integer, loss_type As String, loss_id As String, op_id As String, transfer_flg As String, flg_control As String, pwi_id As String)
@@ -3408,16 +3482,19 @@ re_insert_rework_act:
             sqliteConn.Open()
             Dim cmd As New SQLiteCommand
             cmd.Connection = sqliteConn
-            Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd H:mm:ss")
+            Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
             Dim reader As SqlDataReader
             Dim SQLConn As New SqlConnection() 'The SQL Connection
             Dim SQLCmd As New SqlCommand()
-            Dim st_datetime2 As String = st_time.ToString("yyyy/MM/dd H:mm:ss")
-            Dim end_datetime2 As String = end_time.ToString("yyyy/MM/dd H:mm:ss")
+            Dim st_datetime2 As String = st_time.ToString("yyyy/MM/dd HH:mm:ss")
+            Dim end_datetime2 As String = end_time.ToString("yyyy/MM/dd HH:mm:ss")
+            st_datetime2 = DateTime.ParseExact(st_datetime2, "yyyy/MM/dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss")
+            end_datetime2 = DateTime.ParseExact(end_datetime2, "yyyy/MM/dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss")
+            currdated = DateTime.ParseExact(currdated, "yyyy/MM/dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss")
             If Working_Pro.pwi_id = "0" Then
-                cmd.CommandText = "INSERT INTO loss_actual (wi,line_cd,item_cd,seq_no,shift_prd,start_loss,end_loss,loss_time,updated_date,loss_type,loss_cd_id,line_op_id,pd,transfer_flg , flg_control , pwi_id) VALUES ('" & wi_plan & "','" & line_cd & "','" & item_cd & "','" & seq_no & "','" & shift_prd & "','" & st_datetime2 & "','" & end_datetime2 & "','" & loss_time & "','" & currdated & "','" & loss_type & "','" & loss_id & "','" & op_id & "','" & pd & "','" & transfer_flg & "','" & flg_control & "','" & DBNull.Value & "')"
+                cmd.CommandText = "INSERT INTO loss_actual(wi,line_cd,item_cd,seq_no,shift_prd,start_loss,end_loss,loss_time,updated_date,loss_type,loss_cd_id,line_op_id,pd,transfer_flg , flg_control , pwi_id) VALUES ('" & wi_plan & "','" & line_cd & "','" & item_cd & "','" & seq_no & "','" & shift_prd & "','" & st_datetime2 & "','" & end_datetime2 & "','" & loss_time & "','" & currdated & "','" & loss_type & "','" & loss_id & "','" & op_id & "','" & pd & "','" & transfer_flg & "','" & flg_control & "','" & DBNull.Value & "')"
             Else
-                cmd.CommandText = "INSERT INTO loss_actual (wi,line_cd,item_cd,seq_no,shift_prd,start_loss,end_loss,loss_time,updated_date,loss_type,loss_cd_id,line_op_id,pd,transfer_flg , flg_control , pwi_id) VALUES ('" & wi_plan & "','" & line_cd & "','" & item_cd & "','" & seq_no & "','" & shift_prd & "','" & st_datetime2 & "','" & end_datetime2 & "','" & loss_time & "','" & currdated & "','" & loss_type & "','" & loss_id & "','" & op_id & "','" & pd & "','" & transfer_flg & "','" & flg_control & "','" & pwi_id & "')"
+                cmd.CommandText = "INSERT INTO loss_actual(wi,line_cd,item_cd,seq_no,shift_prd,start_loss,end_loss,loss_time,updated_date,loss_type,loss_cd_id,line_op_id,pd,transfer_flg , flg_control , pwi_id) VALUES ('" & wi_plan & "','" & line_cd & "','" & item_cd & "','" & seq_no & "','" & shift_prd & "','" & st_datetime2 & "','" & end_datetime2 & "','" & loss_time & "','" & currdated & "','" & loss_type & "','" & loss_id & "','" & op_id & "','" & pd & "','" & transfer_flg & "','" & flg_control & "','" & pwi_id & "')"
             End If
             Console.WriteLine("LOSSSS=>>>" & cmd.CommandText)
             Loss_reg.date_time_commit_data.Text = st_datetime2
@@ -3650,10 +3727,13 @@ re_insert_rework_act:
         Dim sqliteConn As New SQLiteConnection(sqliteConnect)
         Try
             sqliteConn.Open()
-            Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd H:mm:ss")
-            Dim st_datetime2 As String = st_time.ToString("yyyy/MM/dd H:mm:ss")
-            Dim end_datetime2 As String = end_time.ToString("yyyy/MM/dd H:mm:ss")
+            Dim currdated As String = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
+            Dim st_datetime2 As String = st_time.ToString("yyyy/MM/dd HH:mm:ss")
+            Dim end_datetime2 As String = end_time.ToString("yyyy/MM/dd HH:mm:ss")
             Dim date_now As String = end_time.ToString("dd/MM/yyyy")
+            st_datetime2 = DateTime.ParseExact(st_datetime2, "yyyy/MM/dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss")
+            end_datetime2 = DateTime.ParseExact(end_datetime2, "yyyy/MM/dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss")
+            currdated = DateTime.ParseExact(currdated, "yyyy/MM/dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture).ToString("yyyy-MM-dd HH:mm:ss")
             Dim cmd As New SQLiteCommand
             cmd.Connection = sqliteConn
             If loss_id = "36" Then
@@ -3661,6 +3741,7 @@ re_insert_rework_act:
             Else
                 cmd.CommandText = "Update loss_actual set end_loss = '" & end_datetime2 & "',loss_time = '" & loss_time & "' , updated_date = '" & currdated & "' , line_op_id = '" & op_id & "'  , transfer_flg = '" & transfer_flg & "' , flg_control ='" & flg_control & "' where wi='" & wi_plan & "' and line_cd = '" & line_cd & "' and item_cd = '" & item_cd & "' and seq_no = '" & seq_no & "' and shift_prd = '" & shift_prd & "' and start_loss = '" & st_datetime2 & "'"
             End If
+            Console.WriteLine("update flg loss commit  ====>" & cmd.CommandText)
             Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
             LoadSQL.Close()
             sqliteConn.Close()

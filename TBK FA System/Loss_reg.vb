@@ -94,7 +94,7 @@ Public Class Loss_reg
                             Button4.Visible = False
                         End If
                         Chang_Loss.ListView2.ForeColor = Color.Blue
-                        Chang_Loss.ListView2.Items.Add(LoadSQL("id_mst").ToString()).SubItems.AddRange(New String() {LoadSQL("loss_cd").ToString(), LoadSQL("description_th").ToString()})
+                        Chang_Loss.ListView2.Items.Add(LoadSQL("id_mst").ToString()).SubItems.AddRange(New String() {LoadSQL("loss_cd").ToString(), LoadSQL("description_th").ToString(), LoadSQL("loss_mold_flg").ToString()})
                         Chang_Loss.ListBox1.Items.Add(LoadSQL("loss_type").ToString())
                     End While
                     Working_Pro.ResetRed()
@@ -223,7 +223,6 @@ Public Class Loss_reg
                     End If
                 Catch ex As Exception
                     transfer_flg = "0"
-
                     If MainFrm.chk_spec_line = "2" Then
                         Dim GenSEQ As Integer = seq_no - 5
                         Dim Iseq = GenSEQ
@@ -241,7 +240,7 @@ Public Class Loss_reg
                 End Try
                 Working_Pro.ResetRed()
                 Working_Pro.Enabled = True
-                Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel)
+                Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel, MainFrm.chk_spec_line)
                 Dim A = Working_Pro.cal_progressbarA(Working_Pro.Label24.Text, Prd_detail.Label12.Text.Substring(3, 5), Prd_detail.Label12.Text.Substring(11, 5))
                 Me.Close()
             Else
@@ -270,16 +269,36 @@ Public Class Loss_reg
         Working_Pro.lbNextTime.Text = BreakTime
         Working_Pro.Enabled = True
         Working_Pro.ResetRed()
+        If modelMoldCavity.statusMoldLoss = "1" Then
+            Dim mdMold = New modelMoldCavity
+            If Working_Pro.QtyMold <> 0 Then
+                Dim shot = calShot(Working_Pro.QtyMold, mdMold.before_cavity)
+                Working_Pro.updateShot(mdMold.before_mm_id, Working_Pro.pwi_id, shot, "2", mdMold.ima_start_date, mdMold.ima_end_date, "1", MainFrm.Label4.Text, MainFrm.Label4.Text)
+                Working_Pro.QtyMold = "0"
+            End If
+            If mdMold.shortTest > "0" And mdMold.shortTest <> "0" Then
+                Dim shot = mdMold.shortTest
+                Working_Pro.updateShot(mdMold.mm_id, Working_Pro.pwi_id, shot, "1", mdMold.ima_start_date, mdMold.ima_end_date, "1", MainFrm.Label4.Text, MainFrm.Label4.Text)
+                mdMold.shortTest = "0"
+            End If
+            modelMoldCavity.mUpdateStatusProduction("1", modelMoldCavity.imc_id, MainFrm.Label4.Text, "0", "2")
+            Dim date_st1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
+            Dim date_end1 As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
+            Dim update_data = Backoffice_model.Update_seqplan(Prd_detail.lb_wi.Text, Backoffice_model.GET_LINE_PRODUCTION(), date_st1, date_end1, Working_Pro.Label22.Text)
+        End If
         Submit_loss()
     End Sub
+    Public Function calShot(actual As Integer, cavity As Integer)
+        Return Math.Ceiling(actual / cavity)
+    End Function
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         Dim date_end_data As String = DateTime.Now.ToString("yyyy/MM/dd H:m:s")
         Dim date_end As Date = date_end_data
         Dim total_loss As Integer = DateDiff(DateInterval.Minute, date_start_data, date_end)
         test_time_loss_time.Text = total_loss
-        If total_loss < 0 Then
-            Minutes_total = Math.Abs(CDbl(Val(test_time_loss_time.Text)))
-            test_time_loss_time.Text = Minutes_total
+        If total_loss <0 Then
+            Minutes_total= Math.Abs(CDbl(Val(test_time_loss_time.Text)))
+            test_time_loss_time.Text= Minutes_total
         End If
         Label9.Text = TimeOfDay.ToString("H:mm:ss")
         'Label1.Text = DateTime.Now.ToString("yyyy/MM/dd")
@@ -393,4 +412,7 @@ Public Class Loss_reg
         ' ปิดการเชื่อมต่อ
         Console.WriteLine("close Connection main")
     End Function
+    Private Sub btnTestshort_Click(sender As Object, e As EventArgs) Handles btnTestshort.Click
+        moldCalculator.Show()
+    End Sub
 End Class

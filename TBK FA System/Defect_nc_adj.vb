@@ -162,10 +162,12 @@ Public Class Defect_nc_adj
 							Working_Pro.LB_COUNTER_SHIP.Text = 0
 						End If
 						Working_Pro.LB_COUNTER_SEQ.Text = CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) - Convert.ToInt32(TextBox1.Text)
-						If CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) < 0 Then
-							Working_Pro.LB_COUNTER_SEQ.Text = 0
-						End If
-						Working_Pro.Label6.Text = CDbl(Val(Working_Pro.Label6.Text)) - Convert.ToInt32(TextBox1.Text)
+                        Working_Pro.QtyMold = Working_Pro.QtyMold - Convert.ToInt32(TextBox1.Text)
+                        If CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) < 0 Then
+                            Working_Pro.LB_COUNTER_SEQ.Text = 0
+                            Working_Pro.QtyMold = 0
+                        End If
+                        Working_Pro.Label6.Text = CDbl(Val(Working_Pro.Label6.Text)) - Convert.ToInt32(TextBox1.Text)
 						If CDbl(Val(Working_Pro.Label6.Text)) < 0 Then
 							Working_Pro.Label6.Text = 0
 						End If
@@ -332,13 +334,15 @@ goto_recheck_data:
 				App_qty_seq = CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) - want_del
 				App_qty_ship = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) - want_del
 				If CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) = want_del Then
-					Working_Pro.LB_COUNTER_SEQ.Text = 0
-					App_qty_seq = 0
+                    Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
+                    App_qty_seq = 0
 					GoTo break_loop
 				End If
 				If App_qty_seq < 0 Then
-					Working_Pro.LB_COUNTER_SEQ.Text = 0
-					App_qty_seq = 0
+                    Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
+                    App_qty_seq = 0
 				End If
 				'End If
 			ElseIf App_qty_seq = 0 And App_qty_ship > 0 Then 'ยังไม่ได้เดินแผน แต่มี qty seq เก่าค้างอยู่
@@ -401,8 +405,9 @@ goto_recheck_data:
 				End If
 				tmp_del3 = want_del
 				If App_qty_seq < 0 Then
-					Working_Pro.LB_COUNTER_SEQ.Text = 0
-					App_qty_seq = 0
+                    Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
+                    App_qty_seq = 0
 				End If
 				Try
 					If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then

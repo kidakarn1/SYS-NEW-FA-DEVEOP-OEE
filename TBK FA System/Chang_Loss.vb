@@ -7,7 +7,6 @@ Public Class Chang_Loss
         Time_Loss.Show()
         Me.Close()
     End Sub
-
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         Working_Pro.Enabled = True
         Me.Close()
@@ -84,7 +83,6 @@ Public Class Chang_Loss
                             Else
                                 Loss_reg.ComboBox1.Items.Add("Proc :[NO PROCESS]")
                             End If
-
                         Else
                             load_show.Show()
                         End If
@@ -172,9 +170,18 @@ Public Class Chang_Loss
                         Backoffice_model.ins_loss_act_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, start_loss, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "0", Working_Pro.pwi_id)
                     End If
                 End Try
-                If status_loss = 0 Then
-                    Loss_reg.Show()
-                    Me.Close()
+                modelMoldCavity.statusMoldLoss = ListView2.Items(sel_cd).SubItems(3).Text
+                If ListView2.Items(sel_cd).SubItems(3).Text = "1" Then
+                    ShowMold.Show()
+                    Loss_reg.txtareamold.Visible = True
+                    Loss_reg.btnTestshort.Visible = True
+                Else
+                    If status_loss = 0 Then
+                        Loss_reg.txtareamold.Visible = False
+                        Loss_reg.btnTestshort.Visible = False
+                        Loss_reg.Show()
+                        Me.Close()
+                    End If
                 End If
             End If
         Catch ex As Exception

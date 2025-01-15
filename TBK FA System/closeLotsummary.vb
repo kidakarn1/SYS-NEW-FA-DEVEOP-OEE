@@ -336,13 +336,16 @@ Public Class closeLotsummary
             Else
                 checkPrintdefect(sWi, sSeq, sLot)
             End If
-
             If statusPage.Text = "MAN" Then
                 Sel_prd_setup.Close()
                 List_Emp.lb_link.Text = "working"
                 List_Emp.Show()
                 Me.Close()
             Else
+                modelMoldCavity.mUpdateStatusProduction("0", modelMoldCavity.imc_id, MainFrm.Label4.Text, "0", "2")
+                Working_Pro.updateShot(modelMoldCavity.mm_id, Working_Pro.pwi_id, calShot(Working_Pro.QtyMold, modelMoldCavity.cavity), "2", modelMoldCavity.ima_start_date, modelMoldCavity.ima_end_date, "1", MainFrm.Label4.Text, MainFrm.Label4.Text)
+                Working_Pro.QtyMold = "0"
+                Working_Pro.check_in_up_seq = 0
                 Working_Pro.Close()
                 Prd_detail.Close()
                 MainFrm.Enabled = True
@@ -356,6 +359,9 @@ Public Class closeLotsummary
         'load_show.Show()
         ' End Try
     End Sub
+    Public Function calShot(actual As Integer, cavity As Integer)
+        Return Math.Ceiling(actual / cavity)
+    End Function
     Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click
         Try
             If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
@@ -370,7 +376,7 @@ Public Class closeLotsummary
                 load_show.Show()
             End If
         Catch ex As Exception
-
+            Working_Pro.check_in_up_seq = 0
             Working_Pro.Close()
             Prd_detail.Close()
             MainFrm.Enabled = True

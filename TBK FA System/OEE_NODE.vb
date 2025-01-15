@@ -126,7 +126,7 @@ Public Class OEE_NODE
             date_st = date_st
             Dim dateTimeend As Date
             dateTimeend = date_end & " " & time
-            '  Dim newDateMinutes As DateTime = dateTimeend.AddMinutes(-60)
+            'Dim newDateMinutes As DateTime = dateTimeend.AddMinutes(-60)
             Dim newDateMinutes As DateTime = start_date 'dateTimeend.AddMinutes(-minSwitchModel)
             'MsgBox("start Date ======>" & start_date)
             Dim convertDateStart = Convert.ToDateTime(date_st).ToString("yyyy-MM-dd")
@@ -396,7 +396,6 @@ Public Class OEE_NODE
     Public Shared Function OEE_getWorkingTime(line_cd As String, Timeshift As String)
         Try
             Dim api = New api()
-
             Dim date_now_date As Date = DateTime.Now.ToString("yyyy-MM-dd")
             ' Dim time As Date = TimeOfDay.ToString("HH:mm:ss") 'DateTime.Now.ToString("HH:mm:ss")
             Dim time As String = DateTime.Now.ToString("HH:mm:ss")

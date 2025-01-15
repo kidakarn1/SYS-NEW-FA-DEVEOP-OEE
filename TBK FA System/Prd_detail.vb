@@ -95,6 +95,7 @@ Public Class Prd_detail
         Else
             Backoffice_model.work_complete_offline(lb_wi.Text)
         End If
+        modelMoldCavity.mUpdateStatusProduction("0", modelMoldCavity.imc_id, Label4.Text, "0", "2")
         sc_wi_plan.TextBox1.Clear()
         MainFrm.Enabled = True
         MainFrm.Show()
@@ -352,7 +353,6 @@ Public Class Prd_detail
             MsgBox("ERROR = 111 " & ex.Message)
         End Try
     End Sub
-
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
 
     End Sub
@@ -368,31 +368,24 @@ Public Class Prd_detail
         Rm_scan.scan_item_cd.Focus()
         Rm_scan.Show()
     End Sub
-
     Private Sub Panel4_Paint(sender As Object, e As PaintEventArgs)
     End Sub
-
     Private Sub cc(sender As Object, e As EventArgs) Handles Timer3.Tick
         check_lot()
     End Sub
-
     Private Sub Timer_delay_api_Tick(sender As Object, e As EventArgs)
 
     End Sub
-
     Private Sub lb_seq_Click(sender As Object, e As EventArgs) Handles lb_seq.Click
 
     End Sub
-
     Private Sub LB_ShowWorker_Click(sender As Object, e As EventArgs) Handles LB_ShowWorker.Click
         Dim showWork = New Show_Worker
         showWork.show
     End Sub
-
     Private Sub btnUp_Click(sender As Object, e As EventArgs) Handles btnUp.Click
         tbnUp()
     End Sub
-
     Private Sub btnDown_Click(sender As Object, e As EventArgs) Handles btnDown.Click
         tbnDown()
     End Sub
@@ -414,7 +407,6 @@ Public Class Prd_detail
             lvWISpc.Items(S_index).EnsureVisible()
             lvWISpc.Select()
         Catch ex As Exception
-
         End Try
     End Sub
     Public Sub tbnDown()
@@ -437,5 +429,13 @@ Public Class Prd_detail
         Catch ex As Exception
 
         End Try
+    End Sub
+    Private Sub Mold_Click(sender As Object, e As EventArgs) Handles mold.Click
+        ScanMold.Show() '
+    End Sub
+    Private Sub Test_short_Click(sender As Object, e As EventArgs) Handles Test_short.Click
+        moldCalculator.Show()
+    End Sub
+    Private Sub picSpecial_Click(sender As Object, e As EventArgs) Handles picSpecial.Click
     End Sub
 End Class

@@ -5,6 +5,11 @@ Imports Newtonsoft.Json.Linq
 Imports System.Web.Script.Serialization
 Public Class Confrime_work_production
     Public Shared ArrayDataPlan As New List(Of DataPlan)
+    Public Shared Function CheckProductionusemold(mm_id As String, line_cd As String, flg_status As String)
+        Dim mdMold = New modelMoldCavity
+        Dim rs = mdMold.mCheckProduction(mm_id, line_cd, flg_status)
+        Return rs
+    End Function
     Public Shared Function next_pae()
         Dim count_reload As Integer = 0
         Backoffice_model.gobal_DateTimeComputerDown = "" ' ห้ามลบ ตัวเช็คคอมดับ
@@ -252,7 +257,6 @@ Public Class Confrime_work_production
                     Working_Pro.Label3.Text = Prd_detail.lb_item_cd.Text
                     Working_Pro.Label12.Text = Prd_detail.lb_item_name.Text
                     Working_Pro.newPartname.Text = Prd_detail.lb_item_name.Text
-
                     If Working_Pro.newPartname.Text.Length > 17 Then
                         Working_Pro.newPartname.Text = Working_Pro.newPartname.Text.ToString.Substring(0, 17) & "..."
                     End If
@@ -316,7 +320,6 @@ Public Class Confrime_work_production
                     Working_Pro.btn_start.Visible = True
                     Working_Pro.btn_stop.Visible = False
                     loadData_Working_OEE()
-                    Prd_detail.Hide()
                 Else
                     Prd_detail.Enabled = False
                     Model_change_alert.Show()
@@ -328,7 +331,16 @@ Public Class Confrime_work_production
         End Try
     End Function
     Public Shared Sub loadData_Working_OEE()
-        Working_Pro.Show()
+        Dim mdMold = New modelMoldCavity
+        Dim rs = CheckProductionusemold(mdMold.mm_id, MainFrm.Label4.Text, "1")
+        If rs = "1" Then
+            MsgBox("Please Recheck Mold.")
+            ScanMold.Show()
+        Else
+            Dim rsUpdate = mdMold.mUpdateStatusproduction("3", mdMold.imc_id, MainFrm.Label4.Text, "0", "2")
+            Prd_detail.Hide()
+            Working_Pro.Show()
+        End If
         '  Working_OEE.lbLine.Text = MainFrm.Label4.Text
         '  Working_OEE.lbPartNo.Text = Prd_detail.lb_item_cd.Text
         '  Working_OEE.lbPartName.Text = Prd_detail.lb_item_name.Text

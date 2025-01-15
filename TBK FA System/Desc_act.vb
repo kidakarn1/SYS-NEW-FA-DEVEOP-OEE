@@ -92,11 +92,13 @@ Public Class Desc_act
                 App_qty_ship = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) - want_del
                 If CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) = want_del Then
                     Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
                     App_qty_seq = 0
                     GoTo break_loop
                 End If
                 If App_qty_seq < 0 Then
                     Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
                     App_qty_seq = 0
                 End If
                 'End If
@@ -165,6 +167,7 @@ Public Class Desc_act
                 tmp_del3 = want_del
                 If App_qty_seq < 0 Then
                     Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
                     App_qty_seq = 0
                 End If
                 Try
@@ -259,11 +262,13 @@ break_loop:
                 App_qty_ship = CDbl(Val(Working_Pro.LB_COUNTER_SHIP.Text)) - want_del
                 If CDbl(Val(Working_Pro.LB_COUNTER_SEQ.Text)) = want_del Then
                     Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
                     App_qty_seq = 0
                     GoTo break_loop
                 End If
                 If App_qty_seq < 0 Then
                     Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
                     App_qty_seq = 0
                 End If
             ElseIf App_qty_seq = 0 And App_qty_ship > 0 Then 'ยังไม่ได้เดินแผน แต่มี qty seq เก่าค้างอยู่
@@ -321,6 +326,7 @@ break_loop:
                 tmp_del3 = want_del
                 If App_qty_seq < 0 Then
                     Working_Pro.LB_COUNTER_SEQ.Text = 0
+                    Working_Pro.QtyMold = 0
                     App_qty_seq = 0
                 End If
                 Try
@@ -499,6 +505,7 @@ break_loop:
                     Try
                         If Working_Pro.LB_COUNTER_SEQ.Text.Substring(0, 1) = "-" Then
                             Working_Pro.LB_COUNTER_SEQ.Text = 0
+                            Working_Pro.QtyMold = 0
                         End If
                         If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                             tr_status = "1"
@@ -511,12 +518,13 @@ break_loop:
                                     Dim special_wi As String = itemPlanData.wi
                                     Dim special_item_cd As String = itemPlanData.item_cd
                                     Dim special_item_name As String = itemPlanData.item_name
-                                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, special_wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.Spwi_id(j))
+                                    Dim seq_mold_no =
+                                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, special_wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.Spwi_id(j), modelMoldCavity.imc_id, modelMoldCavity.mm_id, Backoffice_model.gobal_seq_mold_no)
                                     Backoffice_model.Insert_prd_detail(pd, line_cd, special_wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty2, start_time, end_time, use_timee, number_qty, Working_Pro.Spwi_id(j), tr_status)
                                     j = j + 1
                                 Next
                             Else
-                                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.pwi_id)
+                                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.pwi_id, modelMoldCavity.imc_id, modelMoldCavity.mm_id, Backoffice_model.gobal_seq_mold_no)
                                 Backoffice_model.Insert_prd_detail(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, start_time, end_time, use_timee, number_qty, Working_Pro.pwi_id, tr_status)
                             End If
                         Else
@@ -530,11 +538,11 @@ break_loop:
                                     Dim special_wi As String = itemPlanData.wi
                                     Dim special_item_cd As String = itemPlanData.item_cd
                                     Dim special_item_name As String = itemPlanData.item_name
-                                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, special_wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.Spwi_id(j))
+                                    Backoffice_model.insPrdDetail_sqlite(pd, line_cd, special_wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.Spwi_id(j), modelMoldCavity.imc_id, modelMoldCavity.mm_id, Backoffice_model.gobal_seq_mold_no)
                                     j = j + 1
                                 Next
                             Else
-                                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.pwi_id)
+                                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.pwi_id, modelMoldCavity.imc_id, modelMoldCavity.mm_id, Backoffice_model.gobal_seq_mold_no)
                             End If
                         End If
                     Catch ex As Exception
@@ -548,11 +556,11 @@ break_loop:
                                 Dim special_wi As String = itemPlanData.wi
                                 Dim special_item_cd As String = itemPlanData.item_cd
                                 Dim special_item_name As String = itemPlanData.item_name
-                                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, special_wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.Spwi_id(j))
+                                Backoffice_model.insPrdDetail_sqlite(pd, line_cd, special_wi, special_item_cd, special_item_name, staff_no, Iseq, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.Spwi_id(j), modelMoldCavity.imc_id, modelMoldCavity.mm_id, Backoffice_model.gobal_seq_mold_no)
                                 j = j + 1
                             Next
                         Else
-                            Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.pwi_id)
+                            Backoffice_model.insPrdDetail_sqlite(pd, line_cd, wi_plan, item_cd, item_name, staff_no, seq_no, prd_qty2, number_qty, start_time2, end_time2, use_timee, tr_status, Working_Pro.pwi_id, modelMoldCavity.imc_id, modelMoldCavity.mm_id, Backoffice_model.gobal_seq_mold_no)
                         End If
                     End Try
                     Working_Pro.cal_eff()

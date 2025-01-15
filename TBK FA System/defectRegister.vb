@@ -136,7 +136,7 @@ Public Class defectRegister
             Dim dfAll = CDbl(Val(Working_Pro.lb_ng_qty.Text)) + CDbl(Val(Working_Pro.lb_nc_qty.Text))
             Dim OEE As New OEE_NODE
             Working_Pro.set_AccTarget(Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text, Working_Pro.gobal_stTimeModel)
-            Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel)
+            Working_Pro.setlvA(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Working_Pro.Label14.Text, DateTime.Now.ToString("yyyy-MM-dd"), Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel, MainFrm.chk_spec_line)
             Working_Pro.setlvQ(Working_Pro.Label24.Text, Working_Pro.Label18.Text, Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.gobal_stTimeModel)
             Dim P = Working_Pro.setgetSpeedLoss(Working_Pro.lbOverTimeQuality.Text, Working_Pro.lb_good.Text, Prd_detail.Label12.Text.Substring(3, 5), Working_Pro.Label38.Text, Working_Pro.Label24.Text, Working_Pro.gobal_stTimeModel)
             Dim GoodByPartNo As Integer = CDbl(Val(Working_Pro.actualP.Text)) - CDbl(Val(Working_Pro.lbOverTimeQuality.Text))

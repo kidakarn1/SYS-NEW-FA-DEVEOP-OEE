@@ -108,7 +108,6 @@ Public Class MainFrm
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         check_close_fa()
-
         Label2.Text = TimeOfDay.ToString("H:mm:ss")
         Label3.Text = DateTime.Now.ToString("D")
         Label1.Text = DateTime.Now.ToString("yyyy/MM/dd")
@@ -320,6 +319,9 @@ Public Class MainFrm
     End Function
     Private Sub menu1_Click_1(sender As Object, e As EventArgs) Handles menu1.Click
         Backoffice_model.gobal_Flg_autoTranferProductions = Backoffice_model.Check_detail_actual_insert_act() 'กรณีเครื่องดับ'
+        If Backoffice_model.gobal_Flg_autoTranferProductions = "1" Then
+            model_api_sqlite.mas_manage_mold(Label4.Text)
+        End If
         check_lot()
         'Prd_detail.Label2.Text = ListView1.Items.Count
         Working_Pro.Label24.Text = Label4.Text
@@ -359,8 +361,30 @@ Public Class MainFrm
                             Prd_detail.lb_plan_qty.Text = item("QTY").ToString()
                             Prd_detail.lb_remain_qty.Text = (item("QTY").ToString() - item("prd_qty_sum").ToString())
                             Prd_detail.lb_wi.Text = item("WI").ToString()
+                            modelMoldCavity.moldFlg = item("mold_flg").ToString()
                             Prd_detail.LB_PLAN_DATE.Text = item("WORK_ODR_DLV_DATE").ToString().Substring(0, 10)
                         Next
+                        Dim rsMold = modelMoldCavity.mCheckworkingplan(Prd_detail.lb_wi.Text)
+                        If rsMold <> "0" Then
+                            Dim dictMold As Object = New JavaScriptSerializer().Deserialize(Of List(Of Object))(rsMold)
+                            For Each itemMold As Object In dictMold
+                                modelMoldCavity.imc_id = itemMold("imc_id").ToString
+                                modelMoldCavity.mm_id = itemMold("mm_id").ToString
+                                modelMoldCavity.mm_name = itemMold("mm_name").ToString
+                                modelMoldCavity.mm_mold_number = itemMold("mm_mold_number").ToString
+                                modelMoldCavity.cavity = itemMold("mm_cavity_shot").ToString
+                                Prd_detail.mold.Text = itemMold("mm_mold_number").ToString
+                                modelMoldCavity.mUpdateStatusProduction("2", modelMoldCavity.imc_id, Label4.Text, "0", "2")
+                            Next
+                        Else
+                            If modelMoldCavity.moldFlg = "1" Then
+                                Prd_detail.mold.Text = " - "
+                                Prd_detail.Test_short.Enabled = False
+                            Else
+                                Prd_detail.mold.Text = " - "
+                                Prd_detail.Test_short.Enabled = False
+                            End If
+                        End If
                         Prd_detail.Show()
                     Else
                         dataPlan = ""

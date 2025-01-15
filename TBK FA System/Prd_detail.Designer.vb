@@ -13,10 +13,8 @@ Partial Class Prd_detail
             MyBase.Dispose(disposing)
         End Try
     End Sub
-
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
-
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
@@ -47,7 +45,6 @@ Partial Class Prd_detail
         Me.lb_temp_line = New System.Windows.Forms.Label()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Button4 = New System.Windows.Forms.Button()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.QTY_NC = New System.Windows.Forms.Label()
@@ -63,6 +60,9 @@ Partial Class Prd_detail
         Me.PART_NO = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnUp = New System.Windows.Forms.PictureBox()
         Me.btnDown = New System.Windows.Forms.PictureBox()
+        Me.Test_short = New System.Windows.Forms.Button()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.mold = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.LB_ShowWorker, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picSpecial, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -83,7 +83,7 @@ Partial Class Prd_detail
         Me.lb_remain_qty.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.lb_remain_qty.Font = New System.Drawing.Font("Catamaran", 29.25!, System.Drawing.FontStyle.Bold)
         Me.lb_remain_qty.ForeColor = System.Drawing.Color.Tomato
-        Me.lb_remain_qty.Location = New System.Drawing.Point(641, 361)
+        Me.lb_remain_qty.Location = New System.Drawing.Point(618, 333)
         Me.lb_remain_qty.Name = "lb_remain_qty"
         Me.lb_remain_qty.Size = New System.Drawing.Size(139, 43)
         Me.lb_remain_qty.TabIndex = 38
@@ -99,7 +99,7 @@ Partial Class Prd_detail
         Me.lb_plan_qty.BackColor = System.Drawing.Color.FromArgb(CType(CType(7, Byte), Integer), CType(CType(20, Byte), Integer), CType(CType(35, Byte), Integer))
         Me.lb_plan_qty.Font = New System.Drawing.Font("Catamaran", 29.25!, System.Drawing.FontStyle.Bold)
         Me.lb_plan_qty.ForeColor = System.Drawing.Color.SpringGreen
-        Me.lb_plan_qty.Location = New System.Drawing.Point(443, 361)
+        Me.lb_plan_qty.Location = New System.Drawing.Point(424, 333)
         Me.lb_plan_qty.Name = "lb_plan_qty"
         Me.lb_plan_qty.Size = New System.Drawing.Size(139, 43)
         Me.lb_plan_qty.TabIndex = 37
@@ -112,7 +112,7 @@ Partial Class Prd_detail
         Me.lb_wi.BackColor = System.Drawing.Color.Transparent
         Me.lb_wi.Font = New System.Drawing.Font("Catamaran", 22.0!, System.Drawing.FontStyle.Bold)
         Me.lb_wi.ForeColor = System.Drawing.Color.White
-        Me.lb_wi.Location = New System.Drawing.Point(422, 139)
+        Me.lb_wi.Location = New System.Drawing.Point(419, 139)
         Me.lb_wi.Name = "lb_wi"
         Me.lb_wi.Size = New System.Drawing.Size(205, 33)
         Me.lb_wi.TabIndex = 36
@@ -339,22 +339,6 @@ Partial Class Prd_detail
         Me.Label1.TabIndex = 1
         Me.Label1.Text = "Label1"
         '
-        'Button4
-        '
-        Me.Button4.BackColor = System.Drawing.Color.Transparent
-        Me.Button4.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Button4.FlatAppearance.BorderSize = 0
-        Me.Button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent
-        Me.Button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
-        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(27, Byte), Integer), CType(CType(70, Byte), Integer))
-        Me.Button4.Location = New System.Drawing.Point(15, 503)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(195, 75)
-        Me.Button4.TabIndex = 18
-        Me.Button4.UseVisualStyleBackColor = False
-        '
         'Button3
         '
         Me.Button3.BackColor = System.Drawing.Color.Transparent
@@ -375,9 +359,9 @@ Partial Class Prd_detail
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.PictureBox1.Location = New System.Drawing.Point(408, 451)
+        Me.PictureBox1.Location = New System.Drawing.Point(207, 471)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(139, 131)
+        Me.PictureBox1.Size = New System.Drawing.Size(116, 129)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox1.TabIndex = 41
         Me.PictureBox1.TabStop = False
@@ -428,7 +412,7 @@ Partial Class Prd_detail
         Me.LB_PLAN_DATE.BackColor = System.Drawing.Color.Transparent
         Me.LB_PLAN_DATE.Font = New System.Drawing.Font("Catamaran", 22.0!, System.Drawing.FontStyle.Bold)
         Me.LB_PLAN_DATE.ForeColor = System.Drawing.Color.White
-        Me.LB_PLAN_DATE.Location = New System.Drawing.Point(445, 237)
+        Me.LB_PLAN_DATE.Location = New System.Drawing.Point(420, 237)
         Me.LB_PLAN_DATE.Name = "LB_PLAN_DATE"
         Me.LB_PLAN_DATE.Size = New System.Drawing.Size(207, 33)
         Me.LB_PLAN_DATE.TabIndex = 4633
@@ -446,9 +430,9 @@ Partial Class Prd_detail
         'picSpecial
         '
         Me.picSpecial.BackgroundImage = CType(resources.GetObject("picSpecial.BackgroundImage"), System.Drawing.Image)
-        Me.picSpecial.Location = New System.Drawing.Point(0, 0)
+        Me.picSpecial.Location = New System.Drawing.Point(0, -2)
         Me.picSpecial.Name = "picSpecial"
-        Me.picSpecial.Size = New System.Drawing.Size(800, 600)
+        Me.picSpecial.Size = New System.Drawing.Size(800, 602)
         Me.picSpecial.TabIndex = 4635
         Me.picSpecial.TabStop = False
         Me.picSpecial.Visible = False
@@ -513,14 +497,54 @@ Partial Class Prd_detail
         Me.btnDown.TabIndex = 4638
         Me.btnDown.TabStop = False
         '
+        'Test_short
+        '
+        Me.Test_short.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.0!)
+        Me.Test_short.Location = New System.Drawing.Point(603, 407)
+        Me.Test_short.Name = "Test_short"
+        Me.Test_short.Size = New System.Drawing.Size(168, 58)
+        Me.Test_short.TabIndex = 4639
+        Me.Test_short.Text = "TEST SHORT"
+        Me.Test_short.UseVisualStyleBackColor = True
+        '
+        'Button4
+        '
+        Me.Button4.BackColor = System.Drawing.Color.Transparent
+        Me.Button4.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.Button4.FlatAppearance.BorderSize = 0
+        Me.Button4.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent
+        Me.Button4.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent
+        Me.Button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(27, Byte), Integer), CType(CType(70, Byte), Integer))
+        Me.Button4.Location = New System.Drawing.Point(15, 503)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(195, 75)
+        Me.Button4.TabIndex = 18
+        Me.Button4.UseVisualStyleBackColor = False
+        '
+        'mold
+        '
+        Me.mold.AutoSize = True
+        Me.mold.BackColor = System.Drawing.Color.Transparent
+        Me.mold.Font = New System.Drawing.Font("Catamaran", 19.0!, System.Drawing.FontStyle.Bold)
+        Me.mold.ForeColor = System.Drawing.Color.White
+        Me.mold.Location = New System.Drawing.Point(634, 238)
+        Me.mold.Name = "mold"
+        Me.mold.Size = New System.Drawing.Size(140, 28)
+        Me.mold.TabIndex = 4641
+        Me.mold.Text = "XXXXXXXX"
+        '
         'Prd_detail
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(2, Byte), Integer), CType(CType(10, Byte), Integer), CType(CType(14, Byte), Integer))
-        Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.productionDetail
+        Me.BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), System.Drawing.Image)
         Me.ClientSize = New System.Drawing.Size(800, 600)
         Me.ControlBox = False
+        Me.Controls.Add(Me.mold)
+        Me.Controls.Add(Me.Test_short)
         Me.Controls.Add(Me.btnDown)
         Me.Controls.Add(Me.btnUp)
         Me.Controls.Add(Me.lvWISpc)
@@ -557,7 +581,7 @@ Partial Class Prd_detail
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Prd_detail"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Prd_detail"
+        Me.Text = "   "
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.LB_ShowWorker, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.picSpecial, System.ComponentModel.ISupportInitialize).EndInit()
@@ -572,7 +596,6 @@ Partial Class Prd_detail
     Friend WithEvents Label6 As Label
     Friend WithEvents TextBox1 As TextBox
     Friend WithEvents Label12 As Label
-    Friend WithEvents Button4 As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Label22 As Label
     Friend WithEvents Label1 As Label
@@ -606,4 +629,7 @@ Partial Class Prd_detail
     Friend WithEvents PART_NO As ColumnHeader
     Friend WithEvents btnUp As PictureBox
     Friend WithEvents btnDown As PictureBox
+    Friend WithEvents Test_short As Button
+    Friend WithEvents Button4 As Button
+    Friend WithEvents mold As Label
 End Class
