@@ -60,7 +60,7 @@ Public Class sc_prd_plan
 
 
 
-                    'Working_Pro.Button1.Text = MainFrm.cavity.Text & " Qty."
+                    Working_Pro.Button1.Text = MainFrm.cavity.Text & " Qty."
 
                     Working_Pro.Label18.Text = Prd_detail.Label6.Text
                     Working_Pro.Label29.Text = Prd_detail.Label2.Text
@@ -324,7 +324,7 @@ Public Class sc_prd_plan
 
 
 
-                            'Working_Pro.Button1.Text = MainFrm.cavity.Text & " Qty."
+                            Working_Pro.Button1.Text = MainFrm.cavity.Text & " Qty."
 
                             Working_Pro.Label18.Text = Prd_detail.Label6.Text
                             Working_Pro.Label29.Text = Prd_detail.Label2.Text

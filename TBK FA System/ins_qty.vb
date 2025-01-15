@@ -357,20 +357,12 @@ Public Class ins_qty
                     pb_ok.Visible = True
                 Else
                     ' Wait_data.Label1.Text = "กรุณารอสักครู่ ระบบกำลังบันทึกข้อมูล"
-                    ' Wait\_data.Label2.Text = "PLEASE WAIT SYSTEM SAVING DATA."
+                    ' Wait_data.Label2.Text = "PLEASE WAIT SYSTEM SAVING DATA."
                     ' MsgBox("TEST 1 ")
                     '  Wait_data.Show()
                     'MsgBox("TEST 2")
                     '  Timer1.Enabled = True
                     pb_ok.Visible = False
-
-                    If Backoffice_model.S_chk_spec_line = 1 Then 'for M25
-                        If Working_Pro.checkManualQtySpec = 0 Then ' ใช้แค่ ตอนกด Start ครั้งแรกเท่านั้น
-                            Working_Pro.checkManualQtySpec += 1
-                            MsgBox("LOAD INSLOSS")
-                            Working_Pro.insLossClickStart(DateTime.Now.ToString("yyyy-MM-dd"), Start_input_data_spc.Text)
-                        End If
-                    End If
                     insert_qty(TextBox1.Text)
                 End If
             End If
@@ -403,8 +395,8 @@ Public Class ins_qty
                 Working_Pro.ins_qty_fn_manual()
                 Working_Pro.Enabled = True
                 select_int_qty.Close()
-            'Wait_data.Close()
-            Me.Close()
+                Wait_data.Close()
+                Me.Close()
             Else
                 Button10.Enabled = False
                 Button11.Enabled = False

@@ -686,7 +686,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="OEE_NODE.vb" />
-    <Compile Include="OEE_SQLITE.vb" />
     <Compile Include="ProgressBar_Form.Designer.vb">
       <DependentUpon>ProgressBar_Form.vb</DependentUpon>
     </Compile>
@@ -1491,8 +1490,6 @@
   <ItemGroup>
     <Content Include="fa_logo.ico" />
     <Content Include="ICO_NEW_FA.ico" />
-    <None Include="Resources\selectLoss4.png" />
-    <None Include="Resources\ErrorTImeOld1.png" />
     <None Include="Resources\configLineGemba.png" />
     <None Include="Resources\OEE WAIT DATA %281%291.png" />
     <None Include="Resources\0s-200px-200px-unscreen.gif" />

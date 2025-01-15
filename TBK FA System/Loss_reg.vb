@@ -48,8 +48,8 @@ Public Class Loss_reg
                                     Backoffice_model.alert_loss(special_wi, "2", pd, loss_cd_id)
                                 Next
                             Else
-                                Backoffice_model.Update_flg_loss(pd, line_cd, Working_Pro.wi_no.Text, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
-                                Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, Working_Pro.wi_no.Text, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
+                                Backoffice_model.Update_flg_loss(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
+                                Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
                                 Backoffice_model.alert_loss(wi_plan, "2", pd, loss_cd_id)
                             End If
                         Else
@@ -66,7 +66,7 @@ Public Class Loss_reg
                                     Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, special_wi, special_item_cd, Iseq, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
                                 Next
                             Else
-                                Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, Working_Pro.wi_no.Text, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
+                                Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
                             End If
                         End If
                     Catch ex As Exception
@@ -83,7 +83,7 @@ Public Class Loss_reg
                                 Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, special_wi, special_item_cd, Iseq, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
                             Next
                         Else
-                            Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, Working_Pro.wi_no.Text, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
+                            Backoffice_model.Update_flg_loss_sqlite(pd, line_cd, wi_plan, item_cd, seq_no, shift_prd, date_start_data, end_loss, total_loss, loss_type, loss_cd_id, op_id, transfer_flg, "2")
                         End If
                     End Try
                     Dim LoadSQL = Backoffice_model.get_loss_mst()

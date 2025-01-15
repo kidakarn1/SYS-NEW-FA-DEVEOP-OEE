@@ -65,7 +65,7 @@ Partial Class Wait_data
         '
         'PictureBox2
         '
-        ' Me.PictureBox2.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.dwdd1
+        Me.PictureBox2.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.dwdd1
         Me.PictureBox2.Location = New System.Drawing.Point(24, 352)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(750, 220)

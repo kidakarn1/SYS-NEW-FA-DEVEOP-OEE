@@ -140,45 +140,45 @@ Public Class Backoffice_model
         End Try
     End Sub
     Public Shared Sub GetLocalServerOEE()
-        Dim sqliteConn As New SQLiteConnection(sqliteConnect)
-        Check_connect_sqlite()
-        Clear_sqlite()
+        ' Dim sqliteConn As New SQLiteConnection(sqliteConnect)
+        ' Check_connect_sqlite()
+        ' Clear_sqlite()
         Try
-            sqliteConn.Open()
-            Dim svo_ip_address As String = ""
-            Dim cmd As New SQLiteCommand
-            cmd.Connection = sqliteConn
-            cmd.CommandText = "select * from  Server_OEE"
-            Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
-            While LoadSQL.Read()
-                svo_ip_address = LoadSQL("svo_ipaddress_and_port").ToString()
-            End While
-            svOEE = svo_ip_address
-            'svOEE = "192.168.161.78:3000"
+            ' sqliteConn.Open()
+            ' Dim svo_ip_address As String = ""
+            ' Dim cmd As New SQLiteCommand
+            ' cmd.Connection = sqliteConn
+            ' cmd.CommandText = "select * from  Server_OEE"
+            ' Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
+            ' While LoadSQL.Read()
+            ' svo_ip_address = LoadSQL("svo_ipaddress_and_port").ToString()
+            ' End While
+            'svOEE = svo_ip_address
+            svOEE = "192.168.161.78:6100"
         Catch ex As Exception
             MsgBox("SQLite Database connect failed. Please contact PC System [Function GetLocalServerOEE]")
-        sqliteConn.Close()
+            'sqliteConn.Close()
         End Try
     End Sub
     Public Shared Sub GetLocalServerping()
-        Dim sqliteConn As New SQLiteConnection(sqliteConnect)
-        Check_connect_sqlite()
-        Clear_sqlite()
+        ' Dim sqliteConn As New SQLiteConnection(sqliteConnect)
+        ' Check_connect_sqlite()
+        ' Clear_sqlite()
         Try
-            sqliteConn.Open()
-            Dim tmpsvp_ping As String = ""
-            Dim cmd As New SQLiteCommand
-            cmd.Connection = sqliteConn
-            cmd.CommandText = "select * from  Server_ping"
-            Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
-            While LoadSQL.Read()
-                tmpsvp_ping = LoadSQL("svp_ip_address").ToString()
-            End While
-            svp_ping = tmpsvp_ping
-            'svp_ping = "192.168.161.101"
+            '     sqliteConn.Open()
+            '     Dim tmpsvp_ping As String = ""
+            '     Dim cmd As New SQLiteCommand
+            '     cmd.Connection = sqliteConn
+            '     cmd.CommandText = "select * from  Server_ping"
+            '     Dim LoadSQL As SQLiteDataReader = cmd.ExecuteReader()
+            '     While LoadSQL.Read()
+            '     tmpsvp_ping = LoadSQL("svp_ip_address").ToString()
+            '     End While
+            ' svp_ping = tmpsvp_ping
+            svp_ping = "192.168.161.101"
         Catch ex As Exception
             MsgBox("SQLite Database connect failed. Please contact PC System [Function svp_ping]")
-            sqliteConn.Close()
+            '    sqliteConn.Close()
         End Try
     End Sub
     Public Shared Function checkTransection(pwi_id As String, number_qty As String, DateTime As String)
@@ -221,7 +221,7 @@ Public Class Backoffice_model
     Public Shared Function load_config_master_database()
         Dim api = New api()
         Dim check_tag_type = api.Load_data("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & MainFrm.Label4.Text)
-        Console.WriteLine("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/JOIN_CHECK_LINE_MASTER?line_cd=" & MainFrm.Label4.Text)
+        Console.WriteLine(check_tag_type)
         Return check_tag_type
     End Function
     Public Shared Function F_NEXT_PROCESS(ITEM_CD As String)
@@ -1535,8 +1535,8 @@ recheck:
             '  reader.Close()
             'Return reader
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/index.php/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
-            Console.WriteLine("http://" & svApi & "/apiShopfloor/index.php/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloorTest/index.php/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Console.WriteLine("http://" & svApi & "/apiShopfloorTest/index.php/updateDatadefect/update_tagprint_detail?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
         Catch ex As Exception
             '  SQLConn.Close()
@@ -1556,10 +1556,10 @@ recheck:
             '  reader.Close()
             'Return reader
             Dim mdDefect = New modelDefect
-            Console.WriteLine("http: //" & svApi & "/apiShopfloor/index.php/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
+            Console.WriteLine("http: //" & svApi & "/apiShopfloorTest/index.php/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
             If mdDefect.mGetDataEnableFGPart(MainFrm.Label4.Text) = "1" Then
                 Dim api = New api()
-                Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/index.php/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
+                Dim result = api.Load_data("http://" & svApi & "/apiShopfloorTest/index.php/updateDatadefect/update_tagprint_detailforDefect?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg & "&pwi_id=" & pwi_id & "&BoxNo=" & BoxNo & "&goodQty=" & goodQty & "&cupprint=" & cupprint)
                 Return result
             Else
                 Return 0
@@ -1580,7 +1580,7 @@ recheck:
             '  reader = SQLCmd.ExecuteReader()
             '  reader.Close()
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/index.php/updateDatadefect/update_tagprint_sub?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloorTest/index.php/updateDatadefect/update_tagprint_sub?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
         Catch ex As Exception
             '    SQLConn.Close()
@@ -1599,7 +1599,7 @@ recheck:
             '   reader = SQLCmd.ExecuteReader()
             '   reader.Close()
             Dim api = New api()
-            Dim result = api.Load_data("http://" & svApi & "/apiShopfloor/index.php/updateDatadefect/update_tagprint_main?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
+            Dim result = api.Load_data("http://" & svApi & "/apiShopfloorTest/index.php/updateDatadefect/update_tagprint_main?wi=" & wi & "&flgUpdate=" & flgUpdate & "&conditionflg=" & conditionflg)
             Return result
             'Return reader
         Catch ex As Exception
@@ -3637,7 +3637,6 @@ re_insert_rework_act:
 			shift_prd = '" & shift_prd & "' and 
 			start_loss = '" & st_datetime2 & "'"
             End If
-            Console.WriteLine(SQLCmd.CommandText)
             reader = SQLCmd.ExecuteReader()
             SQLConn.Close()
         Catch ex As Exception
@@ -3687,11 +3686,11 @@ re_insert_rework_act:
         End Try
         Return 0
     End Function
-    Public Function Get_Plan_All_By_Line(line_cd As String, shift As String, dateStart As String, timeStart As String, flg_spec As String, item_cd As String)
+    Public Function Get_Plan_All_By_Line(line_cd As String, shift As String, dateStart As String)
         Try
             Dim api = New api()
-            Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart & "&timeStart=" & timeStart & "&flg_spec=" & flg_spec & "&item_cd=" & item_cd)
-            Console.WriteLine("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart & "&timeStart=" & timeStart & "&flg_spec=" & flg_spec & "&item_cd=" & item_cd)
+            Dim GetData = api.Load_data("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
+            Console.WriteLine("http://" & svApi & "/API_NEW_FA/index.php/GET_DATA_NEW_FA/Get_Plan_All_By_Line?line_cd=" & line_cd & "&shift=" & shift & "&dateStart=" & dateStart)
             Return GetData
         Catch ex As Exception
             MsgBox("Error Function Get_Plan_All_By_Line In Backoffice_model")
@@ -3761,5 +3760,4 @@ re_insert_rework_act:
             MsgBox("Error Function UpdateWorkingSpecial In Backoffice_model")
         End Try
     End Sub
-    
 End Class
