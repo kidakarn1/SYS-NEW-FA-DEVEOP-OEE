@@ -99,6 +99,7 @@ Partial Class loadData
         '
         'PictureBox5
         '
+        Me.PictureBox5.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.eadb74787dda41cc6333341e552934322
         Me.PictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.PictureBox5.Image = CType(resources.GetObject("PictureBox5.Image"), System.Drawing.Image)
         Me.PictureBox5.Location = New System.Drawing.Point(0, -1)
@@ -112,6 +113,7 @@ Partial Class loadData
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.eadb74787dda41cc6333341e552934321
         Me.ClientSize = New System.Drawing.Size(800, 600)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.PictureBox3)

@@ -14,116 +14,134 @@ Imports System.Configuration
 Imports GenCode128
 Imports BarcodeLib.Barcode
 Public Class ins_time_loss
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Dim text_now As String = TextBox1.Text
-        If text_now.Length > 4 Then
-            Dim text_to2 As String = TextBox2.Text
-            If text_to2.Length = 2 Then
-                text_to2 = text_to2 & ":1"
-                TextBox2.Text = text_to2
-            ElseIf text_to2.Length = 1 Then
-                text_to2 = text_to2 & "1"
-                TextBox2.Text = text_to2
-                allena()
-            Else
-                text_to2 = text_to2 & "1"
-                TextBox2.Text = text_to2
-            End If
-        Else
-            If text_now.Length = 2 Then
-                text_now = text_now & ":1"
-                TextBox1.Text = text_now
-            Else
-                text_now = text_now & "1"
-                TextBox1.Text = text_now
-            End If
-        End If
-        chk_ins()
-        Dim text_to2_now As String = TextBox2.Text
-        If text_to2_now.Length > 4 Then
-            alldis()
-        End If
-    End Sub
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Dim text_now As String = TextBox1.Text
-        If text_now.Length > 4 Then
-            Dim text_to2 As String = TextBox2.Text
-            If text_to2.Length = 2 Then
-                text_to2 = text_to2 & ":2"
-                TextBox2.Text = text_to2
-            Else
-                text_to2 = text_to2 & "2"
-                TextBox2.Text = text_to2
-            End If
-        Else
-            If text_now.Length = 2 Then
-                text_now = text_now & ":2"
-                TextBox1.Text = text_now
-            Else
-                text_now = text_now & "2"
-                TextBox1.Text = text_now
-            End If
-        End If
-        chk_ins()
-        Dim text_to2_now As String = TextBox2.Text
-        If text_to2_now.Length > 4 Then
-            alldis()
-        End If
-    End Sub
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        Dim text_now As String = TextBox1.Text
-        If text_now.Length > 4 Then
-            Dim text_to2 As String = TextBox2.Text
-
-            If text_to2.Length = 2 Then
-                text_to2 = text_to2 & ":3"
-                TextBox2.Text = text_to2
-            Else
-                text_to2 = text_to2 & "3"
-                TextBox2.Text = text_to2
-            End If
-
-        Else
-            If text_now.Length = 2 Then
-                text_now = text_now & ":3"
-                TextBox1.Text = text_now
-            Else
-                text_now = text_now & "3"
-                TextBox1.Text = text_now
-            End If
-        End If
-
-        chk_ins()
-
-        Dim text_to2_now As String = TextBox2.Text
-        If text_to2_now.Length > 4 Then
-            alldis()
-        End If
-    End Sub
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+	Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
 		Dim text_now As String = TextBox1.Text
-        If text_now.Length > 4 Then
-            Dim text_to2 As String = TextBox2.Text
+		If text_now.Length > 4 Then
+			Dim text_to2 As String = TextBox2.Text
+			If text_to2.Length = 2 Then
+				text_to2 = text_to2 & ":1"
+				TextBox2.Text = text_to2
+			ElseIf text_to2.Length = 1 Then
+				text_to2 = text_to2 & "1"
+				TextBox2.Text = text_to2
+				allena()
+			Else
+				text_to2 = text_to2 & "1"
+				TextBox2.Text = text_to2
+			End If
 
-            If text_to2.Length = 2 Then
-                text_to2 = text_to2 & ":4"
-                TextBox2.Text = text_to2
-            Else
-                text_to2 = text_to2 & "4"
-                TextBox2.Text = text_to2
-            End If
-        Else
-            If text_now.Length = 2 Then
-                text_now = text_now & ":4"
-                TextBox1.Text = text_now
-            Else
-                text_now = text_now & "4"
-                TextBox1.Text = text_now
-            End If
-        End If
-        chk_ins()
-        Dim text_to2_now As String = TextBox2.Text
+		Else
+			If text_now.Length = 2 Then
+				text_now = text_now & ":1"
+				TextBox1.Text = text_now
+			Else
+				text_now = text_now & "1"
+				TextBox1.Text = text_now
+			End If
+		End If
+
+		chk_ins()
+
+
+		Dim text_to2_now As String = TextBox2.Text
+		If text_to2_now.Length > 4 Then
+			alldis()
+		End If
+
+	End Sub
+
+	Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+		Dim text_now As String = TextBox1.Text
+		If text_now.Length > 4 Then
+			Dim text_to2 As String = TextBox2.Text
+
+			If text_to2.Length = 2 Then
+				text_to2 = text_to2 & ":2"
+				TextBox2.Text = text_to2
+			Else
+				text_to2 = text_to2 & "2"
+				TextBox2.Text = text_to2
+			End If
+
+		Else
+			If text_now.Length = 2 Then
+				text_now = text_now & ":2"
+				TextBox1.Text = text_now
+			Else
+				text_now = text_now & "2"
+				TextBox1.Text = text_now
+			End If
+		End If
+
+		chk_ins()
+
+		Dim text_to2_now As String = TextBox2.Text
+		If text_to2_now.Length > 4 Then
+			alldis()
+
+		End If
+
+	End Sub
+
+	Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+		Dim text_now As String = TextBox1.Text
+		If text_now.Length > 4 Then
+			Dim text_to2 As String = TextBox2.Text
+
+			If text_to2.Length = 2 Then
+				text_to2 = text_to2 & ":3"
+				TextBox2.Text = text_to2
+			Else
+				text_to2 = text_to2 & "3"
+				TextBox2.Text = text_to2
+			End If
+
+		Else
+			If text_now.Length = 2 Then
+				text_now = text_now & ":3"
+				TextBox1.Text = text_now
+			Else
+				text_now = text_now & "3"
+				TextBox1.Text = text_now
+			End If
+		End If
+
+		chk_ins()
+
+		Dim text_to2_now As String = TextBox2.Text
+		If text_to2_now.Length > 4 Then
+			alldis()
+
+		End If
+	End Sub
+
+	Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+		Dim text_now As String = TextBox1.Text
+		If text_now.Length > 4 Then
+			Dim text_to2 As String = TextBox2.Text
+
+			If text_to2.Length = 2 Then
+				text_to2 = text_to2 & ":4"
+				TextBox2.Text = text_to2
+			Else
+				text_to2 = text_to2 & "4"
+				TextBox2.Text = text_to2
+			End If
+
+		Else
+			If text_now.Length = 2 Then
+				text_now = text_now & ":4"
+				TextBox1.Text = text_now
+			Else
+				text_now = text_now & "4"
+				TextBox1.Text = text_now
+			End If
+		End If
+
+		chk_ins()
+
+
+		Dim text_to2_now As String = TextBox2.Text
 		If text_to2_now.Length > 4 Then
 			alldis()
 
@@ -368,152 +386,130 @@ Public Class ins_time_loss
 		'MsgBox(TextBox2.Text.Length)
 		chk_ins()
 	End Sub
-    Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
-        TextBox1.Clear()
-        TextBox2.Clear()
-        ena012()
-        Loss_reg_pass.Enabled = True
-        Me.Hide()
-    End Sub
-    Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
+
+	Private Sub Button11_Click(sender As Object, e As EventArgs) Handles Button11.Click
+		TextBox1.Clear()
+		TextBox2.Clear()
+		ena012()
+
+		Loss_reg_pass.Enabled = True
+
+		Me.Hide()
+	End Sub
+	Private Sub Button10_Click(sender As Object, e As EventArgs) Handles Button10.Click
 		Try
 			If My.Computer.Network.Ping(Backoffice_model.svp_ping) Then
                 Try
-                    If Backoffice_model.S_chk_spec_line = 0 Then ' Normal
-                        Dim date_start_shift As Date = Backoffice_model.date_time_start_master_shift
-                        Dim date_end_shift As Date = Backoffice_model.date_time_end_check_date_paralell_linet
-                        Dim date_start_time As String = date_start_shift.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
-                        Dim convert_date_start_time As String = date_start_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim convert_date_end_time As String = date_end_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim date_end_time As String = date_end_shift.ToString("dd/mm/yy", CultureInfo.InvariantCulture)
-                        Dim convert_date_time_start As String = date_start_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim convert_date_end_shift As String = date_end_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
-                        ' ' MsgBox("--->")
-                        ' MsgBox("convert_date_time_start = " & convert_date_time_start)
-                        'MsgBox("convert_date_end_shift = " & convert_date_end_shift)
-                        'MsgBox("=============<><>===")
-                        Dim date_cerrunt_now As Date = DateTime.Now.ToString()
-                        Dim date_cerrunt_now1 = date_cerrunt_now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
-                        '  MsgBox("re====")
-                        'MsgBox("date_cerrunt_now = " & date_cerrunt_now1)
-                        '  MsgBox("date_start_time = " & date_start_time)
-                        ' If TimeOfDay.ToString("HH:mm:ss") >= "00:00:00" And TimeOfDay.ToString("HH:mm:ss") <= "07:59:59" Then
-                        If date_cerrunt_now1 > date_start_time Then ' check เลย เที่ยงคืน 
-                            '   MsgBox("===>")
-                            date_end_shift = Backoffice_model.date_time_end_check_date_paralell_linet.AddDays(1)
-                            '   MsgBox("===>")
-                        End If
-                        ' MsgBox("01")
-                        Dim total_time_loss As Integer
-                        Dim date1 As Date = Date.Parse(TextBox1.Text)
-                        'MsgBox("02")
-                        Dim date2 As Date = Date.Parse(TextBox2.Text)
-                        If Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "B" Or Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "Q" Or Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "S" Then
-                            '   MsgBox("TimeOfDay   = " & TimeOfDay.ToString("HH:mm:ss"))
-                            If TimeOfDay.ToString("HH:mm:ss") >= "00:00:00" And TimeOfDay.ToString("HH:mm:ss") <= "07:59:59" Then
-                                ' MsgBox("IF -1 DAYS")
-                                '   MsgBox("date_cerrunt_now1===>" & date_cerrunt_now1)
-                                '   MsgBox("date_start_time===>" & date_start_time)
-                                If date_cerrunt_now1 > date_start_time Then
-                                    ' MsgBox("---->")
-                                    ' MsgBox("date1 =" & date1)
-                                    If TextBox1.Text >= "00:00:00" And TextBox1.Text <= "07:59:59" Then
-                                        ' MsgBox("ggggg->>>")
-                                        ' date1 = date1.AddDays(1)
-                                    Else
-                                        '  MsgBox("AAAA->>>")
-                                        date1 = date1.AddDays(-1)
-                                    End If
-                                ElseIf date_cerrunt_now1 = date_start_time Then
-                                    Dim update_start_shift_date_time As Date = date_start_shift.AddDays(-1)
-                                    convert_date_start_time = update_start_shift_date_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+
+                    Dim date_start_shift As Date = Backoffice_model.date_time_start_master_shift
+                    Dim date_end_shift As Date = Backoffice_model.date_time_end_check_date_paralell_linet
+                    Dim date_start_time As String = date_start_shift.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+                    Dim convert_date_start_time As String = date_start_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                    Dim convert_date_end_time As String = date_end_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                    Dim date_end_time As String = date_end_shift.ToString("dd/mm/yy", CultureInfo.InvariantCulture)
+                    Dim convert_date_time_start As String = date_start_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
+                    Dim convert_date_end_shift As String = date_end_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
+                    ' ' MsgBox("--->")
+                    ' MsgBox("convert_date_time_start = " & convert_date_time_start)
+                    'MsgBox("convert_date_end_shift = " & convert_date_end_shift)
+                    'MsgBox("=============<><>===")
+                    Dim date_cerrunt_now As Date = DateTime.Now.ToString()
+                    Dim date_cerrunt_now1 = date_cerrunt_now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
+                    '  MsgBox("re====")
+                    'MsgBox("date_cerrunt_now = " & date_cerrunt_now1)
+                    '  MsgBox("date_start_time = " & date_start_time)
+                    ' If TimeOfDay.ToString("HH:mm:ss") >= "00:00:00" And TimeOfDay.ToString("HH:mm:ss") <= "07:59:59" Then
+                    If date_cerrunt_now1 > date_start_time Then ' check เลย เที่ยงคืน 
+                        '   MsgBox("===>")
+                        date_end_shift = Backoffice_model.date_time_end_check_date_paralell_linet.AddDays(1)
+                        '   MsgBox("===>")
+                    End If
+                    ' MsgBox("01")
+                    Dim total_time_loss As Integer
+                    Dim date1 As Date = Date.Parse(TextBox1.Text)
+                    'MsgBox("02")
+                    Dim date2 As Date = Date.Parse(TextBox2.Text)
+                    If Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "B" Or Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "Q" Or Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "S" Then
+                        '   MsgBox("TimeOfDay   = " & TimeOfDay.ToString("HH:mm:ss"))
+                        If TimeOfDay.ToString("HH:mm:ss") >= "00:00:00" And TimeOfDay.ToString("HH:mm:ss") <= "07:59:59" Then
+                            ' MsgBox("IF -1 DAYS")
+                            If date_cerrunt_now1 > date_start_time Then
+                                ' MsgBox("---->")
+                                ' MsgBox("date1 =" & date1)
+                                If TextBox1.Text >= "00:00:00" And TextBox1.Text <= "07:59:59" Then
+                                    ' MsgBox("ggggg->>>")
+                                    ' date1 = date1.AddDays(1)
+                                Else
+                                    '  MsgBox("AAAA->>>")
+                                    date1 = date1.AddDays(-1)
                                 End If
+                            ElseIf date_cerrunt_now1 = date_start_time Then
+                                Dim update_start_shift_date_time As Date = date_start_shift.AddDays(-1)
+                                convert_date_start_time = update_start_shift_date_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                            End If
+                            If TextBox2.Text >= "00:00:00" And TextBox2.Text <= "07:59:59" Then
+
+                            Else
+                                ' MsgBox("Please check time 5")
+                            End If
+                            If date_cerrunt_now1 > date_start_time Then
                                 If TextBox2.Text >= "00:00:00" And TextBox2.Text <= "07:59:59" Then
                                 Else
-                                    ' MsgBox("Please check time 5")
+                                    date2 = date2.AddDays(-1)
                                 End If
-                                If date_cerrunt_now1 > date_start_time Then
-                                    If TextBox2.Text >= "00:00:00" And TextBox2.Text <= "07:59:59" Then
-                                    Else
-                                        date2 = date2.AddDays(-1)
-                                    End If
-                                ElseIf date_cerrunt_now1 = date_start_time Then
-                                    Dim update_end_shift_date_time As Date = date_end_shift.AddDays(-1)
-                                    convert_date_end_time = update_end_shift_date_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                                End If
+                            ElseIf date_cerrunt_now1 = date_start_time Then
+                                Dim update_end_shift_date_time As Date = date_end_shift.AddDays(-1)
+                                convert_date_end_time = update_end_shift_date_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
                             End If
                         End If
-                        Dim start_time As String = date1.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim end_time As String = date2.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim date_cerrunt As Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                        Dim time_cerrunt As Date = DateTime.Now.ToString("HH:mm:ss")
-                        Dim result_date_click_start
-                        result_date_click_start = Backoffice_model.date_time_click_start.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        '     MsgBox("start_time = " & start_time)
-                        '     MsgBox("result_date_click_start = " & result_date_click_start)
-                        '    MsgBox("end_time = " & end_time)
-                        '   MsgBox("convert_date_end_time = " & convert_date_end_time)
-                        Dim Minutes1 As Long = DateDiff(DateInterval.Minute, date1, date2)
-                        ' MsgBox("Minutes1 = " & Minutes1.ToString)
-                        If start_time >= result_date_click_start And Minutes1 > 0 Then ' check ตอน clisk  start
-                            If start_time >= convert_date_start_time And start_time <= convert_date_end_time Then ' Check Time Start or check shift
-                                'MsgBox("OK1")
+                    End If
+                    Dim start_time As String = date1.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                    Dim end_time As String = date2.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                    Dim date_cerrunt As Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                    Dim time_cerrunt As Date = DateTime.Now.ToString("HH:mm:ss")
+                    Dim result_date_click_start = Backoffice_model.date_time_click_start.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                    '     MsgBox("start_time = " & start_time)
+                    '     MsgBox("result_date_click_start = " & result_date_click_start)
+                    '    MsgBox("end_time = " & end_time)
+                    '   MsgBox("convert_date_end_time = " & convert_date_end_time)
+                    Dim Minutes1 As Long = DateDiff(DateInterval.Minute, date1, date2)
+                    ' MsgBox("Minutes1 = " & Minutes1.ToString)
+                    If start_time >= result_date_click_start And Minutes1 > 0 Then ' check ตอน clisk  start
+                        If start_time >= convert_date_start_time And start_time <= convert_date_end_time Then ' Check Time Start or check shift
+                            'MsgBox("OK1")
+                            'MsgBox("end_time = " & end_time)
+                            'MsgBox("convert_date_end_time = " & convert_date_end_time)
+                            'MsgBox("convert_date_start_time = " & convert_date_start_time)
+                            If end_time <= convert_date_end_time And end_time >= convert_date_start_time Then ' Check Time Start 
+                                'MsgBox("OK2")
+                                Dim date_now As Date = Date.Now
+                                Dim date_time = date_now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                                'MsgBox("date_time = " & date_time)
                                 'MsgBox("end_time = " & end_time)
-                                'MsgBox("convert_date_end_time = " & convert_date_end_time)
-                                'MsgBox("convert_date_start_time = " & convert_date_start_time)
-                                If end_time <= convert_date_end_time And end_time >= convert_date_start_time Then ' Check Time Start 
-                                    'MsgBox("OK2")
-                                    Dim date_now As Date = Date.Now
-                                    Dim date_time = date_now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                                    'MsgBox("date_time = " & date_time)
-                                    'MsgBox("end_time = " & end_time)
-                                    If date_time >= end_time Then
-                                        Try
-                                            Dim Minutes As Long = DateDiff(DateInterval.Minute, date1, date2)
-                                            If Minutes.ToString < 0 Then
-                                                Dim temmpola As String = Minutes.ToString.Substring(0)
-                                                Dim tempp As Integer = temmpola
-                                                tempp = Math.Abs(tempp)
-                                                total_time_loss = 1440 - tempp
-                                            Else
-                                                total_time_loss = Minutes.ToString
-                                            End If
-                                        Catch ex As Exception
-
-                                        End Try
-                                        Dim GET_CHECK_LOSS_reuslt = Backoffice_model.GET_CHECK_LOSS(start_time, end_time)
-                                        Dim check_double_loss As Integer = 0
-                                        Dim count_check_double As String = ""
-                                        count_check_double = GET_CHECK_LOSS_reuslt
-                                        'If CDbl(Val(Backoffice_model.CHECK_TRANSCETION_PRODUCTION_DETAIL(MainFrm.Label4.Text, start_time, end_time))) = 0 Then
-                                        If CDbl(Val(count_check_double)) > 0 Then
-                                            ' MsgBox("Loss double please check start loss and end loss")
-                                            ena012()
-                                            Button10.Enabled = False
-                                            Button11.Enabled = False
-                                            Dim listdetail = "Loss double please check start loss and end loss"
-                                            PictureBox10.BringToFront()
-                                            PictureBox10.Show()
-                                            PictureBox2.BringToFront()
-                                            PictureBox2.Show()
-                                            Panel2.BringToFront()
-                                            Panel2.Show()
-                                            Label3.Text = listdetail
-                                            Label3.BringToFront()
-                                            Label3.Show()
+                                If date_time >= end_time Then
+                                    Try
+                                        Dim Minutes As Long = DateDiff(DateInterval.Minute, date1, date2)
+                                        If Minutes.ToString < 0 Then
+                                            Dim temmpola As String = Minutes.ToString.Substring(0)
+                                            Dim tempp As Integer = temmpola
+                                            tempp = Math.Abs(tempp)
+                                            total_time_loss = 1440 - tempp
                                         Else
-                                            ena012()
-                                            Loss_reg_pass.Label8.Text = TextBox1.Text
-                                            Loss_reg_pass.Label9.Text = TextBox2.Text
-                                            Loss_reg_pass.Enabled = True
-                                            Loss_reg_pass.Button1.Visible = True
-                                            Me.Hide()
+                                            total_time_loss = Minutes.ToString
                                         End If
-                                    Else
-                                        ena012()
+                                    Catch ex As Exception
+
+                                    End Try
+                                    Dim GET_CHECK_LOSS_reuslt = Backoffice_model.GET_CHECK_LOSS(start_time, end_time)
+                                    Dim check_double_loss As Integer = 0
+                                    Dim count_check_double As String = ""
+                                    count_check_double = GET_CHECK_LOSS_reuslt
+                                    'If CDbl(Val(Backoffice_model.CHECK_TRANSCETION_PRODUCTION_DETAIL(MainFrm.Label4.Text, start_time, end_time))) = 0 Then
+                                    If CDbl(Val(count_check_double)) > 0 Then
+                                        ' MsgBox("Loss double please check start loss and end loss")
                                         Button10.Enabled = False
                                         Button11.Enabled = False
-                                        Dim listdetail = "Please Check Time 2 ."
+                                        Dim listdetail = "Loss double please check start loss and end loss"
                                         PictureBox10.BringToFront()
                                         PictureBox10.Show()
                                         PictureBox2.BringToFront()
@@ -523,13 +519,32 @@ Public Class ins_time_loss
                                         Label3.Text = listdetail
                                         Label3.BringToFront()
                                         Label3.Show()
-                                        'MsgBox("Please Check Time.")
+                                    Else
+                                        Loss_reg_pass.Label8.Text = TextBox1.Text
+                                        Loss_reg_pass.Label9.Text = TextBox2.Text
+                                        Loss_reg_pass.Enabled = True
+                                        Loss_reg_pass.Button1.Visible = True
+                                        Me.Hide()
                                     End If
+                                    'Else
+                                    ' Button10.Enabled = False
+                                    ' Button11.Enabled = False
+                                    ' Dim listdetail = "Have Data In Production Actual Detail Please Check."
+                                    ' PictureBox10.BringToFront()
+                                    ' PictureBox10.Show()
+                                    ' PictureBox2.BringToFront()
+                                    ' PictureBox2.Show()
+                                    ' Panel2.BringToFront()
+                                    ' Panel2.Show()
+                                    ' Label3.Text = listdetail
+                                    ' Label3.BringToFront()
+                                    ' Label3.Show()
+                                    'End If
+                                    'MsgBox("OK READY CAL")
                                 Else
-                                    ena012()
                                     Button10.Enabled = False
                                     Button11.Enabled = False
-                                    Dim listdetail = "Please Check Shift."
+                                    Dim listdetail = "Please Check Time."
                                     PictureBox10.BringToFront()
                                     PictureBox10.Show()
                                     PictureBox2.BringToFront()
@@ -539,10 +554,9 @@ Public Class ins_time_loss
                                     Label3.Text = listdetail
                                     Label3.BringToFront()
                                     Label3.Show()
-                                    'MsgBox("Please Check Shift.")
+                                    'MsgBox("Please Check Time.")
                                 End If
                             Else
-                                ena012()
                                 Button10.Enabled = False
                                 Button11.Enabled = False
                                 Dim listdetail = "Please Check Shift."
@@ -555,13 +569,12 @@ Public Class ins_time_loss
                                 Label3.Text = listdetail
                                 Label3.BringToFront()
                                 Label3.Show()
-                                ' MsgBox("Please Check Shift.")
+                                'MsgBox("Please Check Shift.")
                             End If
                         Else
-                            ena012()
                             Button10.Enabled = False
                             Button11.Enabled = False
-                            Dim listdetail = "Please Check time 3 ."
+                            Dim listdetail = "Please Check Shift."
                             PictureBox10.BringToFront()
                             PictureBox10.Show()
                             PictureBox2.BringToFront()
@@ -571,206 +584,78 @@ Public Class ins_time_loss
                             Label3.Text = listdetail
                             Label3.BringToFront()
                             Label3.Show()
-                            ' MsgBox("Please Check time.")
+                            ' MsgBox("Please Check Shift.")
                         End If
-                    Else ' For K1M025
-                       ' MsgBox("K1M025")
-                        Dim date_start_shift As Date = Working_Pro.DateTimeStartofShift.Text ' Backoffice_model.date_time_start_master_shift
-                        Dim date_end_shift As Date = Backoffice_model.date_time_end_check_date_paralell_linet
-                        Dim date_start_time As String = date_start_shift.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
-                        Dim convert_date_start_time As String = date_start_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim convert_date_end_time As String = date_end_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim date_end_time As String = date_end_shift.ToString("dd/mm/yy", CultureInfo.InvariantCulture)
-                        Dim convert_date_time_start As String = date_start_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim convert_date_end_shift As String = date_end_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
-                        ' ' MsgBox("--->")
-                        ' MsgBox("convert_date_time_start = " & convert_date_time_start)
-                        'MsgBox("convert_date_end_shift = " & convert_date_end_shift)
-                        'MsgBox("=============<><>===")
-                        Dim date_cerrunt_now As Date = DateTime.Now.ToString()
-                        Dim date_cerrunt_now1 = date_cerrunt_now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)
-                        '  MsgBox("re====")
-                        'MsgBox("date_cerrunt_now = " & date_cerrunt_now1)
-                        '  MsgBox("date_start_time = " & date_start_time)
-                        ' If TimeOfDay.ToString("HH:mm:ss") >= "00:00:00" And TimeOfDay.ToString("HH:mm:ss") <= "07:59:59" Then
-                        If date_cerrunt_now1 > date_start_time Then ' check เลย เที่ยงคืน 
-                            '   MsgBox("===>")
-                            date_end_shift = Backoffice_model.date_time_end_check_date_paralell_linet.AddDays(1)
-                            '   MsgBox("===>")
-                        End If
-                        ' MsgBox("01")
-                        Dim total_time_loss As Integer
-                        Dim date1 As Date = Date.Parse(TextBox1.Text)
-                        'MsgBox("02")
-                        Dim date2 As Date = Date.Parse(TextBox2.Text)
-                        If Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "B" Or Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "Q" Or Trim(Prd_detail.Label12.Text.Substring(0, 1)) = "S" Then
-                            '   MsgBox("TimeOfDay   = " & TimeOfDay.ToString("HH:mm:ss"))
-                            If TimeOfDay.ToString("HH:mm:ss") >= "00:00:00" And TimeOfDay.ToString("HH:mm:ss") <= "07:59:59" Then
-                                ' MsgBox("IF -1 DAYS")
-                                '   MsgBox("date_cerrunt_now1===>" & date_cerrunt_now1)
-                                '   MsgBox("date_start_time===>" & date_start_time)
-                                If date_cerrunt_now1 > date_start_time Then
-                                    ' MsgBox("---->")
-                                    ' MsgBox("date1 =" & date1)
-                                    If TextBox1.Text >= "00:00:00" And TextBox1.Text <= "07:59:59" Then
-                                        ' MsgBox("ggggg->>>")
-                                        ' date1 = date1.AddDays(1)
-                                    Else
-                                        '  MsgBox("AAAA->>>")
-                                        date1 = date1.AddDays(-1)
-                                    End If
-                                ElseIf date_cerrunt_now1 = date_start_time Then
-                                    Dim update_start_shift_date_time As Date = date_start_shift.AddDays(-1)
-                                    convert_date_start_time = update_start_shift_date_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                                End If
-                                If TextBox2.Text >= "00:00:00" And TextBox2.Text <= "07:59:59" Then
-                                Else
-                                    ' MsgBox("Please check time 5")
-                                End If
-                                If date_cerrunt_now1 > date_start_time Then
-                                    If TextBox2.Text >= "00:00:00" And TextBox2.Text <= "07:59:59" Then
-                                    Else
-                                        date2 = date2.AddDays(-1)
-                                    End If
-                                ElseIf date_cerrunt_now1 = date_start_time Then
-                                    Dim update_end_shift_date_time As Date = date_end_shift.AddDays(-1)
-                                    convert_date_end_time = update_end_shift_date_time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                                End If
-                            End If
-                        End If
-                        Dim start_time As String = date1.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim end_time As String = date2.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim date_cerrunt As Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                        Dim time_cerrunt As Date = DateTime.Now.ToString("HH:mm:ss")
-                        Dim result_date_click_start
-                        Dim dateTimeValue As DateTime = DateTime.ParseExact(Working_Pro.DateTimeStartofShift.Text, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        ' แปลง DateTime เป็น String ในรูปแบบที่ต้องการ
-                        result_date_click_start = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                        Dim Minutes1 As Long = DateDiff(DateInterval.Minute, date1, date2)
-                        'MsgBox(start_time & ">=" & result_date_click_start)
-                        'MsgBox("Minutes1===>" & Minutes1)
-                        If start_time >= result_date_click_start And Minutes1 > 0 Then ' check ตอน clisk  start
-                            ' MsgBox(start_time & ">=" & convert_date_start_time & "AND" & start_time & "<=" & convert_date_end_time)
-                            If start_time >= convert_date_start_time And start_time <= convert_date_end_time Then ' Check Time Start or check shift
-                                'MsgBox("OK1")
-                                'MsgBox("end_time = " & end_time)
-                                'MsgBox("convert_date_end_time = " & convert_date_end_time)
-                                'MsgBox("convert_date_start_time = " & convert_date_start_time)
-                                If end_time <= convert_date_end_time And end_time >= convert_date_start_time Then ' Check Time Start 
-                                    'MsgBox("OK2")
-                                    Dim date_now As Date = Date.Now
-                                    Dim date_time = date_now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                                    'MsgBox("date_time = " & date_time)
-                                    'MsgBox("end_time = " & end_time)
-                                    If date_time >= end_time Then
-                                        Try
-                                            Dim Minutes As Long = DateDiff(DateInterval.Minute, date1, date2)
-                                            If Minutes.ToString < 0 Then
-                                                Dim temmpola As String = Minutes.ToString.Substring(0)
-                                                Dim tempp As Integer = temmpola
-                                                tempp = Math.Abs(tempp)
-                                                total_time_loss = 1440 - tempp
-                                            Else
-                                                total_time_loss = Minutes.ToString
-                                            End If
-                                        Catch ex As Exception
-
-                                        End Try
-                                        Dim GET_CHECK_LOSS_reuslt = Backoffice_model.GET_CHECK_LOSS(start_time, end_time)
-                                        Dim check_double_loss As Integer = 0
-                                        Dim count_check_double As String = ""
-                                        count_check_double = GET_CHECK_LOSS_reuslt
-                                        'If CDbl(Val(Backoffice_model.CHECK_TRANSCETION_PRODUCTION_DETAIL(MainFrm.Label4.Text, start_time, end_time))) = 0 Then
-                                        ena012()
-                                        Loss_reg_pass.Label8.Text = TextBox1.Text
-                                            Loss_reg_pass.Label9.Text = TextBox2.Text
-                                            Loss_reg_pass.Enabled = True
-                                            Loss_reg_pass.Button1.Visible = True
-                                            Me.Hide()
-                                        'Else
-                                        ' Button10.Enabled = False
-                                        ' Button11.Enabled = False
-                                        ' Dim listdetail = "Have Data In Production Actual Detail Please Check."
-                                        ' PictureBox10.BringToFront()
-                                        ' PictureBox10.Show()
-                                        ' PictureBox2.BringToFront()
-                                        ' PictureBox2.Show()
-                                        ' Panel2.BringToFront()
-                                        ' Panel2.Show()
-                                        ' Label3.Text = listdetail
-                                        ' Label3.BringToFront()
-                                        ' Label3.Show()
-                                        'End If
-                                        'MsgBox("OK READY CAL")
-                                    Else
-                                        ena012()
-                                        Button10.Enabled = False
-                                        Button11.Enabled = False
-                                        Dim listdetail = "Please Check Time 5 ."
-                                        PictureBox10.BringToFront()
-                                        PictureBox10.Show()
-                                        PictureBox2.BringToFront()
-                                        PictureBox2.Show()
-                                        Panel2.BringToFront()
-                                        Panel2.Show()
-                                        Label3.Text = listdetail
-                                        Label3.BringToFront()
-                                        Label3.Show()
-                                        'MsgBox("Please Check Time.")
-                                    End If
-                                Else
-                                    ena012()
-                                    Button10.Enabled = False
-                                    Button11.Enabled = False
-                                    Dim listdetail = "Please Check Shift 6."
-                                    PictureBox10.BringToFront()
-                                    PictureBox10.Show()
-                                    PictureBox2.BringToFront()
-                                    PictureBox2.Show()
-                                    Panel2.BringToFront()
-                                    Panel2.Show()
-                                    Label3.Text = listdetail
-                                    Label3.BringToFront()
-                                    Label3.Show()
-                                    'MsgBox("Please Check Shift.")
-                                End If
-                            Else
-                                ena012()
-                                Button10.Enabled = False
-                                Button11.Enabled = False
-                                Dim listdetail = "Please Check Shift 7."
-                                PictureBox10.BringToFront()
-                                PictureBox10.Show()
-                                PictureBox2.BringToFront()
-                                PictureBox2.Show()
-                                Panel2.BringToFront()
-                                Panel2.Show()
-                                Label3.Text = listdetail
-                                Label3.BringToFront()
-                                Label3.Show()
-                                ' MsgBox("Please Check Shift.")
-                            End If
-                        Else
-                            Button10.Enabled = False
-                            Button11.Enabled = False
-                            Dim listdetail = "Please Check time 8 ."
-                            PictureBox10.BringToFront()
-                            PictureBox10.Show()
-                            PictureBox2.BringToFront()
-                            PictureBox2.Show()
-                            Panel2.BringToFront()
-                            Panel2.Show()
-                            Label3.Text = listdetail
-                            Label3.BringToFront()
-                            Label3.Show()
-                            ' MsgBox("Please Check time.")
-                        End If
+                    Else
+                        Button10.Enabled = False
+                        Button11.Enabled = False
+                        Dim listdetail = "Please Check time."
+                        PictureBox10.BringToFront()
+                        PictureBox10.Show()
+                        PictureBox2.BringToFront()
+                        PictureBox2.Show()
+                        Panel2.BringToFront()
+                        Panel2.Show()
+                        Label3.Text = listdetail
+                        Label3.BringToFront()
+                        Label3.Show()
+                        ' MsgBox("Please Check time.")
                     End If
+                    '--LOSS VERSION OLD
+                    ' Try
+                    ' Dim Minutes As Long = DateDiff(DateInterval.Minute, date1, date2)
+                    ' If Minutes.ToString < 0 Then
+                    ' Dim temmpola As String = Minutes.ToString.Substring(0)
+                    ' Dim tempp As Integer = temmpola
+                    ' tempp = Math.Abs(tempp)
+                    ' total_time_loss = 1440 - tempp
+                    ' Else
+                    ' total_time_loss = Minutes.ToString
+                    'End If
+                    '    Catch ex As Exception
+                    '
+                    'End Try
+                    '      If TextBox1.Text >= time_cerrunt Then
+                    '  start_time = date_cerrunt.AddDays(-1)
+                    ''  Dim s As String = start_time.ToString().Substring(0, 9)
+                    ' start_time = s & TextBox1.Text
+                    ' start_time = Convert.ToDateTime(start_time).ToString("yyyy-MM-dd HH:mm:ss")
+                    'End If
+                    '        If TextBox2.Text > time_cerrunt Then
+                    '        end_time = date_cerrunt.AddDays(-1)
+                    '        Dim s As String = end_time.ToString().Substring(0, 9)
+                    '        end_time = s & TextBox2.Text
+                    '        end_time = Convert.ToDateTime(end_time).ToString("yyyy-MM-dd HH:mm:ss")
+                    'End If
+                    '        Dim GET_CHECK_LOSS_reuslt = Backoffice_model.GET_CHECK_LOSS(start_time, end_time)
+                    '        Dim check_double_loss As Integer = 0
+                    'Dim count_check_double As String = ""
+                    'count_check_double = GET_CHECK_LOSS_reuslt
+                    'If CDbl(Val(count_check_double)) > 0 Then
+                    '    MsgBox("Loss double please check start loss and end loss")
+                    'Else
+                    'Dim time_st As Date = Date.Parse(Label2.Text)
+                    ' Dim time_now As Date = Date.Now
+                    'Dim Minutes_total As Long = DateDiff(DateInterval.Minute, time_now, time_st)
+                    'Minutes_total = Math.Abs(Minutes_total)
+                    'If total_time_loss > Minutes_total Or total_time_loss = 0 Then
+                    '   MsgBox("Time insert is incorrected. Please try again.")
+                    'Else
+                    'If total_time_loss > Minutes_total Or total_time_loss = 0 Then
+                    ''    Loss_reg_pass.Label8.Text = TextBox1.Text
+                    '     Loss_reg_pass.Label9.Text = TextBox2.Text
+                    '      Loss_reg_pass.Enabled = True
+                    '       Loss_reg_pass.Button1.Visible = True
+                    '        Me.Hide()
+                    '     Else
+                    '          MsgBox("Time insert is incorrected. Please try again.")
+                    '       End If
+                    '    End If
+                    ' End If
                 Catch ex As Exception
-                    ena012()
                     Button10.Enabled = False
                     Button11.Enabled = False
-                    Dim listdetail = "Please Check time 9."
+                    Dim listdetail = "Please Check time."
                     PictureBox10.BringToFront()
                     PictureBox10.Show()
                     PictureBox2.BringToFront()
