@@ -119,7 +119,6 @@ Partial Class Working_Pro
         Me.lb_nc_child_part = New System.Windows.Forms.Label()
         Me.lb_ng_child_part = New System.Windows.Forms.Label()
         Me.lbNextTime = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.LB_IND_ROW = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -1390,22 +1389,6 @@ Partial Class Working_Pro
         Me.lbNextTime.Text = "XX:XX:XX"
         Me.lbNextTime.Visible = False
         '
-        'Button1
-        '
-        Me.Button1.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.inst_qty2
-        Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Button1.Image = Global.TBK_FA_System.My.Resources.Resources.inst_qty2
-        Me.Button1.Location = New System.Drawing.Point(144, 526)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(128, 73)
-        Me.Button1.TabIndex = 4561
-        Me.Button1.Text = "1 Qty."
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.Button1.UseVisualStyleBackColor = False
-        Me.Button1.Visible = False
-        '
         'LB_IND_ROW
         '
         Me.LB_IND_ROW.AutoSize = True
@@ -1476,7 +1459,6 @@ Partial Class Working_Pro
         'PictureBox14
         '
         Me.PictureBox14.BackColor = System.Drawing.Color.White
-        Me.PictureBox14.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.btnInfo
         Me.PictureBox14.Location = New System.Drawing.Point(459, 464)
         Me.PictureBox14.Name = "PictureBox14"
         Me.PictureBox14.Size = New System.Drawing.Size(169, 69)
@@ -1572,7 +1554,6 @@ Partial Class Working_Pro
         'btn_defect
         '
         Me.btn_defect.BackColor = System.Drawing.Color.FromArgb(CType(CType(63, Byte), Integer), CType(CType(63, Byte), Integer), CType(CType(63, Byte), Integer))
-        Me.btn_defect.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.btnDefect1
         Me.btn_defect.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.btn_defect.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btn_defect.Enabled = False
@@ -1759,7 +1740,6 @@ Partial Class Working_Pro
         'btn_setup
         '
         Me.btn_setup.BackColor = System.Drawing.Color.FromArgb(CType(CType(63, Byte), Integer), CType(CType(63, Byte), Integer), CType(CType(63, Byte), Integer))
-        Me.btn_setup.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.btnSetting11
         Me.btn_setup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.btn_setup.Cursor = System.Windows.Forms.Cursors.Hand
         Me.btn_setup.Enabled = False
@@ -2590,7 +2570,6 @@ Partial Class Working_Pro
         Me.Controls.Add(Me.lb_good)
         Me.Controls.Add(Me.Panel7)
         Me.Controls.Add(Me.lb_ng_qty)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me._Edit_Up_1)
         Me.Controls.Add(Me.Button3)
         Me.Controls.Add(Me.Label16)
@@ -2754,7 +2733,6 @@ Partial Class Working_Pro
     Friend WithEvents lb_nc_child_part As Label
     Friend WithEvents lb_ng_child_part As Label
     Friend WithEvents lbNextTime As Label
-    Friend WithEvents Button1 As Button
     Friend WithEvents LB_IND_ROW As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents Label17 As Label

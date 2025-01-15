@@ -197,11 +197,10 @@ Public Class ins_qty_special_time
 		End If
 		chk_ins()
 		Dim text_to2_now As String = TextBox2.Text
-		If text_to2_now.Length > 4 Then
-			alldis()
-
-		End If
-	End Sub
+        If text_to2_now.Length > 4 Then
+            alldis()
+        End If
+    End Sub
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
         Dim text_now As String = TextBox1.Text
         If text_now.Length > 4 Then
@@ -354,9 +353,11 @@ Public Class ins_qty_special_time
                     If Backoffice_model.S_chk_spec_line = 0 Then
                         timeclickStart = DateTime.Now.ToString()
                         DatetimeclickStart = Backoffice_model.date_time_click_start.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-                    Else
+                    Else ' For K1M025
                         timeclickStart = DateTime.Now.ToString()
-                        DatetimeclickStart = Backoffice_model.date_time_start_master_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                        'DatetimeclickStart = Backoffice_model.date_time_start_master_shift.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
+                        Dim dateTimeValue As DateTime = DateTime.Parse(Working_Pro.DateTimeStartofShift.Text)
+                        DatetimeclickStart = dateTimeValue.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
                     'Dim date_start_shift As Date = Backoffice_model.date_time_start_master_shift เอาเวลา ของ Shift ตั้งต้นขึ้นมา
                     '''' เป็นการเอาเวลาของการ กด ปุ่ม STarts มาแทน 
@@ -460,7 +461,6 @@ Public Class ins_qty_special_time
                             result = False
                         End If
                     End If
-
                     If result Then
                         If date_cerrunt1 >= start_time And date_cerrunt1 >= end_time Then ' check ตอน clisk  start
                             ' MsgBox("start_time====>" & start_time & " >= " & convert_date_start_time & " AND " & start_time & " <= " & convert_date_end_time)
@@ -755,7 +755,10 @@ Public Class ins_qty_special_time
             Dim timestart As Date = Working_Pro.Label16.Text
             show_time_add_qty.Text = timestart.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
         Else
-            show_time_add_qty.Text = Backoffice_model.date_time_start_master_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
+            Dim dateTimeValue As DateTime = DateTime.Parse(Working_Pro.DateTimeStartofShift.Text)
+            DatetimeclickStart = dateTimeValue.ToString("HH:mm:ss")
+            show_time_add_qty.Text = DatetimeclickStart
+            ' show_time_add_qty.Text = Backoffice_model.date_time_start_master_shift.ToString("HH:mm:ss", CultureInfo.InvariantCulture)
         End If
         chk_ins()
     End Sub

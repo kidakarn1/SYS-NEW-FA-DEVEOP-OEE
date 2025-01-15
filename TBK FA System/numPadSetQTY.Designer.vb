@@ -222,7 +222,7 @@ Partial Class numPadSetQTY
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.NumSettingActual1
+        '  Me.BackgroundImage = Global.TBK_FA_System.My.Resources.Resources.NumSettingActual1
         Me.ClientSize = New System.Drawing.Size(800, 600)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.lb_MAX_QTY)

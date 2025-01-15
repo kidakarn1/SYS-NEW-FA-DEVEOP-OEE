@@ -249,7 +249,7 @@ Public Class Confrime_work_production
                             End If
                         End If
                     Next
-                    Working_Pro.Button1.Text = MainFrm.cavity.Text & " Qty."
+                    'Working_Pro.Button1.Text = MainFrm.cavity.Text & " Qty."
                     Working_Pro.Label18.Text = Prd_detail.Label6.Text
                     Working_Pro.Label29.Text = Prd_detail.Label2.Text
                     Working_Pro.Label14.Text = Prd_detail.Label12.Text.Substring(0, 1)
@@ -320,11 +320,6 @@ Public Class Confrime_work_production
                     Working_Pro.btn_start.Visible = True
                     Working_Pro.btn_stop.Visible = False
                     loadData_Working_OEE()
-<<<<<<< HEAD
-=======
-
-                    Prd_detail.Hide()
->>>>>>> parent of 5ffecdd (Updated Version 2.0.7)
                 Else
                     Prd_detail.Enabled = False
                     Model_change_alert.Show()
@@ -377,19 +372,15 @@ Public Class Confrime_work_production
         End If
         Timer1.Enabled = True
     End Sub
-
     Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
 
     End Sub
-
     Private Sub Label6_Click(sender As Object, e As EventArgs) Handles Label6.Click
 
     End Sub
-
     Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
 
     End Sub
-
     Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
 
     End Sub
